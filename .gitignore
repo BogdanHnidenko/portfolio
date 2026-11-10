@@ -1,0 +1,4 @@
+
+# claude team kit (only the manifest is versioned)
+.pipeline/*
+!.pipeline/workspace.json

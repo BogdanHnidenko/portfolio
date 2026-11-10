@@ -1,0 +1,62 @@
+{
+  "name": "portfolio",
+  "services": [
+    {
+      "name": "web",
+      "type": "frontend",
+      "path": ".",
+      "stack": "React 18 + TypeScript + Vite + SCSS modules + Zustand (single-page portfolio, no backend)",
+      "commands": {
+        "lint": "npm run lint",
+        "typecheck": "npx tsc --noEmit -p tsconfig.app.json",
+        "test": "npx vitest run",
+        "build": "npm run build"
+      },
+      "dev": {
+        "start": "npm run dev",
+        "url": "http://localhost:5173"
+      }
+    }
+  ],
+  "conventions": {
+    "replyLanguage": "uk",
+    "comments": {
+      "language": "uk",
+      "level": "all",
+      "enforce": true,
+      "exclude": []
+    },
+    "extra": [
+      "Глобальний стан (мова EN/UA, тема dark/light) — лише Zustand, з persist у localStorage.",
+      "Тексти EN/UA — власний типізований словник (src/i18n), без i18n-бібліотек.",
+      "Стилі — SCSS modules; кольори та відступи — через CSS custom properties теми.",
+      "Дизайн-джерело: https://claude.ai/artifact/EGbBduxP7FeChP4SAoJEAd (Desktop 1440 / Mobile 390, dark / light)."
+    ]
+  },
+  "qa": {
+    "defaultDepth": "ask"
+  },
+  "contracts": {
+    "path": "contracts"
+  },
+  "e2e": {
+    "path": "e2e",
+    "command": "npx playwright test"
+  },
+  "audit": {
+    "exclude": [],
+    "maxDiffLines": 3000
+  },
+  "pipeline": {
+    "branchPrefix": "feat/",
+    "maxLoops": 3,
+    "verifySteps": [
+      "lint",
+      "typecheck",
+      "test",
+      "build"
+    ],
+    "stepTimeoutSec": 900,
+    "maxFileSizeKb": 1024
+  }
+}
