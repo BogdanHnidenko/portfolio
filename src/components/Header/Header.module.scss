@@ -1,4 +1,4 @@
-// Sticky-хедер: лого, навігація з активним пунктом, перемикачі мови й теми, CV, мобільні «пігулки».
+// Sticky-хедер: лого, навігація з активним пунктом, перемикачі мови й теми, CV; на ≤ 900 px — бургер і панель меню.
 @use '../../styles/breakpoints' as *;
 
 .top {
@@ -142,41 +142,113 @@
   display: none;
 }
 
-// Мобільна навігація-«пігулки»: три пункти рівної ширини
-.mnav {
+// Кнопка-бургер: видно лише на ≤ 900 px
+.burger {
   display: none;
-  gap: 6px;
-  padding: 0 20px 10px;
+}
+
+// Обгортка панелі: стоїть під хедером з відступами `wrap`; сама не перехоплює кліки
+.menuWrap {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+}
+
+// Панель бургер-меню у стилі карток: фон, межа, радіус і тінь з токенів теми
+.menu {
+  display: none;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 8px;
+  padding: 10px;
+  // Висота екрана мінус хедер і відступи: на низьких екранах (телефон у ландшафті) панель прокручується сама
+  max-height: calc(100dvh - 96px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border: 1px solid var(--line2);
+  border-radius: 22px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  pointer-events: auto;
+}
+
+// Пункти меню — великі рядки на всю ширину панелі
+.menuNav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 
   a {
-    flex: 1 1 0;
-    display: inline-flex;
+    display: flex;
     align-items: center;
-    justify-content: center;
-    height: 44px;
-    border-radius: 999px;
-    border: 1px solid var(--line);
-    background: var(--surface);
-    font-size: 14px;
+    min-height: 52px;
+    padding: 0 16px;
+    border-radius: 14px;
+    font-size: 17px;
+    font-weight: 500;
     color: var(--muted);
     text-decoration: none;
     cursor: pointer;
+    transition:
+      color 0.2s,
+      background 0.2s;
+
+    &:hover {
+      color: var(--text);
+      background: var(--surface2);
+    }
   }
 
-  a.on {
+  // Активна сторінка — оранжева «пігулка», як активний пункт мобільної навігації макета
+  a.on,
+  a.on:hover {
     color: var(--on-accent2);
     background: var(--accent2);
-    border-color: transparent;
     font-weight: 600;
   }
 }
 
+// Рядок налаштувань: мова ліворуч, тема праворуч
+.menuSettings {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 6px 2px;
+  border-top: 1px solid var(--line);
+}
+
+@keyframes menuIn {
+  from {
+    opacity: 0;
+    translate: 0 -6px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@include motion {
+  .menu {
+    animation: menuIn 0.22s $ease-out;
+  }
+}
+
 @include narrow {
-  .nav {
+  .nav,
+  .wideOnly {
     display: none;
   }
 
-  .mnav {
+  .burger {
+    display: grid;
+  }
+
+  // Відкрита панель (без `hidden`) показується лише тут; на > 900 px вона не видна ніколи
+  .menu:not([hidden]) {
     display: flex;
   }
 }

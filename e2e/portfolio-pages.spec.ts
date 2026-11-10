@@ -335,32 +335,42 @@ test.describe('AC-2 навігація', () => {
       await expect(page.locator('[data-testid^="nav-link-"][aria-current="page"]')).toHaveCount(1);
     });
 
-    test(`AC-2 [happy] мобільний пункт ${slug}: URL, сторінка, aria-current`, async ({ page }) => {
+    test(`AC-2 [happy] пункт бургер-панелі ${slug}: URL, сторінка, aria-current, панель закривається`, async ({ page }) => {
       await page.setViewportSize({ width: 390, height: 800 });
       await open(page, '/');
-      // Посилання мобільного меню
-      const link = page.getByTestId(`mnav-link-${slug}`);
+      // Кнопка-бургер
+      await page.getByTestId('menu-toggle').click();
+      // Посилання панелі
+      const link = page.getByTestId(`mmenu-link-${slug}`);
       await expect(link).toBeVisible();
       await expect(link).toHaveAttribute('href', path);
       await link.click();
       await expect(page).toHaveURL(new RegExp(`${path}$`));
       await expect(page.getByTestId(pageId)).toBeVisible();
-      await expect(link).toHaveAttribute('aria-current', 'page');
-      await expect(page.locator('[data-testid^="mnav-link-"][aria-current="page"]')).toHaveCount(1);
+      await expect(page.getByTestId('mobile-menu')).toBeHidden();
+      // Після повторного відкриття активний лише поточний пункт
+      await page.getByTestId('menu-toggle').click();
+      await expect(page.getByTestId(`mmenu-link-${slug}`)).toHaveAttribute('aria-current', 'page');
+      await expect(page.locator('[data-testid^="mmenu-link-"][aria-current="page"]')).toHaveCount(1);
     });
   }
 
-  test('AC-2 [happy] на Home активного пункту меню немає (десктоп і мобільний); лого веде на /', async ({ page }) => {
+  test('AC-2 [happy] на Home активний лише пункт Home (aria-current і клас on); лого веде на /', async ({ page }) => {
     await open(page, '/');
-    await expect(page.locator('[aria-current="page"]')).toHaveCount(0);
+    // Активні пункти десктопного меню на Home (панель бургера теж містить посилання, тому звужуємо вибірку)
+    await expect(page.locator('[data-testid^="nav-link-"][aria-current="page"]')).toHaveCount(1);
+    await expect(page.getByTestId('nav-link-home')).toHaveAttribute('aria-current', 'page');
     await expect(page.getByTestId('logo-link')).toHaveAttribute('href', '/');
     await page.getByTestId('nav-link-about').click();
     await expect(page.getByTestId('page-about')).toBeVisible();
+    await expect(page.getByTestId('nav-link-home')).not.toHaveAttribute('aria-current', 'page');
     await page.getByTestId('logo-link').click();
     await expect(page).toHaveURL(/localhost:\d+\/$/);
     await expect(page.getByTestId('page-home')).toBeVisible();
-    await expect(page.locator('[aria-current="page"]')).toHaveCount(0);
-    await expect(page.locator('[data-testid^="nav-link-"].on, [data-testid^="mnav-link-"].on')).toHaveCount(0);
+    await expect(page.locator('[data-testid^="nav-link-"][aria-current="page"]')).toHaveCount(1);
+    // Клас on у CSS-модулі хешується, тому шукаємо його як підрядок
+    await expect(page.getByTestId('nav-link-home')).toHaveClass(/on/);
+    await expect(page.getByTestId('nav-link-work')).not.toHaveClass(/_on_|\bon\b/);
   });
 
   test('AC-2 [navigation] внутрішні посилання Home ведуть на правильні адреси', async ({ page }) => {
@@ -426,7 +436,7 @@ test.describe('AC-2 навігація', () => {
     await expect(page.getByTestId('page-work')).toBeVisible();
     await page.goBack();
     await expect(page.getByTestId('page-home')).toBeVisible();
-    await expect(page.locator('[aria-current="page"]')).toHaveCount(0);
+    await expect(page.getByTestId('nav-link-home')).toHaveAttribute('aria-current', 'page');
     await page.goForward();
     await expect(page.getByTestId('page-work')).toBeVisible();
     await page.goForward();
@@ -487,7 +497,7 @@ test.describe('AC-2 навігація', () => {
     await page.getByTestId('lang-ua').click();
     await expect(page.getByTestId('nav-link-about')).toHaveAttribute('aria-current', 'page');
     await expect(page.getByTestId('nav-link-about')).toHaveText('Про мене');
-    await expect(page.locator('[aria-current="page"]')).toHaveCount(2); // десктопний + мобільний пункти
+    await expect(page.locator('[data-testid^="nav-link-"][aria-current="page"]')).toHaveCount(1); // лише десктопний пункт
   });
 });
 
@@ -1152,17 +1162,17 @@ test.describe('AC-8 адаптив', () => {
     await checkLayout(page, testInfo, { name: 'home-hostile-320' });
   });
 
-  test('AC-8 [happy] навігація: ≤900 видно nav-mobile і ховається nav-desktop; >900 навпаки', async ({ page }) => {
+  test('AC-8 [happy] навігація: ≤900 видно бургер і ховається nav-desktop; >900 навпаки', async ({ page }) => {
     await open(page, '/work');
     for (const w of [320, 390, 720, 768, 900]) {
       await page.setViewportSize({ width: w, height: 800 });
-      await expect(page.getByTestId('nav-mobile'), `@${w}`).toBeVisible();
+      await expect(page.getByTestId('menu-toggle'), `@${w}`).toBeVisible();
       await expect(page.getByTestId('nav-desktop'), `@${w}`).toBeHidden();
     }
     for (const w of [901, 1024, 1440]) {
       await page.setViewportSize({ width: w, height: 800 });
       await expect(page.getByTestId('nav-desktop'), `@${w}`).toBeVisible();
-      await expect(page.getByTestId('nav-mobile'), `@${w}`).toBeHidden();
+      await expect(page.getByTestId('menu-toggle'), `@${w}`).toBeHidden();
     }
   });
 
@@ -1175,19 +1185,24 @@ test.describe('AC-8 адаптив', () => {
     }
   });
 
-  test('AC-8 [navigation] мобільна навігація 390 на кожній сторінці: активна «пігулка» видима і всі три пункти досяжні', async ({ page }) => {
+  test('AC-8 [navigation] мобільна навігація 390 на кожній сторінці: через бургер досяжні всі пункти, активний виділено', async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 800 });
     await open(page, '/');
     for (const slug of ['work', 'about', 'contact']) {
-      // Пункт мобільного меню
-      const link = page.getByTestId(`mnav-link-${slug}`);
-      await link.click();
-      await expect(link).toHaveAttribute('aria-current', 'page');
+      // Відкриваємо панель і беремо пункт
+      await page.getByTestId('menu-toggle').click();
+      // Пункт панелі
+      const link = page.getByTestId(`mmenu-link-${slug}`);
       // Розміри цілі натискання
       const b = (await link.boundingBox())!;
-      expect(b.height).toBeGreaterThanOrEqual(24);
+      expect(b.height).toBeGreaterThanOrEqual(44);
       expect(b.x).toBeGreaterThanOrEqual(0);
       expect(b.x + b.width).toBeLessThanOrEqual(390);
+      await link.click();
+      await expect(page.getByTestId(`page-${slug}`)).toBeVisible();
+      await page.getByTestId('menu-toggle').click();
+      await expect(page.getByTestId(`mmenu-link-${slug}`)).toHaveAttribute('aria-current', 'page');
+      await page.getByTestId('menu-toggle').click();
     }
   });
 

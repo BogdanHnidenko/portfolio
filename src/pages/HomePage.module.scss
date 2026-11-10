@@ -173,7 +173,7 @@ a.tile {
   margin-top: 8px;
 }
 
-// Плитка з фото на всю висоту рядка
+// Плитка з фото: поруч з intro тягнеться на всю висоту ряду (не нижча за min-height макета)
 .tPhoto {
   grid-column: span 5;
   padding: 0;
@@ -422,23 +422,16 @@ a.tile:hover .arrC {
   }
 }
 
+// 901–1100 і вужче: рівні ряди без порожніх половин — intro 7 + фото 5, роботи 4 + 4 + 4, AI на всю ширину,
+// Stack і Contact links по 6 в одному ряду, CTA після них на всю ширину (лише `order`, DOM-порядок той самий)
 @include tablet {
-  .tIntro {
-    grid-column: span 12;
-  }
-
-  .tPhoto {
-    grid-column: span 12;
-    min-height: 420px;
-  }
-
-  .tW {
-    grid-column: span 4;
-  }
-
   .tAi,
   .tCta {
     grid-column: span 12;
+  }
+
+  .tCta {
+    order: 1;
   }
 
   .tStack,
@@ -447,34 +440,17 @@ a.tile:hover .arrC {
   }
 }
 
+// 721–900: колонки ті самі, що й на планшеті, але плитки вужчі — менші відступи й кегль, щоб текст не вилазив
 @include narrow {
   .tW,
+  .tAi,
   .tStack,
   .tLinks {
-    grid-column: span 12;
-  }
-
-  .tW {
-    min-height: 0;
-  }
-}
-
-@include phone {
-  .home {
-    padding-top: 16px;
-  }
-
-  .bento {
-    gap: 12px;
-  }
-
-  .tile {
     padding: 22px;
-    border-radius: 22px;
   }
 
   .tIntro {
-    padding: 26px 22px;
+    padding: 30px 26px;
     gap: 28px;
   }
 
@@ -484,27 +460,22 @@ a.tile:hover .arrC {
   }
 
   .name {
-    font-size: 42px;
+    font-size: 46px;
     letter-spacing: -0.045em;
     margin-top: 18px;
   }
 
   .headline {
-    font-size: 19px;
+    font-size: 18px;
   }
 
   .pitch {
-    font-size: 16px;
+    font-size: 15.5px;
   }
 
   .cta {
-    flex-direction: column;
     margin-top: 22px;
     gap: 10px;
-
-    a {
-      width: 100%;
-    }
   }
 
   .istats {
@@ -520,8 +491,77 @@ a.tile:hover .arrC {
     font-size: 12.5px;
   }
 
+  .tW {
+    min-height: 0;
+  }
+
+  .tH {
+    font-size: 19px;
+  }
+
+  .tP {
+    font-size: 14.5px;
+  }
+}
+
+@include phone {
+  .home {
+    padding-top: 16px;
+  }
+
+  .bento {
+    gap: 12px;
+  }
+
+  // Телефон: кожна плитка на всю ширину
+  .tIntro,
+  .tPhoto,
+  .tW,
+  .tStack,
+  .tLinks {
+    grid-column: span 12;
+  }
+
+  .tile {
+    border-radius: 22px;
+  }
+
+  .tIntro {
+    padding: 26px 22px;
+  }
+
+  .name {
+    font-size: 42px;
+  }
+
+  .headline {
+    font-size: 19px;
+  }
+
+  .pitch {
+    font-size: 16px;
+  }
+
+  .cta {
+    flex-direction: column;
+
+    a {
+      width: 100%;
+    }
+  }
+
+  // Портретна рамка 4:5 на всю ширину замість min-height макета
   .tPhoto {
-    min-height: 380px;
+    min-height: 0;
+    aspect-ratio: 4 / 5;
+  }
+
+  .tH {
+    font-size: 22px;
+  }
+
+  .tP {
+    font-size: 15.5px;
   }
 
   .tCta {

@@ -22,7 +22,7 @@ function shape(value: unknown): unknown {
 const DROPPED_KEYS = ['featured', 'allWork', 'openCase', 'teaserGo', 'photoBadge', 'photoCap', 'photoCap2'];
 
 /** Ключі попередньої односторінкової версії, які більше не потрібні. */
-const LEGACY_KEYS = ['docTitle', 'navApps', 'navAi', 'navStack', 'navExp', 'dirs', 'dirsLabel', 'groupNames', 'groupMeta', 'avatarLabel', 'stackHead'];
+const LEGACY_KEYS = ['docTitle', 'navApps', 'navAi', 'navStack', 'navExp', 'dirs', 'dirsLabel', 'groupNames', 'groupMeta', 'avatarLabel', 'stackHead', 'navSectionsLabel'];
 
 describe('словник', () => {
   it('en і ua мають однаковий набір ключів і однакову структуру', () => {

@@ -43,20 +43,31 @@ export function ArrowUpRightIcon({ size = 14, strokeWidth = 1.9, className }: Ic
   );
 }
 
-/** Сонце — показується в темній темі на кнопці перемикання. */
-export function SunIcon() {
+/** Пропси іконок теми: data-testid, щоб іконки в хедері й у бургер-меню не мали однакових ідентифікаторів. */
+interface ThemeIconProps {
+  testId?: string;
+}
+
+/**
+ * Сонце — показується в темній темі на кнопці перемикання.
+ * @param props - data-testid (за замовчуванням `theme-icon-sun`)
+ */
+export function SunIcon({ testId = 'theme-icon-sun' }: ThemeIconProps) {
   return (
-    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" aria-hidden="true" data-testid="theme-icon-sun">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" aria-hidden="true" data-testid={testId}>
       <circle cx="12" cy="12" r="4" />
       <path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4" />
     </svg>
   );
 }
 
-/** Місяць — показується у світлій темі на кнопці перемикання. */
-export function MoonIcon() {
+/**
+ * Місяць — показується у світлій темі на кнопці перемикання.
+ * @param props - data-testid (за замовчуванням `theme-icon-moon`)
+ */
+export function MoonIcon({ testId = 'theme-icon-moon' }: ThemeIconProps) {
   return (
-    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" data-testid="theme-icon-moon">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" data-testid={testId}>
       <path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" />
     </svg>
   );
@@ -123,6 +134,24 @@ export function GlobeIcon() {
     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <circle cx="12" cy="12" r="9" />
       <path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18" />
+    </svg>
+  );
+}
+
+/** Три лінії — кнопка-бургер у закритому стані. */
+export function MenuIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true" data-testid="menu-icon-open">
+      <path d="M4 7h16M4 12h16M4 17h16" />
+    </svg>
+  );
+}
+
+/** Хрестик — кнопка-бургер, коли панель меню відкрита. */
+export function CloseIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true" data-testid="menu-icon-close">
+      <path d="M6 6l12 12M18 6L6 18" />
     </svg>
   );
 }

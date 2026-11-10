@@ -91,26 +91,42 @@ describe('App — маршрутизація', () => {
     expect(screen.getByTestId('page-work')).toBeInTheDocument();
   });
 
-  it('активний пункт меню має клас on і aria-current="page", на Home активного немає', () => {
+  it('активний пункт меню має клас on і aria-current="page"; Home активний лише на /', () => {
     renderAt('/');
-    for (const id of ['work', 'about', 'contact']) {
-      expect(screen.getByTestId(`nav-link-${id}`)).not.toHaveAttribute('aria-current');
-      expect(screen.getByTestId(`mnav-link-${id}`)).not.toHaveAttribute('aria-current');
+    for (const prefix of ['nav-link', 'mmenu-link']) {
+      expect(screen.getByTestId(`${prefix}-home`)).toHaveAttribute('aria-current', 'page');
+      expect(screen.getByTestId(`${prefix}-home`)).toHaveClass('on');
+      for (const id of ['work', 'about', 'contact']) {
+        expect(screen.getByTestId(`${prefix}-${id}`)).not.toHaveAttribute('aria-current');
+      }
     }
     fireEvent.click(screen.getByTestId('nav-link-about'));
-    expect(screen.getByTestId('nav-link-about')).toHaveAttribute('aria-current', 'page');
-    expect(screen.getByTestId('mnav-link-about')).toHaveAttribute('aria-current', 'page');
-    expect(screen.getByTestId('nav-link-about')).toHaveClass('on');
-    expect(screen.getByTestId('mnav-link-about')).toHaveClass('on');
+    for (const prefix of ['nav-link', 'mmenu-link']) {
+      expect(screen.getByTestId(`${prefix}-about`)).toHaveAttribute('aria-current', 'page');
+      expect(screen.getByTestId(`${prefix}-about`)).toHaveClass('on');
+      expect(screen.getByTestId(`${prefix}-home`)).not.toHaveAttribute('aria-current');
+      expect(screen.getByTestId(`${prefix}-home`)).not.toHaveClass('on');
+    }
     expect(screen.getByTestId('nav-link-work')).not.toHaveAttribute('aria-current');
     expect(screen.getByTestId('nav-link-work')).not.toHaveClass('on');
   });
 
+  it('пункт Home у меню — перший, з текстом Home і адресою /, як у лого', () => {
+    renderAt('/work');
+    // Пункти десктопного меню в порядку DOM
+    const items = within(screen.getByTestId('nav-desktop')).getAllByRole('link');
+    expect(items.map((item) => item.textContent)).toEqual(['Home', 'Work', 'About', 'Contact']);
+    expect(screen.getByTestId('nav-link-home')).toHaveAttribute('href', '/');
+    fireEvent.click(screen.getByTestId('nav-link-home'));
+    expect(screen.getByTestId('page-home')).toBeInTheDocument();
+    expect(screen.getByTestId('nav-link-home')).toHaveAttribute('aria-current', 'page');
+  });
+
   it('пункти меню, лого і внутрішні посилання — справжні <a href> на правильні адреси', () => {
     renderAt('/');
-    for (const id of ['work', 'about', 'contact']) {
-      expect(screen.getByTestId(`nav-link-${id}`)).toHaveAttribute('href', `/${id}`);
-      expect(screen.getByTestId(`mnav-link-${id}`)).toHaveAttribute('href', `/${id}`);
+    for (const [id, href] of [['home', '/'], ['work', '/work'], ['about', '/about'], ['contact', '/contact']]) {
+      expect(screen.getByTestId(`nav-link-${id}`)).toHaveAttribute('href', href);
+      expect(screen.getByTestId(`mmenu-link-${id}`)).toHaveAttribute('href', href);
     }
     expect(screen.getByTestId('logo-link')).toHaveAttribute('href', '/');
     expect(screen.getByTestId('skip-link')).toHaveAttribute('href', '#main');
@@ -145,6 +161,19 @@ describe('App — маршрутизація', () => {
     fireEvent.click(screen.getByTestId('probe-forward'));
     expect(screen.getByTestId('page-work')).toBeInTheDocument();
     expect(window.scrollTo).toHaveBeenCalledTimes(5);
+  });
+
+  it('перехід із бургер-меню закриває панель і ставить фокус на main, а не на бургер', async () => {
+    // Імітація користувача
+    const user = userEvent.setup();
+    renderAt('/');
+    await user.click(screen.getByTestId('menu-toggle'));
+    expect(screen.getByTestId('mobile-menu')).toBeVisible();
+    await user.click(screen.getByTestId('mmenu-link-about'));
+    expect(screen.getByTestId('page-about')).toBeInTheDocument();
+    expect(screen.getByTestId('mobile-menu')).not.toBeVisible();
+    expect(screen.getByTestId('menu-toggle')).toHaveAttribute('aria-expanded', 'false');
+    expect(document.activeElement).toBe(screen.getByTestId('main'));
   });
 
   it('редірект з невідомого шляху не забирає фокус і не скролить', () => {
@@ -302,7 +331,8 @@ describe('App — мова', () => {
     expect(screen.getByTestId('lang-en')).toHaveAttribute('aria-pressed', 'false');
     expect(screen.getByTestId('about-title')).toHaveTextContent('Про мене');
     expect(screen.getByTestId('nav-link-work')).toHaveTextContent('Роботи');
-    expect(screen.getByTestId('mnav-link-contact')).toHaveTextContent('Контакти');
+    expect(screen.getByTestId('mmenu-link-contact')).toHaveTextContent('Контакти');
+    expect(screen.getByTestId('nav-link-home')).toHaveTextContent('Головна');
     expect(screen.getByTestId('theme-toggle')).toHaveAttribute('aria-label', 'Змінити тему');
     expect(screen.getByTestId('band-primary')).toHaveTextContent('Завантажити CV');
     expect(document.documentElement).toHaveAttribute('lang', 'uk');

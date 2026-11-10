@@ -16,5 +16,9 @@ export const GITHUB_HREF = 'https://github.com/BogdanHnidenko';
 /** Профіль Telegram. */
 export const TELEGRAM_HREF = 'https://t.me/Bohdan_Hnidenko';
 
-/** Фото автора: файл `public/photo.jpg` додасть автор пізніше; до того показується заглушка. */
+/**
+ * Фото автора: файл `public/photo.jpg` додасть автор пізніше; до того показується заглушка.
+ * Рекомендований файл: вертикальне фото по пояс, ~1200×1500 px (4:5), JPEG. Рамки обрізають кадр
+ * з `object-position: center 20%`, тож обличчя має бути у верхній третині.
+ */
 export const PHOTO_SRC = '/photo.jpg';

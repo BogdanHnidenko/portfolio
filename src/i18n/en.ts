@@ -3,8 +3,8 @@ import type { Dictionary } from './types';
 
 /**
  * Англійські тексти сайту, дослівно з `COPY.en` макета (docs/design/portfolio.dc.html).
- * Перенесено лише ключі, які використовує розмітка; додано заголовки вкладок (`titles`)
- * і службові підписи доступності (`navPrimaryLabel`, `navSectionsLabel`, `langLabel`).
+ * Перенесено лише ключі, які використовує розмітка; додано заголовки вкладок (`titles`), пункт меню `navHome`
+ * і службові підписи доступності (`navPrimaryLabel`, `langLabel`, `menuOpen`, `menuClose`).
  * Порожній `href` у посиланнях кейсу — заглушка (`#top` у макеті): таке посилання не показується.
  */
 export const en = {
@@ -14,12 +14,14 @@ export const en = {
     about: 'About — Bohdan Hnidenko',
     contact: 'Contact — Bohdan Hnidenko',
   },
+  navHome: 'Home',
   navWork: 'Work',
   navAbout: 'About',
   navContact: 'Contact',
   homeLabel: 'Bohdan Hnidenko — home',
   navPrimaryLabel: 'Primary',
-  navSectionsLabel: 'Sections',
+  menuOpen: 'Open menu',
+  menuClose: 'Close menu',
   langLabel: 'Language',
   cv: 'Download CV',
   themeLabel: 'Toggle color theme',

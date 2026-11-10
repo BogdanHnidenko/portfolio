@@ -3,8 +3,8 @@ import type { Dictionary } from './types';
 
 /**
  * Українські тексти сайту, дослівно з `COPY.ua` макета (docs/design/portfolio.dc.html).
- * Перенесено лише ключі, які використовує розмітка; додано заголовки вкладок (`titles`)
- * і службові підписи доступності (`navPrimaryLabel`, `navSectionsLabel`, `langLabel`).
+ * Перенесено лише ключі, які використовує розмітка; додано заголовки вкладок (`titles`), пункт меню `navHome`
+ * і службові підписи доступності (`navPrimaryLabel`, `langLabel`, `menuOpen`, `menuClose`).
  * Порожній `href` у посиланнях кейсу — заглушка (`#top` у макеті): таке посилання не показується.
  */
 export const ua = {
@@ -14,12 +14,14 @@ export const ua = {
     about: 'Про мене — Богдан Гніденко',
     contact: 'Контакти — Богдан Гніденко',
   },
+  navHome: 'Головна',
   navWork: 'Роботи',
   navAbout: 'Про мене',
   navContact: 'Контакти',
   homeLabel: 'Богдан Гніденко — головна',
   navPrimaryLabel: 'Основна навігація',
-  navSectionsLabel: 'Розділи',
+  menuOpen: 'Відкрити меню',
+  menuClose: 'Закрити меню',
   langLabel: 'Мова',
   cv: 'Завантажити CV',
   themeLabel: 'Змінити тему',

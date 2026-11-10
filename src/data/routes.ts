@@ -8,20 +8,20 @@ export const PATHS: Readonly<Record<PageId, string>> = {
   contact: '/contact',
 };
 
-/** Сторінка, на яку веде пункт навігації (Home у меню немає — на неї веде лого). */
-export type NavPageId = Exclude<PageId, 'home'>;
-
-/** Пункт навігації: сторінка і ключ словника з її назвою. */
+/** Пункт навігації: сторінка, ключ словника з її назвою і чи активний він лише при точному збігу адреси. */
 export interface NavItem {
-  id: NavPageId;
-  labelKey: 'navWork' | 'navAbout' | 'navContact';
+  id: PageId;
+  labelKey: 'navHome' | 'navWork' | 'navAbout' | 'navContact';
+  /** `end` для NavLink: Home (`/`) інакше був би активним на кожній сторінці */
+  end: boolean;
 }
 
-/** Пункти навігації в порядку макета (однакові для десктопу й мобільних «пігулок»). */
+/** Пункти навігації: Home першим, далі порядок макета (однакові для десктопу й бургер-меню). */
 export const NAV_ITEMS: readonly NavItem[] = [
-  { id: 'work', labelKey: 'navWork' },
-  { id: 'about', labelKey: 'navAbout' },
-  { id: 'contact', labelKey: 'navContact' },
+  { id: 'home', labelKey: 'navHome', end: true },
+  { id: 'work', labelKey: 'navWork', end: false },
+  { id: 'about', labelKey: 'navAbout', end: false },
+  { id: 'contact', labelKey: 'navContact', end: false },
 ];
 
 /**

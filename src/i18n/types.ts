@@ -68,12 +68,14 @@ export interface StackGroup {
  */
 export interface Dictionary {
   titles: Record<PageId, string>;
+  navHome: string;
   navWork: string;
   navAbout: string;
   navContact: string;
   homeLabel: string;
   navPrimaryLabel: string;
-  navSectionsLabel: string;
+  menuOpen: string;
+  menuClose: string;
   langLabel: string;
   cv: string;
   themeLabel: string;
