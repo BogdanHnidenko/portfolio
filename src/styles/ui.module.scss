@@ -59,6 +59,7 @@
 }
 
 .primary {
+  // Без постійної анімації: кнопка CV реагує лише на наведення (підйом + тінь), щоб не відволікати
   background: var(--accent2);
   border-color: transparent;
   color: var(--on-accent2);
@@ -66,19 +67,6 @@
   box-shadow:
     0 0 0 1px rgba(255, 255, 255, 0.18) inset,
     0 10px 30px -10px var(--accent2);
-
-  // Відблиск, що пробігає по кнопці
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: -60%;
-    width: 40%;
-    background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.55), transparent);
-    transform: skewX(-20deg);
-    pointer-events: none;
-  }
 
   &:hover {
     background: var(--accent2);
@@ -359,16 +347,6 @@
   }
 }
 
-@keyframes shine {
-  0%,
-  60% {
-    left: -60%;
-  }
-  100% {
-    left: 130%;
-  }
-}
-
 @keyframes spin {
   to {
     --ang: 360deg;
@@ -411,10 +389,6 @@
 
   .em {
     animation: sheen 7s linear infinite;
-  }
-
-  .primary::after {
-    animation: shine 4.5s ease-in-out infinite;
   }
 
   .card:hover::before {
