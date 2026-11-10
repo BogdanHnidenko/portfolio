@@ -1,4 +1,4 @@
-// Sticky-хедер: навігація, перемикачі мови й теми, CV, мобільні «пігулки», смуга прогресу скролу.
+// Sticky-хедер: лого, навігація з активним пунктом, перемикачі мови й теми, CV, мобільні «пігулки».
 @use '../../styles/breakpoints' as *;
 
 .top {
@@ -6,22 +6,9 @@
   top: 0;
   z-index: 30;
   border-bottom: 1px solid var(--line);
-  background: color-mix(in oklab, var(--bg) 74%, transparent);
+  background: color-mix(in oklab, var(--bg) 78%, transparent);
   backdrop-filter: saturate(160%) blur(16px);
   -webkit-backdrop-filter: saturate(160%) blur(16px);
-}
-
-// Смуга прогресу: без підтримки scroll-driven animations лишається нульової ширини
-.progress {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -1px;
-  height: 2px;
-  transform-origin: 0 50%;
-  transform: scaleX(0);
-  background: linear-gradient(90deg, var(--accent), var(--accent2));
-  box-shadow: 0 0 12px var(--accent2);
 }
 
 .topIn {
@@ -31,6 +18,7 @@
   height: 68px;
 }
 
+// Лого «BH» — посилання на Home
 .mark {
   display: grid;
   place-items: center;
@@ -38,46 +26,49 @@
   height: 44px;
   border-radius: 12px;
   border: 1px solid var(--line2);
-  background: linear-gradient(160deg, var(--surface2), var(--surface));
+  background: var(--surface);
   font: 600 13px/1 $font-mono;
   letter-spacing: 0.02em;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .nav {
   display: flex;
-  gap: 2px;
+  gap: 4px;
   margin-left: 12px;
 
   a {
     position: relative;
     color: var(--muted);
     text-decoration: none;
-    font-size: 14px;
-    padding: 12px 12px;
-    border-radius: 8px;
-    transition: color 0.2s;
-
-    // Підкреслення, що «виїжджає» при hover
-    &::after {
-      content: '';
-      position: absolute;
-      left: 12px;
-      right: 12px;
-      bottom: 6px;
-      height: 1px;
-      background: var(--accent2);
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform 0.35s $ease-out;
-    }
+    font-size: 14.5px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    transition:
+      color 0.2s,
+      background 0.2s;
+    cursor: pointer;
 
     &:hover {
       color: var(--text);
+      background: var(--surface);
     }
+  }
 
-    &:hover::after {
-      transform: scaleX(1);
+  // Активна сторінка: світлий текст і оранжеве підкреслення
+  a.on {
+    color: var(--text);
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: 14px;
+      right: 14px;
+      bottom: 6px;
+      height: 2px;
+      border-radius: 2px;
+      background: var(--accent2);
     }
   }
 }
@@ -139,13 +130,11 @@
   color: var(--muted);
   transition:
     color 0.2s,
-    border-color 0.2s,
-    transform 0.4s $ease-out;
+    border-color 0.2s;
 
   &:hover {
     color: var(--text);
     border-color: var(--line2);
-    transform: rotate(25deg);
   }
 }
 
@@ -153,52 +142,32 @@
   display: none;
 }
 
-// Мобільна навігація-«пігулки» з горизонтальним скролом
+// Мобільна навігація-«пігулки»: три пункти рівної ширини
 .mnav {
   display: none;
   gap: 6px;
-  overflow-x: auto;
   padding: 0 20px 10px;
-  scrollbar-width: none;
-  -webkit-mask-image: linear-gradient(90deg, #000 88%, transparent);
-  mask-image: linear-gradient(90deg, #000 88%, transparent);
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
 
   a {
-    flex: 0 0 auto;
+    flex: 1 1 0;
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     height: 44px;
-    padding: 0 15px;
     border-radius: 999px;
     border: 1px solid var(--line);
     background: var(--surface);
     font-size: 14px;
     color: var(--muted);
     text-decoration: none;
-
-    &:hover {
-      color: var(--text);
-      border-color: var(--line2);
-    }
+    cursor: pointer;
   }
-}
 
-@keyframes prog {
-  to {
-    transform: scaleX(1);
-  }
-}
-
-@include motion {
-  @supports (animation-timeline: scroll()) {
-    .progress {
-      animation: prog linear both;
-      animation-timeline: scroll(root);
-    }
+  a.on {
+    color: var(--on-accent2);
+    background: var(--accent2);
+    border-color: transparent;
+    font-weight: 600;
   }
 }
 
@@ -209,11 +178,6 @@
 
   .mnav {
     display: flex;
-  }
-
-  // Подвійний клас, щоб перекрити відступи спільного .wrap
-  .top .topIn {
-    padding: 0 20px;
   }
 }
 

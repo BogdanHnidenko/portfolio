@@ -2,37 +2,25 @@ import { NB } from './nb';
 import type { Dictionary } from './types';
 
 /**
- * Українські тексти сторінки, дослівно з `COPY.ua` макета (docs/design/portfolio.dc.html).
- * Додано лише службові підписи доступності (`homeLabel`, `nav*Label`, `langLabel`, `avatarLabel`) і `docTitle`.
- * Порожній `href` у посиланнях кейсу — заглушка: таке посилання не показується.
+ * Українські тексти сайту, дослівно з `COPY.ua` макета (docs/design/portfolio.dc.html).
+ * Перенесено лише ключі, які використовує розмітка; додано заголовки вкладок (`titles`)
+ * і службові підписи доступності (`navPrimaryLabel`, `navSectionsLabel`, `langLabel`).
+ * Порожній `href` у посиланнях кейсу — заглушка (`#top` у макеті): таке посилання не показується.
  */
 export const ua = {
-  docTitle: 'Богдан Гніденко — Full-Stack розробник',
+  titles: {
+    home: 'Богдан Гніденко — Full-Stack розробник',
+    work: 'Роботи — Богдан Гніденко',
+    about: 'Про мене — Богдан Гніденко',
+    contact: 'Контакти — Богдан Гніденко',
+  },
   navWork: 'Роботи',
-  navApps: 'Мобільні',
-  navAi: 'AI-процес',
-  navStack: 'Стек',
-  navExp: 'Досвід',
+  navAbout: 'Про мене',
   navContact: 'Контакти',
-  homeLabel: 'Богдан Гніденко — на початок',
+  homeLabel: 'Богдан Гніденко — головна',
   navPrimaryLabel: 'Основна навігація',
   navSectionsLabel: 'Розділи',
   langLabel: 'Мова',
-  avatarLabel: 'Місце для фото',
-  dirsLabel: 'Напрями',
-  dirs: [
-    { title: 'Продакшн-системи', text: 'Хмарний POS для 1' + NB + '000+ закладів', href: '#work' },
-    { title: 'Мобільні застосунки', text: "Власні апки — від нуля до рев'ю в сторах", href: '#apps' },
-    { title: 'AI-розробка', text: 'Команда агентів: MVP за ~1' + NB + 'тиждень', href: '#ai' },
-  ],
-  appsTitleA: 'Мобільні',
-  appsTitleB: 'застосунки',
-  appsOwn: 'Власні проєкти',
-  appsClient: 'Клієнтські продукти',
-  groupNames: ['SkyService POS', 'Мої проєкти'],
-  groupMeta: ['трав. 2023 – черв. 2026', ''],
-  expTitleA: 'Досвід і',
-  expTitleB: 'стек',
   cv: 'Завантажити CV',
   themeLabel: 'Змінити тему',
   skip: 'Перейти до змісту',
@@ -45,6 +33,140 @@ export const ua = {
     NB +
     '000+ закладів, до власних мобільних застосунків. Будую від початку до кінця з власною командою AI-агентів.',
   viewWork: 'Мої роботи',
+  photoAlt: 'Місце для фото',
+  istats: [
+    { v: '4' + NB + 'роки', l: 'комерційного досвіду' },
+    { v: '1' + NB + '000+', l: 'закладів на POS, над яким я працював' },
+    { v: '~7' + NB + 'днів', l: 'MVP застосунку з AI-агентами' },
+  ],
+  workTiles: [
+    {
+      lbl: 'SkyService POS',
+      title: 'POS-термінал',
+      text: 'Рендер каталогу з 1' + NB + '000+ позицій на слабких POS-пристроях.',
+      metric: '10–20' + NB + 'с → <1' + NB + 'с',
+    },
+    {
+      lbl: 'Власні проєкти',
+      title: 'Власні мобільні продукти',
+      text: 'React Native та Expo — архітектура, UI, API та підписки.',
+      metric: "На рев'ю в App Store і Google Play",
+    },
+    {
+      lbl: 'Мої проєкти',
+      title: 'AI Chat',
+      text: 'Чат з AI та авторизація, повний стек.',
+      metric: 'Vue 3 · Node.js · PostgreSQL',
+    },
+  ],
+  stackKey: ['React Native', 'Expo', 'TypeScript', 'Vue.js 3', 'Node.js', 'PostgreSQL', 'WebSockets', 'Claude Code'],
+  teaserLbl: 'Як я будую',
+  teaserTitle: 'З власною командою AI-агентів',
+  miniFlow: ['PM / Оркестратор', 'Backend · Frontend · Mobile', 'Security пре-тестер', 'QA-агент', 'Перевірено'],
+  cHeadA: 'Відкритий до повної зайнятості, контракту та фрилансу —',
+  cHeadB: 'віддалено.',
+  cSub: 'Відповідаю протягом доби.',
+  emailMe: 'Написати на email',
+  allContacts: 'Усі контакти',
+  workTitleA: 'Вибрані',
+  workTitleB: 'роботи',
+  workLead:
+    '4 роки випускаю продакшн-продукти — від хмарного POS, яким користуються 1' +
+    NB +
+    '000+ закладів, до власних мобільних застосунків.',
+  g1: 'SkyService POS',
+  g1Meta: 'трав. 2023 – черв. 2026',
+  g2: 'Мобільні застосунки',
+  g3: 'Мої проєкти',
+  appsOwn: 'Власні проєкти',
+  appsClient: 'Клієнтські продукти',
+  inReview: "На рев'ю",
+  featTitle: 'Власні мобільні продукти',
+  featBody: 'React Native, Expo, TypeScript. Архітектура, UI, інтеграція API та підписки — від початку до кінця.',
+  featStatus: "Статус: на рев'ю в App Store і Google Play.",
+  ndaTitle: 'Клієнтські застосунки під NDA',
+  ndaBody: 'Кросплатформні застосунки на React Native / Expo, створені за вимогами клієнтів.',
+  lProblem: 'Проблема',
+  lSolution: 'Рішення',
+  lResult: 'Результат',
+  cases: [
+    {
+      title: 'POS-термінал',
+      metric: '10–20' + NB + 'с → <1' + NB + 'с',
+      p:
+        'Каталог з 1' +
+        NB +
+        '000+ позицій рендерився 10–20' +
+        NB +
+        'с на слабких POS-пристроях, а замовлення й оплати мали лишатися realtime.',
+      s: 'Realtime-замовлення та оплати через WebSockets; рендер каталогу перероблено під слабке залізо.',
+      r: 'Рендер каталогу з 1' + NB + '000+ позицій скорочено з 10–20' + NB + 'с до менш ніж 1' + NB + 'с.',
+      tags: ['Vue.js 3', 'TypeScript', 'Vuex/Pinia', 'WebSockets'],
+      links: [{ label: 'Кейс', href: '' }],
+    },
+    {
+      title: 'Kitchen Display System',
+      metric: '100+ замовлень / день / заклад',
+      p: 'Кухні потрібно бачити кожне замовлення одразу, синхронно з POS.',
+      s: 'Realtime-екрани KDS з керуванням стоп-листом і синхронізацією з POS.',
+      r: 'Обробляє 100+ замовлень на день у кожному закладі в реальному часі.',
+      tags: ['Vue.js', 'Vuex', 'WebSockets'],
+      links: [{ label: 'Кейс', href: '' }],
+    },
+    {
+      title: 'Модуль маркетплейсу',
+      metric: 'БД → API → UI',
+      p: 'Товарами треба було керувати в одному місці та підключити сторонні POS-системи.',
+      s: 'PostgreSQL + Node.js / Express REST API + UI: CRUD товарів із серверною валідацією та пайплайном завантаження зображень.',
+      r: 'Єдиний REST-бекенд з інтеграціями сторонніх POS API.',
+      tags: ['Node.js', 'Express', 'PostgreSQL', 'REST'],
+      links: [{ label: 'Кейс', href: '' }],
+    },
+    {
+      title: 'AI Chat',
+      metric: 'Чат + авторизація',
+      p: 'Власний проєкт: AI-продукт від початку до кінця.',
+      s: 'Чат з AI та авторизація на стеку Vue 3 + Node.js + PostgreSQL.',
+      r: 'Робочий full-stack застосунок — live-демо та код на GitHub.',
+      tags: ['Vue 3', 'TypeScript', 'Node.js', 'PostgreSQL'],
+      links: [
+        { label: 'Live-демо', href: '' },
+        { label: 'GitHub', href: 'https://github.com/BogdanHnidenko' },
+        { label: 'Кейс', href: '' },
+      ],
+    },
+  ],
+  aboutTitleA: 'Про',
+  aboutTitleB: 'мене',
+  prof: [
+    { k: 'Зараз', v: "Власні мобільні застосунки — на рев'ю в App Store і Google Play" },
+    { k: 'Раніше', v: 'SkyService POS · 2023–2026 · заступник тімліда' },
+    { k: 'Формат', v: 'Віддалено · повна зайнятість, контракт, фриланс' },
+    { k: 'Мови', v: 'Англійська B1 · Українська — рідна' },
+  ],
+  expTitle: 'Досвід',
+  jobs: [
+    {
+      role: 'React Native розробник',
+      org: 'Фриланс і власні продукти',
+      period: '2025 – дотепер',
+      place: 'Віддалено',
+      bullets: ["Власні мобільні продукти — на рев'ю в App Store і Google Play.", 'Кросплатформні клієнтські застосунки під NDA.'],
+    },
+    {
+      role: 'Frontend / Full-Stack розробник',
+      org: 'SkyService POS',
+      period: 'трав. 2023 – черв. 2026',
+      place: 'Віддалено',
+      bullets: [
+        'Заступник тімліда в команді з чотирьох.',
+        'Realtime POS і KDS.',
+        'Google та Apple OAuth.',
+        'Замінив застарілий polling на обробку через колбеки та async/await, усунувши цілий клас race-condition багів.',
+      ],
+    },
+  ],
+  aiEyebrow: 'AI-процес',
   aiTitleA: 'Як я будую',
   aiTitleB: 'з AI',
   aiLead:
@@ -63,106 +185,15 @@ export const ua = {
   nDone: 'Перевірено на пристрої / в браузері',
   rail: 'Правила CLAUDE.md тримають код узгодженим для всіх агентів.',
   aiCards: [
-    { n: '01', k: 'Безпека', t: 'Виявив відсутню перевірку OAuth state / CSRF у Google sign-in ще до релізу.' },
+    { k: 'Безпека', t: 'Виявив відсутню перевірку OAuth state / CSRF у Google sign-in ще до релізу.' },
     {
-      n: '02',
       k: 'Автоматизація',
       t: 'Рутинний агент перевіряє мою пошту, стежить за статусом проєктів і сповіщає, коли щось падає.',
     },
-    { n: '03', k: 'Швидкість', t: 'MVP застосунку за ~1' + NB + 'тиждень замість 1–2' + NB + 'місяців.' },
+    { k: 'Швидкість', t: 'MVP застосунку за ~1' + NB + 'тиждень замість 1–2' + NB + 'місяців.' },
   ],
   tools: 'Інструменти',
-  inReview: "На рев'ю",
-  featTitle: 'Власні мобільні продукти',
-  featBody: 'Архітектура, UI, інтеграція API та підписки — від початку до кінця.',
-  featStatus: "Статус: на рев'ю в App Store і Google Play.",
-  ndaTitle: 'Клієнтські застосунки під NDA',
-  ndaBody: 'Кросплатформні застосунки на React Native / Expo, створені за вимогами клієнтів.',
-  workTitleA: 'Вибрані',
-  workTitleB: 'роботи',
-  lProblem: 'Проблема',
-  lSolution: 'Рішення',
-  lResult: 'Результат',
-  cases: [
-    {
-      n: '01',
-      org: 'SkyService POS',
-      title: 'POS-термінал',
-      metric: '10–20' + NB + 'с → <1' + NB + 'с',
-      p:
-        'Каталог з 1' +
-        NB +
-        '000+ позицій рендерився 10–20' +
-        NB +
-        'с на слабких POS-пристроях, а замовлення й оплати мали лишатися realtime.',
-      s: 'Realtime-замовлення та оплати через WebSockets; рендер каталогу перероблено під слабке залізо.',
-      r: 'Рендер каталогу з 1' + NB + '000+ позицій скорочено з 10–20' + NB + 'с до менш ніж 1' + NB + 'с.',
-      tags: ['Vue.js 3', 'TypeScript', 'Vuex/Pinia', 'WebSockets'],
-      links: [{ label: 'Кейс', href: '' }],
-    },
-    {
-      n: '02',
-      org: 'SkyService POS',
-      title: 'Kitchen Display System',
-      metric: '100+ замовлень / день / заклад',
-      p: 'Кухні потрібно бачити кожне замовлення одразу, синхронно з POS.',
-      s: 'Realtime-екрани KDS з керуванням стоп-листом і синхронізацією з POS.',
-      r: 'Обробляє 100+ замовлень на день у кожному закладі в реальному часі.',
-      tags: ['Vue.js', 'Vuex', 'WebSockets'],
-      links: [{ label: 'Кейс', href: '' }],
-    },
-    {
-      n: '03',
-      org: 'Full stack',
-      title: 'Модуль маркетплейсу',
-      metric: 'БД → API → UI',
-      p: 'Товарами треба було керувати в одному місці та підключити сторонні POS-системи.',
-      s: 'PostgreSQL + Node.js / Express REST API + UI: CRUD товарів із серверною валідацією та пайплайном завантаження зображень.',
-      r: 'Єдиний REST-бекенд з інтеграціями сторонніх POS API.',
-      tags: ['Node.js', 'Express', 'PostgreSQL', 'REST'],
-      links: [{ label: 'Кейс', href: '' }],
-    },
-    {
-      n: '04',
-      org: 'Власний проєкт',
-      title: 'AI Chat',
-      metric: 'Чат + авторизація',
-      p: 'Власний проєкт: AI-продукт від початку до кінця.',
-      s: 'Чат з AI та авторизація на стеку Vue 3 + Node.js + PostgreSQL.',
-      r: 'Робочий full-stack застосунок — live-демо та код на GitHub.',
-      tags: ['Vue 3', 'TypeScript', 'Node.js', 'PostgreSQL'],
-      links: [
-        { label: 'Live-демо', href: '' },
-        { label: 'GitHub', href: 'https://github.com/BogdanHnidenko' },
-        { label: 'Кейс', href: '' },
-      ],
-    },
-  ],
-  jobs: [
-    {
-      role: 'React Native розробник',
-      org: 'Фриланс і власні продукти',
-      period: '2025 – дотепер',
-      place: 'Віддалено',
-      bullets: [
-        "Власні мобільні продукти — на рев'ю в App Store і Google Play.",
-        'Кросплатформні клієнтські застосунки під NDA.',
-      ],
-    },
-    {
-      role: 'Frontend / Full-Stack розробник',
-      org: 'SkyService POS',
-      period: 'трав. 2023 – черв. 2026',
-      place: 'Віддалено',
-      bullets: [
-        'Заступник тімліда в команді з чотирьох.',
-        'Realtime POS і KDS.',
-        'Google та Apple OAuth.',
-        'Замінив застарілий polling на обробку через колбеки та async/await, усунувши цілий клас race-condition багів.',
-      ],
-    },
-  ],
-  stackHead: 'З чим я працюю',
+  stackTitle: 'Стек',
   stack: [
     { name: 'Мобільна', items: ['React Native', 'Expo', 'TypeScript'] },
     { name: 'Frontend', items: ['React', 'Vue.js 3', 'Pinia', 'Vuex', 'Vue Router'] },
@@ -171,9 +202,6 @@ export const ua = {
     { name: 'AI', items: ['Команда агентів Claude Code', 'Gemini', 'ChatGPT'] },
     { name: 'Інструменти', items: ['Git', 'Vite', 'Webpack', 'Postman'] },
   ],
-  cHeadA: 'Відкритий до повної зайнятості, контракту та фрилансу —',
-  cHeadB: 'віддалено.',
-  cSub: 'Відповідаю протягом доби.',
   cvPdf: 'Завантажити CV (PDF)',
   copy: '© 2026 Богдан Гніденко',
   langs: 'Англійська B1 · Українська — рідна',

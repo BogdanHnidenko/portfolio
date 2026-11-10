@@ -1,0 +1,141 @@
+// Сторінка Work: групи робіт із заголовками-лічильниками, сітка кейсів і картка мобільних застосунків.
+@use '../styles/breakpoints' as *;
+
+.groups {
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
+}
+
+.grpH {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.grpT {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+}
+
+// Лічильник робіт у групі
+.grpC {
+  font: 500 11px/1 $font-mono;
+  color: var(--muted);
+  background: var(--surface2);
+  padding: 5px 7px;
+  border-radius: 6px;
+}
+
+// Період роботи (лише SkyService POS)
+.grpM {
+  font: 500 12.5px/1.3 $font-mono;
+  color: var(--faint);
+}
+
+// Лінія, що тягнеться до правого краю
+.grpLine {
+  flex: 1 1 80px;
+  min-width: 40px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--line2), transparent);
+}
+
+.work {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+// Картка застосунків: текст ліворуч, сцена з телефонами праворуч
+.appsCard {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  overflow: hidden;
+}
+
+.appsTxt {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 36px;
+}
+
+.appItem {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 28px 0;
+
+  &:first-child {
+    padding-top: 0;
+  }
+
+  & + & {
+    border-top: 1px solid var(--line);
+    padding-bottom: 0;
+  }
+}
+
+.appRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.subL {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font: 500 11.5px/1 $font-mono;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--faint);
+
+  > :first-child {
+    width: 6px;
+    height: 6px;
+  }
+}
+
+.statusL {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.ndaIco {
+  flex: 0 0 auto;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line2);
+  background: var(--bg2);
+  color: var(--muted);
+}
+
+@include narrow {
+  .appsCard {
+    grid-template-columns: 1fr;
+  }
+}
+
+@include phone {
+  .groups {
+    gap: 56px;
+  }
+
+  .appsTxt {
+    padding: 24px 20px;
+  }
+}

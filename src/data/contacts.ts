@@ -15,3 +15,6 @@ export const GITHUB_HREF = 'https://github.com/BogdanHnidenko';
 
 /** Профіль Telegram. */
 export const TELEGRAM_HREF = 'https://t.me/Bohdan_Hnidenko';
+
+/** Фото автора: файл `public/photo.jpg` додасть автор пізніше; до того показується заглушка. */
+export const PHOTO_SRC = '/photo.jpg';

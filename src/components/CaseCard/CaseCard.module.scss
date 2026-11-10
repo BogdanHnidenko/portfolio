@@ -1,0 +1,156 @@
+// Картка кейсу на Work: власний контейнер `case` перебудовує кроки в рядок, коли картка ширша за 620 px.
+@use '../../styles/breakpoints' as *;
+
+.case {
+  container: case / inline-size;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 32px 36px;
+}
+
+.caseHead {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+// Велика метрика моноширинним шрифтом
+.big {
+  align-self: flex-start;
+  max-width: 100%;
+  font: 500 28px/1.05 $font-mono;
+  letter-spacing: -0.05em;
+  color: var(--text);
+  text-wrap: balance;
+}
+
+// Кроки Problem → Solution → Result з лінією-таймлайном
+.steps {
+  position: relative;
+  display: grid;
+  gap: 18px;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 8px;
+    bottom: 8px;
+    width: 1px;
+    background: linear-gradient(var(--line2), var(--accent), var(--accent2));
+  }
+}
+
+.step {
+  position: relative;
+  padding-left: 26px;
+
+  // Точка кроку на лінії
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 2px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--surface);
+    box-shadow: 0 0 0 1.5px var(--faint);
+  }
+
+  p {
+    margin: 8px 0 0;
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--muted);
+    text-wrap: pretty;
+  }
+}
+
+.s2::before {
+  box-shadow: 0 0 0 1.5px var(--accent);
+}
+
+// Результат виділено оранжевим
+.s3 {
+  &::before {
+    background: var(--accent2);
+    box-shadow: 0 0 0 1.5px var(--accent2);
+  }
+
+  p {
+    color: var(--text);
+  }
+}
+
+.resLbl {
+  color: var(--accent2-text);
+}
+
+@container case (min-width: 620px) {
+  .caseHead {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .big {
+    font-size: 32px;
+    text-align: right;
+    max-width: 55%;
+  }
+
+  .steps {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 40px;
+
+    &::before {
+      left: 4px;
+      right: 4px;
+      top: 4px;
+      bottom: auto;
+      width: auto;
+      height: 1px;
+      background: linear-gradient(90deg, var(--line2), var(--accent), var(--accent2));
+    }
+  }
+
+  .step {
+    padding-left: 0;
+    padding-top: 26px;
+
+    &::before {
+      top: 0;
+    }
+  }
+}
+
+.caseFoot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: auto;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+
+.links {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  margin-right: -10px;
+}
+
+@include phone {
+  .case {
+    padding: 22px 20px;
+  }
+
+  .big {
+    font-size: 24px;
+  }
+}
