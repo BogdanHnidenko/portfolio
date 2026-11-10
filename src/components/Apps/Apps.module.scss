@@ -1,0 +1,77 @@
+// Секція «Mobile apps»: текстова колонка зліва, сцена з телефонами справа.
+@use '../../styles/breakpoints' as *;
+
+.apps {
+  overflow: hidden;
+}
+
+.appsGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  gap: 48px;
+  align-items: center;
+}
+
+.appsTxt {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+// Заголовок без верхнього відступу: відстань задає gap колонки
+.appsTxt .title {
+  margin-top: 0;
+}
+
+.appItem {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-top: 28px;
+  border-top: 1px solid var(--line);
+}
+
+.appItem.ndaI {
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 18px;
+}
+
+.appRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.statusL {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.ndaIco {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line2);
+  background: var(--bg2);
+  color: var(--muted);
+}
+
+.ndaBody {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+@include narrow {
+  .appsGrid {
+    grid-template-columns: 1fr;
+  }
+}

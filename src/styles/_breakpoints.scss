@@ -1,0 +1,38 @@
+// Брейкпоінти макета як container queries на корені застосунку (контейнер `page`, див. App.module.scss).
+// Значення ті самі, що в макеті: 1100 / 900 / 720 px.
+
+// Планшет і вужче
+@mixin tablet {
+  @container page (max-width: 1100px) {
+    @content;
+  }
+}
+
+// Вузький планшет: ховається десктопна навігація, з'являється мобільна
+@mixin narrow {
+  @container page (max-width: 900px) {
+    @content;
+  }
+}
+
+// Телефон
+@mixin phone {
+  @container page (max-width: 720px) {
+    @content;
+  }
+}
+
+// Анімації вмикаються лише коли користувач не просив зменшити рух
+@mixin motion {
+  @media (prefers-reduced-motion: no-preference) {
+    @content;
+  }
+}
+
+// Шрифти макета
+$font-sans: 'Geist', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+$font-mono: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+$font-serif: 'Instrument Serif', 'Playfair Display', Georgia, serif;
+
+// Крива «м'якого виїзду», яку макет використовує для більшості переходів
+$ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);

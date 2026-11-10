@@ -1,0 +1,53 @@
+// Кольорові токени тем із макета. Підключаються на корені застосунку за атрибутом data-theme.
+
+// Темна тема (за замовчуванням)
+@mixin theme-dark {
+  --bg: #060a16;
+  --bg2: #0a1022;
+  --surface: #0e1529;
+  --surface2: #151d36;
+  --line: rgba(160, 180, 255, 0.09);
+  --line2: rgba(160, 180, 255, 0.17);
+  --text: #eef1f8;
+  --muted: #a3abc2;
+  --faint: #8a92ab;
+  --accent: #2f7bff;
+  --accent-text: #86b4ff;
+  --accent-soft: rgba(47, 123, 255, 0.14);
+  --glow: rgba(47, 123, 255, 0.3);
+  --accent2: #ff7a45;
+  --accent2-text: #ff9466;
+  --accent2-hi: #ffc2a1;
+  --accent2-soft: rgba(255, 122, 69, 0.13);
+  --on-accent2: #1a0a05;
+  --grid: rgba(160, 180, 255, 0.05);
+  --ok: #5bd69b;
+  --bar-op: 0.9;
+  --shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 24px 48px -28px rgba(0, 0, 0, 0.8);
+}
+
+// Світла тема
+@mixin theme-light {
+  --bg: #f7f8fb;
+  --bg2: #eef1f7;
+  --surface: #ffffff;
+  --surface2: #f3f5fa;
+  --line: rgba(10, 20, 48, 0.09);
+  --line2: rgba(10, 20, 48, 0.17);
+  --text: #0a1430;
+  --muted: #4a5370;
+  --faint: #5e6782;
+  --accent: #1c5fe0;
+  --accent-text: #1a4fc0;
+  --accent-soft: rgba(28, 95, 224, 0.08);
+  --glow: rgba(28, 95, 224, 0.15);
+  --accent2: #f2683a;
+  --accent2-text: #c2410c;
+  --accent2-hi: #ea7a4a;
+  --accent2-soft: rgba(242, 104, 58, 0.1);
+  --on-accent2: #1a0a05;
+  --grid: rgba(10, 20, 48, 0.05);
+  --ok: #178a57;
+  --bar-op: 0.55;
+  --shadow: 0 1px 2px rgba(10, 20, 48, 0.04), 0 18px 36px -26px rgba(10, 20, 48, 0.25);
+}

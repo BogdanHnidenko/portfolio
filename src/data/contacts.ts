@@ -1,0 +1,17 @@
+/** Шлях до CV: файл `public/cv.pdf` додасть автор пізніше; кнопки завантаження посилаються сюди. */
+export const CV_HREF = '/cv.pdf';
+
+/** Адреса пошти для картки email. */
+export const EMAIL = 'bodyaghnidenko@gmail.com';
+
+/** Посилання mailto для картки email. */
+export const EMAIL_HREF = `mailto:${EMAIL}`;
+
+/** Профіль LinkedIn. */
+export const LINKEDIN_HREF = 'https://www.linkedin.com/in/bohdan-hnidenko-dev';
+
+/** Профіль GitHub. */
+export const GITHUB_HREF = 'https://github.com/BogdanHnidenko';
+
+/** Профіль Telegram. */
+export const TELEGRAM_HREF = 'https://t.me/Bohdan_Hnidenko';

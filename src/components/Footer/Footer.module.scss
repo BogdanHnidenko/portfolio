@@ -1,0 +1,21 @@
+// Футер сторінки.
+@use '../../styles/breakpoints' as *;
+
+.foot {
+  padding: 28px 0 40px;
+}
+
+.footIn {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  font: 500 12.5px/1.5 $font-mono;
+  color: var(--faint);
+}
+
+@include phone {
+  .footIn {
+    flex-direction: column;
+  }
+}

@@ -1,0 +1,233 @@
+// Sticky-хедер: навігація, перемикачі мови й теми, CV, мобільні «пігулки», смуга прогресу скролу.
+@use '../../styles/breakpoints' as *;
+
+.top {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  border-bottom: 1px solid var(--line);
+  background: color-mix(in oklab, var(--bg) 74%, transparent);
+  backdrop-filter: saturate(160%) blur(16px);
+  -webkit-backdrop-filter: saturate(160%) blur(16px);
+}
+
+// Смуга прогресу: без підтримки scroll-driven animations лишається нульової ширини
+.progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  box-shadow: 0 0 12px var(--accent2);
+}
+
+.topIn {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  height: 68px;
+}
+
+.mark {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  border: 1px solid var(--line2);
+  background: linear-gradient(160deg, var(--surface2), var(--surface));
+  font: 600 13px/1 $font-mono;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+}
+
+.nav {
+  display: flex;
+  gap: 2px;
+  margin-left: 12px;
+
+  a {
+    position: relative;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 14px;
+    padding: 12px 12px;
+    border-radius: 8px;
+    transition: color 0.2s;
+
+    // Підкреслення, що «виїжджає» при hover
+    &::after {
+      content: '';
+      position: absolute;
+      left: 12px;
+      right: 12px;
+      bottom: 6px;
+      height: 1px;
+      background: var(--accent2);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.35s $ease-out;
+    }
+
+    &:hover {
+      color: var(--text);
+    }
+
+    &:hover::after {
+      transform: scaleX(1);
+    }
+  }
+}
+
+.topAct {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+// Сегментований перемикач EN / UA
+.seg {
+  display: flex;
+  padding: 3px;
+  gap: 2px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+
+  button {
+    appearance: none;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    font: 500 12px/1 $font-mono;
+    padding: 0 11px;
+    min-width: 40px;
+    height: 36px;
+    border-radius: 7px;
+    color: var(--faint);
+    transition:
+      color 0.2s,
+      background 0.2s;
+
+    &:hover {
+      color: var(--text);
+    }
+  }
+
+  button.on {
+    background: var(--surface2);
+    color: var(--text);
+    box-shadow: 0 0 0 1px var(--line2) inset;
+  }
+}
+
+// Квадратна кнопка-іконка (тема)
+.ibtn {
+  appearance: none;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--muted);
+  transition:
+    color 0.2s,
+    border-color 0.2s,
+    transform 0.4s $ease-out;
+
+  &:hover {
+    color: var(--text);
+    border-color: var(--line2);
+    transform: rotate(25deg);
+  }
+}
+
+.short {
+  display: none;
+}
+
+// Мобільна навігація-«пігулки» з горизонтальним скролом
+.mnav {
+  display: none;
+  gap: 6px;
+  overflow-x: auto;
+  padding: 0 20px 10px;
+  scrollbar-width: none;
+  -webkit-mask-image: linear-gradient(90deg, #000 88%, transparent);
+  mask-image: linear-gradient(90deg, #000 88%, transparent);
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  a {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    height: 44px;
+    padding: 0 15px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    font-size: 14px;
+    color: var(--muted);
+    text-decoration: none;
+
+    &:hover {
+      color: var(--text);
+      border-color: var(--line2);
+    }
+  }
+}
+
+@keyframes prog {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@include motion {
+  @supports (animation-timeline: scroll()) {
+    .progress {
+      animation: prog linear both;
+      animation-timeline: scroll(root);
+    }
+  }
+}
+
+@include narrow {
+  .nav {
+    display: none;
+  }
+
+  .mnav {
+    display: flex;
+  }
+
+  // Подвійний клас, щоб перекрити відступи спільного .wrap
+  .top .topIn {
+    padding: 0 20px;
+  }
+}
+
+@include phone {
+  .topIn {
+    height: 64px;
+    gap: 10px;
+  }
+
+  .full {
+    display: none;
+  }
+
+  .short {
+    display: inline;
+  }
+}

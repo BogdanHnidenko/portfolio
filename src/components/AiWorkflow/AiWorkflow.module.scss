@@ -1,0 +1,421 @@
+// Секція «AI workflow»: схема кроків із пульсами, рейка CLAUDE.md, AI-картки, інструменти.
+@use '../../styles/breakpoints' as *;
+
+.flowBox {
+  position: relative;
+  margin-top: 64px;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: var(--bg2);
+  padding: 56px 40px 36px;
+  overflow: hidden;
+
+  // Фонова сітка, що згасає до країв
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 32px 32px;
+    -webkit-mask-image: radial-gradient(ellipse 70% 80% at 50% 45%, #000 20%, transparent 80%);
+    mask-image: radial-gradient(ellipse 70% 80% at 50% 45%, #000 20%, transparent 80%);
+  }
+}
+
+.flowGlow {
+  position: absolute;
+  left: 50%;
+  top: 42%;
+  width: 1000px;
+  height: 460px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  background: radial-gradient(closest-side, var(--accent-soft), transparent 75%);
+}
+
+// Смуга-«сканер», що проходить по схемі
+.flowScan {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 180px;
+  left: -200px;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, color-mix(in oklab, var(--accent2) 10%, transparent), transparent);
+}
+
+.flow {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+}
+
+.node {
+  position: relative;
+  flex: 0 0 auto;
+  width: 172px;
+  border: 1px solid var(--line2);
+  border-radius: 12px;
+  background: var(--surface);
+  padding: 14px 16px 16px;
+  box-shadow: var(--shadow);
+}
+
+.node .smLbl,
+.grp .smLbl {
+  font-size: 10.5px;
+}
+
+.nodeN {
+  font-size: 15px;
+  font-weight: 550;
+  letter-spacing: -0.012em;
+  line-height: 1.3;
+  margin-top: 10px;
+}
+
+.node.pm {
+  border-color: color-mix(in oklab, var(--accent) 50%, var(--line2));
+}
+
+.node.done {
+  width: 190px;
+  background: color-mix(in oklab, var(--accent) 14%, var(--surface));
+  border-color: color-mix(in oklab, var(--accent) 60%, transparent);
+
+  .nodeN {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  svg {
+    color: var(--accent-text);
+    margin-top: 2px;
+  }
+}
+
+// Група агентів-розробників (пунктирна рамка)
+.grp {
+  position: relative;
+  flex: 0 0 auto;
+  width: 196px;
+  border: 1px dashed var(--line2);
+  border-radius: 14px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: color-mix(in oklab, var(--surface) 45%, transparent);
+}
+
+.grp .grpLbl {
+  padding: 2px 4px 4px;
+}
+
+.sub {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  padding: 11px 12px;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.sq {
+  width: 6px;
+  height: 6px;
+  border-radius: 2px;
+  background: var(--accent);
+}
+
+// З'єднувач зі стрілкою
+.conn {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 24px;
+  height: 1px;
+  margin: 0 8px;
+  background: linear-gradient(90deg, var(--line2), color-mix(in oklab, var(--accent) 50%, var(--line2)));
+
+  &::after {
+    content: '';
+    position: absolute;
+    right: -1px;
+    top: -4px;
+    width: 0;
+    height: 0;
+    border-top: 4.5px solid transparent;
+    border-bottom: 4.5px solid transparent;
+    border-left: 6px solid color-mix(in oklab, var(--accent) 50%, var(--line2));
+  }
+}
+
+.pulse {
+  position: absolute;
+  top: -2.5px;
+  left: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent2-hi);
+  box-shadow: 0 0 12px 2px var(--accent2);
+  opacity: 0;
+}
+
+.rail {
+  position: relative;
+  z-index: 1;
+  margin-top: 36px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  border: 1px dashed var(--line2);
+  border-radius: 12px;
+  padding: 14px 16px;
+  font-size: 14.5px;
+  color: var(--muted);
+  background: color-mix(in oklab, var(--surface) 40%, transparent);
+}
+
+.file {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 28px;
+  padding: 0 10px;
+  border-radius: 7px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  font: 500 12px/1 $font-mono;
+  color: var(--text);
+}
+
+.aiCards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.aiCard {
+  padding: 26px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.aiCardTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.n {
+  font: 500 12px/1 $font-mono;
+  color: var(--accent2-text);
+}
+
+.aiCardT {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+  text-wrap: pretty;
+}
+
+.tools {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 28px;
+}
+
+@keyframes flowx {
+  0% {
+    left: 0;
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  88% {
+    opacity: 1;
+  }
+  100% {
+    left: calc(100% - 6px);
+    opacity: 0;
+  }
+}
+
+@keyframes flowy {
+  0% {
+    top: 0;
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  88% {
+    opacity: 1;
+  }
+  100% {
+    top: calc(100% - 6px);
+    opacity: 0;
+  }
+}
+
+@keyframes lit {
+  0%,
+  14%,
+  100% {
+    box-shadow: var(--shadow);
+  }
+  6% {
+    box-shadow:
+      var(--shadow),
+      0 0 0 1px color-mix(in oklab, var(--accent2) 60%, transparent),
+      0 0 30px -4px color-mix(in oklab, var(--accent2) 55%, transparent);
+  }
+}
+
+@keyframes scan {
+  0% {
+    left: -200px;
+  }
+  100% {
+    left: calc(100% + 20px);
+  }
+}
+
+@include motion {
+  .pulse {
+    animation: flowx 2.6s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  }
+
+  .p2 {
+    animation-delay: 0.55s;
+  }
+  .p3 {
+    animation-delay: 1.1s;
+  }
+  .p4 {
+    animation-delay: 1.65s;
+  }
+
+  // Кроки по черзі «підсвічуються», ніби задача проходить конвеєром
+  .flow .node,
+  .flow .grp {
+    animation: lit 5s ease-in-out infinite;
+  }
+
+  .flow .l2 {
+    animation-delay: 0.6s;
+  }
+  .flow .l3 {
+    animation-delay: 1.2s;
+  }
+  .flow .l4 {
+    animation-delay: 1.8s;
+  }
+  .flow .l5 {
+    animation-delay: 2.4s;
+  }
+
+  .flowScan {
+    animation: scan 5s linear infinite;
+  }
+}
+
+@include tablet {
+  .node {
+    width: 140px;
+  }
+
+  .node.done {
+    width: 160px;
+  }
+
+  .grp {
+    width: 168px;
+  }
+
+  .conn {
+    margin: 0 5px;
+  }
+}
+
+@include narrow {
+  .aiCards {
+    grid-template-columns: 1fr;
+  }
+}
+
+// На телефоні схема стає вертикальною, з'єднувачі й пульси — вертикальними
+@include phone {
+  .flowBox {
+    margin-top: 40px;
+    padding: 24px 18px 20px;
+    border-radius: 16px;
+  }
+
+  .flow {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .node,
+  .grp,
+  .node.done {
+    width: auto;
+  }
+
+  .conn {
+    flex: 0 0 32px;
+    width: 1px;
+    min-width: 0;
+    height: 32px;
+    margin: 6px 0;
+    align-self: center;
+    background: linear-gradient(180deg, var(--line2), color-mix(in oklab, var(--accent) 50%, var(--line2)));
+
+    &::after {
+      right: auto;
+      top: auto;
+      left: -4px;
+      bottom: -1px;
+      border-left: 4.5px solid transparent;
+      border-right: 4.5px solid transparent;
+      border-top: 6px solid color-mix(in oklab, var(--accent) 50%, var(--line2));
+      border-bottom: 0;
+    }
+  }
+
+  .pulse {
+    top: 0;
+    left: -2.5px;
+    animation-name: flowy;
+  }
+
+  .flowScan {
+    display: none;
+  }
+
+  .rail {
+    font-size: 14px;
+  }
+
+  .aiCard {
+    padding: 22px 20px;
+  }
+}

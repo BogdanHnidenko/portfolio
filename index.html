@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Bohdan Hnidenko — Full-Stack & React Native developer. Production POS systems, own mobile apps, AI agent workflows." />
+    <title>Bohdan Hnidenko — Full-Stack Developer</title>
+    <!-- Порожня іконка: справжній favicon поза скоупом, а без цього браузер робить запит /favicon.ico з 404 у консолі -->
+    <link rel="icon" href="data:," />
+    <!--
+      Ставить тему й мову на <html> до рендеру React, щоб не блимала неправильна тема.
+      Логіка навмисно дублює src/store/settings.ts (ключ portfolio-settings, формат zustand persist),
+      бо цей скрипт виконується до завантаження бандла. Будь-яка помилка — тихо беремо системні значення.
+    -->
+    <script>
+      (function () {
+        // Корінь документа, на який ставимо data-theme і lang
+        var root = document.documentElement;
+        // Збережені тема й мова (якщо валідні)
+        var saved = {};
+        try {
+          // Сирий JSON зі сховища; може бути null або пошкодженим
+          var raw = window.localStorage.getItem('portfolio-settings');
+          // Розпарсений стан у форматі zustand persist: { state: { theme, lang }, version }
+          var parsed = raw ? JSON.parse(raw) : null;
+          if (parsed && parsed.state && typeof parsed.state === 'object') saved = parsed.state;
+        } catch (e) {
+          saved = {};
+        }
+        // Підсумкова тема: збережена або системна
+        var theme = saved.theme === 'light' || saved.theme === 'dark' ? saved.theme : null;
+        if (!theme) {
+          try {
+            theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+          } catch (e) {
+            theme = 'dark';
+          }
+        }
+        // Підсумкова мова: збережена або мова браузера (uk* → ua)
+        var lang = saved.lang === 'en' || saved.lang === 'ua' ? saved.lang : null;
+        if (!lang) {
+          // Список мов браузера в порядку пріоритету
+          var langs = (navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || '']);
+          lang = 'en';
+          for (var i = 0; i < langs.length; i++) {
+            if (String(langs[i] || '').toLowerCase().indexOf('uk') === 0) { lang = 'ua'; break; }
+          }
+        }
+        root.setAttribute('data-theme', theme);
+        root.setAttribute('lang', lang === 'ua' ? 'uk' : 'en');
+        if (lang === 'ua') document.title = 'Богдан Гніденко — Full-Stack розробник';
+      })();
+    </script>
+    <!-- Фон сторінки за темою ще до завантаження стилів бандла: без білих смуг і спалахів -->
+    <style>
+      html[data-theme='dark'], html[data-theme='dark'] body { background: #060a16; }
+      html[data-theme='light'], html[data-theme='light'] body { background: #f7f8fb; }
+      body { margin: 0; }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=Playfair+Display:ital,wght@1,400&display=swap"
+    />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

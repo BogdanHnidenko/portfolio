@@ -1,0 +1,34 @@
+// Глобальні стилі документа: фон html/body за темою, плавний скрол, кастомна властивість для обертових градієнтів.
+// Усе, що стосується компонентів, живе в SCSS-модулях.
+
+// Кут обертання conic-градієнтів (аватар, рамка карток при hover); @property робить його анімованим
+@property --ang {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+}
+
+// Фон документа збігається з темою, щоб при overscroll і під час скролу не було білих смуг
+html[data-theme='dark'],
+html[data-theme='dark'] body {
+  background: #060a16;
+}
+
+html[data-theme='light'],
+html[data-theme='light'] body {
+  background: #f7f8fb;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
