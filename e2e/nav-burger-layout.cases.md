@@ -14,7 +14,7 @@
 | AC-3.1 | Рівна сітка на 1024 і 800 | responsive | виміряти блоки | intro+photo в ряду, Stack+Contact в ряду, CTA нижче на всю ширину | auto |
 | AC-3.2 | 390: усі плитки на всю ширину | responsive | виміряти | однакова ширина | auto |
 | AC-3.3 | Без горизонтального скролу | responsive | 320/390/800/1024/1440 x 4 сторінки | scrollWidth = clientWidth | auto |
-| AC-4.1 | Фото на 1440 і 800 | happy | підмінити photo.jpg | cover, позиція 20%, плитка вища за ширину | auto |
-| AC-4.2 | Фото на 390 | happy | підмінити photo.jpg | 4:5 ±2px | auto |
-| AC-4.3 | Заглушка | happy | photo.jpg 404 | placeholder і badge видно | auto |
+| AC-4.1 | Фото на 1440 і 800 | happy | підмінити photo.webp | cover, позиція 20%, плитка вища за ширину | auto |
+| AC-4.2 | Фото на 390 | happy | підмінити photo.webp | 4:5 ±2px | auto |
+| AC-4.3 | Заглушка | happy | photo.webp 404 | placeholder і badge видно | auto |
 | AC-5 | Регресії | happy | portfolio-pages і cv-button-static | усі проходять; застарілі тести про nav-mobile / mnav-link-* переписано на бургер | auto |

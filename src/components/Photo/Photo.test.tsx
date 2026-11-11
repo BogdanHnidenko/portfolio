@@ -1,5 +1,6 @@
 import { act, fireEvent, render, screen, within } from '@testing-library/react';
 import { beforeEach, describe, expect, it } from 'vitest';
+import { PHOTO_SRC } from '../../data/contacts';
 import { useSettings } from '../../store/settings';
 import { Photo } from './Photo';
 
@@ -18,7 +19,8 @@ describe('Photo', () => {
     expect(container.firstElementChild).toHaveAttribute('aria-label', 'Photo placeholder');
     // Зображення ще не завантажене
     const img = screen.getByTestId('photo-img');
-    expect(img).toHaveAttribute('src', '/photo.jpg');
+    expect(img).toHaveAttribute('src', PHOTO_SRC);
+    expect(PHOTO_SRC).toBe('/photo.webp');
     expect(img).toHaveAttribute('alt', '');
     expect(container).not.toHaveTextContent(/your photo|твоє фото|4:5|3:4/i);
   });

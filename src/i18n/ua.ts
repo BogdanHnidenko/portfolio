@@ -50,9 +50,9 @@ export const ua = {
     },
     {
       lbl: 'Власні проєкти',
-      title: 'Власні мобільні продукти',
-      text: 'React Native та Expo — архітектура, UI, API та підписки.',
-      metric: "На рев'ю в App Store і Google Play",
+      title: 'FieldQuote',
+      text: 'Офлайн-кошториси, інвойси та підпис клієнта для контракторів.',
+      metric: 'В App Store · Google Play незабаром',
     },
     {
       lbl: 'Мої проєкти',
@@ -82,10 +82,17 @@ export const ua = {
   g3: 'Мої проєкти',
   appsOwn: 'Власні проєкти',
   appsClient: 'Клієнтські продукти',
-  inReview: "На рев'ю",
-  featTitle: 'Власні мобільні продукти',
-  featBody: 'React Native, Expo, TypeScript. Архітектура, UI, інтеграція API та підписки — від початку до кінця.',
-  featStatus: "Статус: на рев'ю в App Store і Google Play.",
+  appLive: 'В App Store',
+  featTitle: 'FieldQuote',
+  featBody:
+    'Кошторис на обʼєкті — оплата ще до відʼїзду. Офлайн iOS-застосунок для контракторів-одинаків: кошториси, інвойси, PDF і підпис клієнта просто на місці.',
+  appStoreCta: 'Завантажити в App Store',
+  googlePlaySoon: 'Google Play — незабаром',
+  appScreenAlts: {
+    left: 'FieldQuote — екран кошторису',
+    center: 'FieldQuote — головний екран',
+    right: 'FieldQuote — перегляд і підпис клієнта',
+  },
   ndaTitle: 'Клієнтські застосунки під NDA',
   ndaBody: 'Кросплатформні застосунки на React Native / Expo, створені за вимогами клієнтів.',
   lProblem: 'Проблема',
@@ -141,7 +148,7 @@ export const ua = {
   aboutTitleA: 'Про',
   aboutTitleB: 'мене',
   prof: [
-    { k: 'Зараз', v: "Власні мобільні застосунки — на рев'ю в App Store і Google Play" },
+    { k: 'Зараз', v: 'FieldQuote — мій iOS-застосунок, уже в App Store' },
     { k: 'Раніше', v: 'SkyService POS · 2023–2026 · заступник тімліда' },
     { k: 'Формат', v: 'Віддалено · повна зайнятість, контракт, фриланс' },
     { k: 'Мови', v: 'Англійська B1 · Українська — рідна' },
@@ -153,7 +160,7 @@ export const ua = {
       org: 'Фриланс і власні продукти',
       period: '2025 – дотепер',
       place: 'Віддалено',
-      bullets: ["Власні мобільні продукти — на рев'ю в App Store і Google Play.", 'Кросплатформні клієнтські застосунки під NDA.'],
+      bullets: ['Власний продукт FieldQuote — уже в App Store, Google Play незабаром.', 'Кросплатформні клієнтські застосунки під NDA.'],
     },
     {
       role: 'Frontend / Full-Stack розробник',

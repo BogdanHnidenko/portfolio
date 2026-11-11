@@ -204,6 +204,8 @@ describe('App — контент сторінок', () => {
     renderAt('/');
     expect(screen.getAllByTestId('home-stat')).toHaveLength(3);
     expect(screen.getAllByTestId('home-work-tile')).toHaveLength(3);
+    expect(screen.getAllByTestId('home-work-tile')[1]).toHaveTextContent('FieldQuote');
+    expect(screen.getAllByTestId('home-work-tile')[1]).toHaveTextContent('On the App Store · Google Play soon');
     expect(screen.getByTestId('home-ai-tile').querySelectorAll('span[class~="mf"]')).toHaveLength(5);
     expect(screen.getByTestId('home-stack-tile').querySelectorAll('span[class~="tag"]')).toHaveLength(8);
     expect(screen.getByTestId('home-cta')).toBeInTheDocument();
@@ -225,9 +227,14 @@ describe('App — контент сторінок', () => {
     expect(screen.getAllByTestId('work-group-count').map((el) => el.textContent)).toEqual(['3', '2', '1']);
     expect(screen.getAllByTestId('case-card')).toHaveLength(4);
     expect(screen.getByTestId('apps-card')).toBeInTheDocument();
-    expect(screen.getByTestId('app-own')).toHaveTextContent('In review');
+    expect(screen.getByTestId('app-title')).toHaveTextContent('FieldQuote');
+    expect(screen.getByTestId('app-live-badge')).toHaveTextContent('On the App Store');
+    expect(screen.getByTestId('app-own')).not.toHaveTextContent(/review/i);
+    expect(within(screen.getByTestId('app-own')).getByText('Offline-first')).toBeInTheDocument();
+    expect(within(screen.getByTestId('app-own')).getByTestId('app-store-link')).toBeInTheDocument();
     expect(screen.getByTestId('app-nda')).toHaveTextContent('NDA');
-    expect(screen.getByTestId('apps-stage')).toHaveAttribute('aria-hidden', 'true');
+    expect(screen.getByTestId('apps-stage')).not.toHaveAttribute('aria-hidden');
+    expect(within(screen.getByTestId('apps-stage')).getAllByRole('img')).toHaveLength(3);
     expect(screen.getByTestId('cta-band')).toBeInTheDocument();
     expect(screen.getByTestId('work-title')).toHaveTextContent('Selected work');
   });

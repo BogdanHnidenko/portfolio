@@ -21,6 +21,9 @@ function shape(value: unknown): unknown {
 /** Ключі макета, які розмітка не використовує, тож їх не переносимо (розділ «Тексти» специфікації). */
 const DROPPED_KEYS = ['featured', 'allWork', 'openCase', 'teaserGo', 'photoBadge', 'photoCap', 'photoCap2'];
 
+/** Ключі старого статусу «на рев'ю», прибрані після виходу FieldQuote в App Store. */
+const REVIEW_KEYS = ['inReview', 'featStatus'];
+
 /** Ключі попередньої односторінкової версії, які більше не потрібні. */
 const LEGACY_KEYS = ['docTitle', 'navApps', 'navAi', 'navStack', 'navExp', 'dirs', 'dirsLabel', 'groupNames', 'groupMeta', 'avatarLabel', 'stackHead', 'navSectionsLabel'];
 
@@ -31,7 +34,7 @@ describe('словник', () => {
 
   it('не містить невикористаних ключів макета і ключів старої версії', () => {
     for (const dict of Object.values(dictionaries)) {
-      for (const key of [...DROPPED_KEYS, ...LEGACY_KEYS]) {
+      for (const key of [...DROPPED_KEYS, ...LEGACY_KEYS, ...REVIEW_KEYS]) {
         expect(dict).not.toHaveProperty(key);
       }
     }
@@ -58,6 +61,53 @@ describe('словник', () => {
       expect(hrefs).toEqual(['https://github.com/BogdanHnidenko']);
       expect(dict.cases[3].title).toBe('AI Chat');
     }
+  });
+
+  it('не містить старого статусу «на рев\'ю» в жодному тексті (крім кроку Review AI-процесу)', () => {
+    for (const dict of Object.values(dictionaries)) {
+      // Усі тексти словника, крім назви кроку AI-процесу, де «Review» має інше значення
+      const texts = JSON.stringify({ ...dict, stReview: '' });
+      expect(texts).not.toMatch(/google play review|in review|рев'ю|ревю/i);
+    }
+  });
+
+  it('має тексти FieldQuote з таблиць специфікації обома мовами', () => {
+    // Словники обох мов для порівняння з таблицями специфікації
+    const { en, ua } = dictionaries;
+    expect(en.featTitle).toBe('FieldQuote');
+    expect(ua.featTitle).toBe('FieldQuote');
+    expect(en.appLive).toBe('On the App Store');
+    expect(ua.appLive).toBe('В App Store');
+    expect(en.appStoreCta).toBe('Download on the App Store');
+    expect(ua.appStoreCta).toBe('Завантажити в App Store');
+    expect(en.googlePlaySoon).toBe('Google Play — coming soon');
+    expect(ua.googlePlaySoon).toBe('Google Play — незабаром');
+    expect(en.workTiles[1]).toMatchObject({
+      lbl: 'Own projects',
+      title: 'FieldQuote',
+      text: 'Offline-first quotes, invoices and client signatures for contractors.',
+      metric: 'On the App Store · Google Play soon',
+    });
+    expect(ua.workTiles[1]).toMatchObject({
+      lbl: 'Власні проєкти',
+      title: 'FieldQuote',
+      text: 'Офлайн-кошториси, інвойси та підпис клієнта для контракторів.',
+      metric: 'В App Store · Google Play незабаром',
+    });
+    expect(en.prof[0]).toEqual({ k: 'Now', v: 'FieldQuote — my own iOS app, live on the App Store' });
+    expect(ua.prof[0]).toEqual({ k: 'Зараз', v: 'FieldQuote — мій iOS-застосунок, уже в App Store' });
+    expect(en.jobs[0].bullets[0]).toBe('Own product FieldQuote — live on the App Store, Google Play coming soon.');
+    expect(ua.jobs[0].bullets[0]).toBe('Власний продукт FieldQuote — уже в App Store, Google Play незабаром.');
+    expect(en.appScreenAlts).toEqual({
+      left: 'FieldQuote — estimate screen',
+      center: 'FieldQuote — home screen',
+      right: 'FieldQuote — preview and client signature',
+    });
+    expect(ua.appScreenAlts).toEqual({
+      left: 'FieldQuote — екран кошторису',
+      center: 'FieldQuote — головний екран',
+      right: 'FieldQuote — перегляд і підпис клієнта',
+    });
   });
 
   it('зберігає нерозривні пробіли з макета', () => {

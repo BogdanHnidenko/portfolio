@@ -7,7 +7,7 @@ const STORAGE_KEY = 'portfolio-settings';
 // Сторінки сайту для перевірки горизонтального скролу
 const PATHS = ['/', '/work', '/about', '/contact'];
 
-// Мінімальний валідний вертикальний PNG 8x10, яким підміняємо /photo.jpg
+// Мінімальний валідний вертикальний PNG 8x10, яким підміняємо /photo.webp
 const PNG = Buffer.from(
   'iVBORw0KGgoAAAANSUhEUgAAAAgAAAAKCAIAAAAGpYjXAAAAEUlEQVR4nGM4UWGDFTEMdwkAK+B2wUa5V18AAAAASUVORK5CYII=',
   'base64',
@@ -22,8 +22,8 @@ const test = base.extend<{ errors: string[] }>({
       // Накопичувач повідомлень консолі
       const errors: string[] = [];
       page.on('console', (m) => {
-        // Відсутній /photo.jpg - очікувана мережева помилка, не помилка застосунку
-        if (/Failed to load resource/.test(m.text()) && /photo\.jpg/.test(m.location().url)) return;
+        // Відсутній /photo.webp - очікувана мережева помилка, не помилка застосунку
+        if (/Failed to load resource/.test(m.text()) && /photo\.webp/.test(m.location().url)) return;
         if (m.type() === 'error') errors.push(m.text());
       });
       page.on('pageerror', (e) => errors.push(e.message));
@@ -55,11 +55,11 @@ async function openAt(page: Page, path: string, width: number, lang: 'en' | 'ua'
 }
 
 /**
- * Підмінює /photo.jpg вертикальним зображенням.
+ * Підмінює /photo.webp вертикальним зображенням.
  * @param page - сторінка
  */
 async function mockPhoto(page: Page): Promise<void> {
-  await page.route('**/photo.jpg', (r) => r.fulfill({ status: 200, contentType: 'image/png', body: PNG }));
+  await page.route('**/photo.webp', (r) => r.fulfill({ status: 200, contentType: 'image/png', body: PNG }));
 }
 
 /**
@@ -289,7 +289,7 @@ test.describe('AC-4 фото', () => {
   });
 
   test('AC-4 [happy] без фото видно заглушку і бейдж', async ({ page }) => {
-    await page.route('**/photo.jpg', (r) => r.fulfill({ status: 404, body: 'nope' }));
+    await page.route('**/photo.webp', (r) => r.fulfill({ status: 404, body: 'nope' }));
     await openAt(page, '/', 1440);
     await expect(page.getByTestId('photo-placeholder').first()).toBeVisible();
     await expect(page.getByTestId('photo-badge')).toBeVisible();

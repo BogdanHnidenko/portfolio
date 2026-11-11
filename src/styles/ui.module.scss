@@ -268,6 +268,7 @@ a.card {
   align-self: flex-start;
 }
 
+// Крапка бейджа — статична: бейдж показує сталий стан («On the App Store»), тож без блимання
 .bd {
   width: 6px;
   height: 6px;
@@ -352,16 +353,6 @@ a.card {
   }
 }
 
-@keyframes blink {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.4;
-  }
-}
-
 // Анімації вмикаються лише без prefers-reduced-motion; без них увесь контент одразу видимий.
 // Сторінки монтуються заново при кожному переході, тож pagein / rise відпрацьовують і при навігації.
 @include motion {
@@ -390,10 +381,6 @@ a.card {
   }
   .d6 {
     animation-delay: 0.44s;
-  }
-
-  .bd {
-    animation: blink 2.4s ease-in-out infinite;
   }
 
   // Поява під час прокрутки — лише там, де є scroll-driven animations; інакше контент просто видимий

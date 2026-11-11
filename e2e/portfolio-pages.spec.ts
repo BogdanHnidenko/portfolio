@@ -33,8 +33,8 @@ const test = base.extend<{ errors: string[] }>({
       // Накопичувач повідомлень консолі
       const errors: string[] = [];
       page.on('console', (m) => {
-        // Браузерна помилка мережі для відсутнього /photo.jpg - очікувана, не помилка застосунку
-        if (/Failed to load resource/.test(m.text()) && /photo\.jpg/.test(m.location().url)) return;
+        // Браузерна помилка мережі для відсутнього /photo.webp - очікувана, не помилка застосунку
+        if (/Failed to load resource/.test(m.text()) && /photo\.webp/.test(m.location().url)) return;
         if (m.type() === 'error' || m.type() === 'warning') errors.push(`${m.type()}: ${m.text()}`);
       });
       page.on('pageerror', (e) => errors.push(`pageerror: ${e.message}`));
@@ -124,25 +124,28 @@ async function hOverflow(page: Page): Promise<number> {
   return page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
 }
 
-/** Мінімальний валідний PNG 8x10, яким підміняємо /photo.jpg. */
+/** Мінімальний валідний PNG 8x10, яким підміняємо /photo.webp. */
 const PNG = Buffer.from(
   'iVBORw0KGgoAAAANSUhEUgAAAAgAAAAKCAIAAAAGpYjXAAAAEUlEQVR4nGM4UWGDFTEMdwkAK+B2wUa5V18AAAAASUVORK5CYII=',
   'base64',
 );
 
 /**
- * Підмінює відповідь на /photo.jpg.
+ * Підмінює відповідь на /photo.webp.
  * @param page - сторінка
  * @param mode - ok: валідна картинка; 404; abort: обрив зʼєднання; broken: 200 із сміттям
  */
 async function mockPhoto(page: Page, mode: 'ok' | '404' | 'abort' | 'broken'): Promise<void> {
-  await page.route('**/photo.jpg', (r) => {
+  await page.route('**/photo.webp', (r) => {
     if (mode === 'ok') return r.fulfill({ status: 200, contentType: 'image/png', body: PNG });
     if (mode === '404') return r.fulfill({ status: 404, body: 'nope' });
     if (mode === 'abort') return r.abort('failed');
     return r.fulfill({ status: 200, contentType: 'image/jpeg', body: 'not an image' });
   });
 }
+
+/** Нахилені телефони сцени FieldQuote на Work накладаються за макетом навмисно. */
+const IGNORE_PHONES = ['[data-testid^="app-screen-"]'];
 
 /** На короткій сторінці Contact повна прокрутка підсовує контент під sticky-хедер: це задум макета, не накладання (хедер перевіряється на інших сторінках). */
 const IGNORE_STICKY_CONTACT = ['[data-testid="site-header"]', '[data-testid="contact-title"]', '[data-testid="page-contact"] *'];
@@ -168,7 +171,7 @@ test.describe('AC-1 сторінки й контент', () => {
       '4 years shipping production products — from a cloud POS used by 1,000+ venues to my own mobile apps. I build end to end with my own team of AI agents.',
       'Download CV', 'View work', '4 yrs', 'commercial experience', '1,000+', 'venues on the POS I worked on', '~1 week', 'app MVP with my AI agents',
       'English B1 · Ukrainian native', 'SkyService POS', 'POS terminal', 'Catalog render for 1,000+ items on low-end POS devices.', '10–20 s → <1 s',
-      'Own projects', 'Own mobile products', 'React Native & Expo — architecture, UI, API and subscriptions.', 'In App Store & Google Play review',
+      'Own projects', 'FieldQuote', 'Offline-first quotes, invoices and client signatures for contractors.', 'On the App Store · Google Play soon',
       'My projects', 'AI Chat', 'Chat with AI and authentication, built full-stack.', 'Vue 3 · Node.js · PostgreSQL',
       'How I build', 'With my own team of AI agents', 'PM / Orchestrator', 'Backend · Frontend · Mobile', 'Security pre-tester', 'QA agent', 'Verified',
       'Stack', 'Vue.js 3', 'Node.js', 'PostgreSQL', 'WebSockets', 'Claude Code',
@@ -207,8 +210,8 @@ test.describe('AC-1 сторінки й контент', () => {
       'Chat with AI and authentication on a Vue 3 + Node.js + PostgreSQL stack.',
       'A working full-stack app — live demo and source on GitHub.',
       'Problem', 'Solution', 'Result', 'Vuex/Pinia', 'Kitchen Display System',
-      'In review', 'React Native, Expo, TypeScript. Architecture, UI, API integration and subscriptions, end to end.',
-      'Status: in App Store & Google Play review.', 'Client apps under NDA', 'NDA',
+      'On the App Store', 'Quote on site. Get paid before you leave. An offline-first iOS app for solo contractors: estimates, invoices, PDFs and client signatures right on the job.',
+      'Google Play — coming soon', 'Client apps under NDA', 'NDA',
       'Cross-platform React Native / Expo apps delivered to client requirements.',
       'Open to full-time, contract and freelance remote work.', 'Email me', 'All contacts',
     ]);
@@ -226,10 +229,10 @@ test.describe('AC-1 сторінки й контент', () => {
     await expect(page.getByTestId('cta-band')).toBeVisible();
     await expect(page.getByTestId('about-title')).toBeVisible();
     await expectTexts(page, [
-      'Now', 'Own mobile apps — in App Store & Google Play review', 'Before', 'SkyService POS · 2023–2026 · deputy team lead',
+      'Now', 'FieldQuote — my own iOS app, live on the App Store', 'Before', 'SkyService POS · 2023–2026 · deputy team lead',
       'Format', 'Remote · full-time, contract, freelance', 'Languages', 'English B1 · Ukrainian native',
       'Experience', '2025 – Present', 'React Native Developer', 'Freelance & Own Products',
-      'Own mobile products — in App Store & Google Play review.', 'Cross-platform client apps under NDA.',
+      'Own product FieldQuote — live on the App Store, Google Play coming soon.', 'Cross-platform client apps under NDA.',
       'May 2023 – Jun 2026', 'Frontend / Full-Stack Developer', 'Deputy team lead in a team of four.', 'Realtime POS & KDS.', 'Google and Apple OAuth.',
       'Replaced legacy polling with callback-driven handling and async/await, eliminating a class of race-condition bugs.',
       'AI Workflow', 'A team of role-based Claude Code agents, one job each. Every change ends verified on a real device or in the browser.',
@@ -609,16 +612,16 @@ test.describe('AC-4 мова', () => {
       'Роботи', 'Про мене', 'Контакти', 'Завантажити CV', 'Відкритий до віддаленої роботи', 'Богдан', 'Гніденко', 'Full-Stack розробник', 'Робота з AI-агентами',
       '4 роки випускаю продакшн-продукти — від хмарного POS, яким користуються 1 000+ закладів, до власних мобільних застосунків. Будую від початку до кінця з власною командою AI-агентів.',
       'Мої роботи', '4 роки', 'комерційного досвіду', '1 000+', 'закладів на POS, над яким я працював', '~7 днів', 'MVP застосунку з AI-агентами',
-      'POS-термінал', 'Рендер каталогу з 1 000+ позицій на слабких POS-пристроях.', '10–20 с → <1 с', 'Власні проєкти', 'Власні мобільні продукти',
-      'На рев\'ю в App Store і Google Play', 'Мої проєкти', 'Чат з AI та авторизація, повний стек.', 'Як я будую', 'З власною командою AI-агентів',
+      'POS-термінал', 'Рендер каталогу з 1 000+ позицій на слабких POS-пристроях.', '10–20 с → <1 с', 'Власні проєкти', 'FieldQuote',
+      'Офлайн-кошториси, інвойси та підпис клієнта для контракторів.', 'В App Store · Google Play незабаром', 'Мої проєкти', 'Чат з AI та авторизація, повний стек.', 'Як я будую', 'З власною командою AI-агентів',
       'PM / Оркестратор', 'Security пре-тестер', 'QA-агент', 'Перевірено',
       'Відкритий до повної зайнятості, контракту та фрилансу', 'віддалено.', 'Відповідаю протягом доби.', 'Написати на email', 'Усі контакти',
     ],
     '/work': [
-      'Роботи', 'Вибрані', 'трав. 2023 – черв. 2026', 'Мобільні застосунки', 'Мої проєкти', 'Проблема', 'Рішення', 'Результат', 'На рев\'ю',
-      'Власні мобільні продукти', 'Клієнтські застосунки під NDA', 'Клієнтські продукти', 'Усі контакти', 'Написати на email',
-      'Статус: на рев\'ю в App Store і Google Play.',
-      'React Native, Expo, TypeScript. Архітектура, UI, інтеграція API та підписки — від початку до кінця.',
+      'Роботи', 'Вибрані', 'трав. 2023 – черв. 2026', 'Мобільні застосунки', 'Мої проєкти', 'Проблема', 'Рішення', 'Результат', 'В App Store',
+      'FieldQuote', 'Клієнтські застосунки під NDA', 'Клієнтські продукти', 'Усі контакти', 'Написати на email',
+      'Google Play — незабаром',
+      'Кошторис на обʼєкті — оплата ще до відʼїзду. Офлайн iOS-застосунок для контракторів-одинаків: кошториси, інвойси, PDF і підпис клієнта просто на місці.',
       'Кросплатформні застосунки на React Native / Expo, створені за вимогами клієнтів.',
     ],
     '/about': [
@@ -884,7 +887,7 @@ test.describe('AC-5 тема', () => {
 test.describe('AC-6 фото', () => {
   test.use({ viewport: { width: 1440, height: 900 }, colorScheme: 'dark', locale: 'en-US' });
 
-  test('AC-6 [happy] без photo.jpg: заглушки на Home, бейдж мов видно, підпису немає', async ({ page }) => {
+  test('AC-6 [happy] без photo.webp: заглушки на Home, бейдж мов видно, підпису немає', async ({ page }) => {
     await mockPhoto(page, '404');
     await open(page, '/');
     await expect(page.getByTestId('home-photo').getByTestId('photo-placeholder')).toBeVisible();
@@ -894,7 +897,7 @@ test.describe('AC-6 фото', () => {
     await expect(page.getByTestId('home-photo')).not.toContainText(/Your photo|Твоє фото/);
   });
 
-  test('AC-6 [happy] без photo.jpg: на About заглушки у фото й аватарі', async ({ page }) => {
+  test('AC-6 [happy] без photo.webp: на About заглушки у фото й аватарі', async ({ page }) => {
     await mockPhoto(page, '404');
     await open(page, '/about');
     await expect(page.getByTestId('about-photo').getByTestId('photo-placeholder')).toBeVisible();
@@ -906,29 +909,31 @@ test.describe('AC-6 фото', () => {
     await expect(page.getByTestId('about-photo')).not.toContainText(/Your photo|Твоє фото/);
   });
 
-  test('AC-6 [happy] реальний (незамоканий) стан: public/photo.jpg немає -> заглушки без помилок консолі про фото', async ({ page }) => {
+  test('AC-6 [happy] реальний (незамоканий) стан: public/photo.webp є -> фото завантажене, заглушки немає', async ({ page }) => {
     await open(page, '/');
-    // Чекаємо спроби завантаження
-    await page.waitForLoadState('networkidle');
-    await expect(page.getByTestId('photo-placeholder')).toHaveCount(1);
+    // Реальне фото в плитці
+    const img = page.getByTestId('photo-img');
+    await expect(img).toBeVisible();
+    await expect.poll(() => img.evaluate((e: HTMLImageElement) => e.naturalWidth)).toBeGreaterThan(0);
+    await expect(page.getByTestId('photo-placeholder')).toHaveCount(0);
     await expect(page.getByTestId('photo-badge')).toBeVisible();
   });
 
-  test('AC-6 [happy] є photo.jpg: на Home photo-img з alt = імʼя, заглушки немає, бейдж видно', async ({ page }) => {
+  test('AC-6 [happy] є photo.webp: на Home photo-img з alt = імʼя, заглушки немає, бейдж видно', async ({ page }) => {
     await mockPhoto(page, 'ok');
     await open(page, '/');
     // Зображення в плитці
     const img = page.getByTestId('home-photo').getByTestId('photo-img');
     await expect(img).toBeVisible();
     await expect(img).toHaveAttribute('alt', 'Bohdan Hnidenko');
-    await expect(img).toHaveAttribute('src', /\/photo\.jpg/);
+    await expect(img).toHaveAttribute('src', /\/photo\.webp/);
     await expect(page.getByTestId('photo-placeholder')).toHaveCount(0);
     await expect(page.getByTestId('photo-badge')).toBeVisible();
     expect(await img.evaluate((e) => getComputedStyle(e).objectFit)).toBe('cover');
     expect(await img.evaluate((e: HTMLImageElement) => e.naturalWidth)).toBeGreaterThan(0);
   });
 
-  test('AC-6 [happy] є photo.jpg: на About фото й аватар показують зображення', async ({ page }) => {
+  test('AC-6 [happy] є photo.webp: на About фото й аватар показують зображення', async ({ page }) => {
     await mockPhoto(page, 'ok');
     await open(page, '/about');
     await expect(page.getByTestId('about-photo').getByTestId('photo-img')).toBeVisible();
@@ -961,7 +966,7 @@ test.describe('AC-6 фото', () => {
       const about = await ratio(mode === 'ok' ? page.getByTestId('about-photo').getByTestId('photo-img') : page.getByTestId('about-photo').getByTestId('photo-placeholder'));
       expect(about, `About ${mode}`).toBeGreaterThan(0.73);
       expect(about, `About ${mode}`).toBeLessThan(0.77);
-      await page.unroute('**/photo.jpg');
+      await page.unroute('**/photo.webp');
     }
   });
 
@@ -972,7 +977,7 @@ test.describe('AC-6 фото', () => {
       await expect(page.getByTestId('photo-placeholder')).toBeVisible();
       await expect(page.getByTestId('photo-img')).toHaveCount(0);
       await expect(page.getByTestId('photo-badge')).toBeVisible();
-      await page.unroute('**/photo.jpg');
+      await page.unroute('**/photo.webp');
     }
   });
 
@@ -997,7 +1002,7 @@ test.describe('AC-6 фото', () => {
   });
 
   test('AC-6 [interrupt] фото вдалося пізніше (повільна відповідь): спочатку не зламана іконка, потім зображення', async ({ page }) => {
-    await page.route('**/photo.jpg', async (r) => {
+    await page.route('**/photo.webp', async (r) => {
       await new Promise((res) => setTimeout(res, 1200));
       await r.fulfill({ status: 200, contentType: 'image/png', body: PNG });
     });
@@ -1124,7 +1129,7 @@ test.describe('AC-8 адаптив', () => {
       await open(page, p.path, { lang: 'en', theme: 'dark' });
       await eachWidth(page, WIDTHS.deep, async (w) => {
         await settle(page);
-        await checkLayout(page, testInfo, { name: `${p.id}-en-dark-${w}`, ignore: p.path === '/contact' ? IGNORE_STICKY_CONTACT : [] });
+        await checkLayout(page, testInfo, { name: `${p.id}-en-dark-${w}`, ignore: p.path === '/contact' ? IGNORE_STICKY_CONTACT : IGNORE_PHONES });
       });
     });
 
@@ -1132,7 +1137,7 @@ test.describe('AC-8 адаптив', () => {
       await open(page, p.path, { lang: 'ua', theme: 'light' });
       await eachWidth(page, WIDTHS.deep, async (w) => {
         await settle(page);
-        await checkLayout(page, testInfo, { name: `${p.id}-ua-light-${w}`, ignore: p.path === '/contact' ? IGNORE_STICKY_CONTACT : [] });
+        await checkLayout(page, testInfo, { name: `${p.id}-ua-light-${w}`, ignore: p.path === '/contact' ? IGNORE_STICKY_CONTACT : IGNORE_PHONES });
       });
     });
   }

@@ -62,6 +62,13 @@ export interface StackGroup {
   items: string[];
 }
 
+/** Підписи (alt) скриншотів FieldQuote у трьох телефонах сцени на Work. */
+export interface AppScreenAlts {
+  left: string;
+  center: string;
+  right: string;
+}
+
 /**
  * Повний набір текстів сайту однією мовою.
  * Обидві мови мають реалізувати цей інтерфейс, тож набір ключів у en і ua завжди однаковий.
@@ -107,10 +114,12 @@ export interface Dictionary {
   g3: string;
   appsOwn: string;
   appsClient: string;
-  inReview: string;
+  appLive: string;
   featTitle: string;
   featBody: string;
-  featStatus: string;
+  appStoreCta: string;
+  googlePlaySoon: string;
+  appScreenAlts: AppScreenAlts;
   ndaTitle: string;
   ndaBody: string;
   lProblem: string;

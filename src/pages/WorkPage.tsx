@@ -1,7 +1,8 @@
 import type { ReactNode } from 'react';
 import { CaseCard, type CaseStepLabels } from '../components/CaseCard/CaseCard';
 import { CtaBand } from '../components/CtaBand/CtaBand';
-import { ClockIcon, LockIcon } from '../components/icons/Icons';
+import { FieldQuoteActions } from '../components/FieldQuoteActions/FieldQuoteActions';
+import { LockIcon } from '../components/icons/Icons';
 import { PhonesStage } from '../components/PhonesStage/PhonesStage';
 import { EMAIL_HREF } from '../data/contacts';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
@@ -13,10 +14,10 @@ import s from './WorkPage.module.scss';
 /** Кількість кейсів SkyService POS (перші в словнику); решта — власні проєкти, як `prepare()` у макеті. */
 const SKY_CASES_COUNT = 3;
 
-/** Теги власних мобільних продуктів, як у макеті. */
-const OWN_APP_TAGS: readonly string[] = ['React Native', 'Expo', 'TypeScript'];
+/** Теги FieldQuote: стек застосунку і його ключова властивість (робота без мережі). */
+const OWN_APP_TAGS: readonly string[] = ['React Native', 'Expo', 'TypeScript', 'Offline-first'];
 
-/** Кількість карток у групі «Mobile apps»: власні продукти і клієнтські під NDA. */
+/** Кількість карток у групі «Mobile apps»: FieldQuote і клієнтські застосунки під NDA. */
 const APPS_COUNT = 2;
 
 /** Пропси заголовка групи робіт. */
@@ -63,8 +64,8 @@ function Group({ children, ...head }: GroupHeadProps & { children: ReactNode }) 
 }
 
 /**
- * Сторінка Work: шапка «Selected work», групи SkyService POS (3 кейси), Mobile apps (картка застосунків
- * зі сценою телефонів) і My projects (AI Chat), банер з «Email me».
+ * Сторінка Work: шапка «Selected work», групи SkyService POS (3 кейси), Mobile apps (картка FieldQuote
+ * з посиланнями і скриншотами в телефонах, клієнтські застосунки під NDA) і My projects (AI Chat), банер з «Email me».
  */
 export function WorkPage() {
   // Тексти активної мови
@@ -110,10 +111,12 @@ export function WorkPage() {
                     {t.appsOwn}
                   </div>
                   <div className={s.appRow}>
-                    <h3 className={ui.h3}>{t.featTitle}</h3>
-                    <span className={ui.badge}>
+                    <h3 className={ui.h3} data-testid="app-title">
+                      {t.featTitle}
+                    </h3>
+                    <span className={ui.badge} data-testid="app-live-badge">
                       <span className={ui.bd} aria-hidden="true" />
-                      {t.inReview}
+                      {t.appLive}
                     </span>
                   </div>
                   <p className={ui.p}>{t.featBody}</p>
@@ -124,10 +127,7 @@ export function WorkPage() {
                       </span>
                     ))}
                   </div>
-                  <div className={s.statusL}>
-                    <ClockIcon />
-                    <span>{t.featStatus}</span>
-                  </div>
+                  <FieldQuoteActions />
                 </div>
                 <div className={s.appItem} data-testid="app-nda">
                   <div className={s.subL}>
