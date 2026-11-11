@@ -2,6 +2,7 @@ import { AiFlow } from '../components/AiFlow/AiFlow';
 import { CtaBand } from '../components/CtaBand/CtaBand';
 import { Photo } from '../components/Photo/Photo';
 import { CV_FILENAME, CV_HREF } from '../data/contacts';
+import { ABOUT_ANCHORS } from '../data/routes';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import { useT } from '../i18n';
 import ui from '../styles/ui.module.scss';
@@ -100,7 +101,7 @@ export function AboutPage() {
         </div>
       </section>
 
-      <section className={ui.sec} id="ai" data-testid="section-ai">
+      <section className={cx(ui.sec, ui.anchor)} id={ABOUT_ANCHORS.ai} data-testid="section-ai">
         <div className={ui.wrap}>
           <SectionEyebrow index="02" title={t.aiEyebrow} />
           <h2 className={cx(ui.h2, ui.reveal)}>
@@ -129,7 +130,7 @@ export function AboutPage() {
         </div>
       </section>
 
-      <section className={ui.sec} id="stack" data-testid="section-stack">
+      <section className={cx(ui.sec, ui.anchor)} id={ABOUT_ANCHORS.stack} data-testid="section-stack">
         <div className={ui.wrap}>
           <SectionEyebrow index="03" title={t.stackTitle} />
           <div className={s.stack}>

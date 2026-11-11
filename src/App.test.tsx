@@ -131,12 +131,16 @@ describe('App — маршрутизація', () => {
     expect(screen.getByTestId('logo-link')).toHaveAttribute('href', '/');
     expect(screen.getByTestId('skip-link')).toHaveAttribute('href', '#main');
     expect(screen.getByTestId('view-work')).toHaveAttribute('href', '/work');
-    for (const tile of screen.getAllByTestId('home-work-tile')) {
-      expect(tile.tagName).toBe('A');
-      expect(tile).toHaveAttribute('href', '/work');
-    }
-    expect(screen.getByTestId('home-ai-tile')).toHaveAttribute('href', '/about');
-    expect(screen.getByTestId('home-stack-tile')).toHaveAttribute('href', '/about');
+    // Плитки робіт по порядку: POS-термінал, FieldQuote, AI Chat — кожна на свою групу Work
+    const workTiles = screen.getAllByTestId('home-work-tile');
+    expect(workTiles.map((tile) => tile.tagName)).toEqual(['A', 'A', 'A']);
+    expect(workTiles.map((tile) => tile.getAttribute('href'))).toEqual([
+      '/work#work-sky',
+      '/work#work-apps',
+      '/work#work-own',
+    ]);
+    expect(screen.getByTestId('home-ai-tile')).toHaveAttribute('href', '/about#ai');
+    expect(screen.getByTestId('home-stack-tile')).toHaveAttribute('href', '/about#stack');
     expect(screen.getByTestId('home-link-contacts')).toHaveAttribute('href', '/contact');
   });
 
@@ -219,6 +223,7 @@ describe('App — контент сторінок', () => {
   it('Work: 3 групи з лічильниками 3 / 2 / 1, 4 кейси, картка застосунків і банер', () => {
     renderAt('/work');
     expect(screen.getAllByTestId('work-group')).toHaveLength(3);
+    expect(screen.getAllByTestId('work-group').map((el) => el.id)).toEqual(['work-sky', 'work-apps', 'work-own']);
     expect(screen.getAllByTestId('work-group-title').map((el) => el.textContent)).toEqual([
       'SkyService POS',
       'Mobile apps',
@@ -251,6 +256,8 @@ describe('App — контент сторінок', () => {
     for (const id of ['section-experience', 'section-ai', 'section-stack']) {
       expect(screen.getByTestId(id)).toBeInTheDocument();
     }
+    expect(screen.getByTestId('section-ai')).toHaveAttribute('id', 'ai');
+    expect(screen.getByTestId('section-stack')).toHaveAttribute('id', 'stack');
     expect(within(screen.getByTestId('about-photo')).getByTestId('photo-placeholder')).toBeInTheDocument();
     expect(within(screen.getByTestId('about-avatar')).getByTestId('photo-placeholder')).toBeInTheDocument();
   });
