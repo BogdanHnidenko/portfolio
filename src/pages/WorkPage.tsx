@@ -5,6 +5,7 @@ import { FieldQuoteActions } from '../components/FieldQuoteActions/FieldQuoteAct
 import { LockIcon } from '../components/icons/Icons';
 import { PhonesStage } from '../components/PhonesStage/PhonesStage';
 import { EMAIL_HREF } from '../data/contacts';
+import { WORK_ANCHORS } from '../data/routes';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import { useT } from '../i18n';
 import ui from '../styles/ui.module.scss';
@@ -50,13 +51,21 @@ function GroupHead({ title, count, meta }: GroupHeadProps) {
   );
 }
 
+/** Пропси групи робіт: заголовок, якір і вміст. */
+interface GroupProps extends GroupHeadProps {
+  /** `id` групи — якір, на який ведуть плитки головної */
+  anchor: string;
+  /** Вміст групи */
+  children: ReactNode;
+}
+
 /**
- * Група робіт: заголовок і вміст.
- * @param props - пропси заголовка і вміст групи
+ * Група робіт: заголовок і вміст; `id` дозволяє відкрити сторінку одразу на цій групі.
+ * @param props - пропси заголовка, якір і вміст групи
  */
-function Group({ children, ...head }: GroupHeadProps & { children: ReactNode }) {
+function Group({ anchor, children, ...head }: GroupProps) {
   return (
-    <div data-testid="work-group">
+    <div id={anchor} className={ui.anchor} data-testid="work-group">
       <GroupHead {...head} />
       {children}
     </div>
@@ -94,7 +103,7 @@ export function WorkPage() {
       </section>
       <div className={ui.wrap}>
         <div className={s.groups}>
-          <Group title={t.g1} count={casesSky.length} meta={t.g1Meta}>
+          <Group anchor={WORK_ANCHORS.sky} title={t.g1} count={casesSky.length} meta={t.g1Meta}>
             <div className={s.work}>
               {casesSky.map((item) => (
                 <CaseCard key={item.title} item={item} labels={labels} className={ui.reveal} />
@@ -102,7 +111,7 @@ export function WorkPage() {
             </div>
           </Group>
 
-          <Group title={t.g2} count={APPS_COUNT}>
+          <Group anchor={WORK_ANCHORS.apps} title={t.g2} count={APPS_COUNT}>
             <article className={cx(ui.card, s.appsCard, ui.reveal)} data-testid="apps-card">
               <div className={s.appsTxt}>
                 <div className={s.appItem} data-testid="app-own">
@@ -148,7 +157,7 @@ export function WorkPage() {
             </article>
           </Group>
 
-          <Group title={t.g3} count={casesOwn.length}>
+          <Group anchor={WORK_ANCHORS.own} title={t.g3} count={casesOwn.length}>
             <div className={s.work}>
               {casesOwn.map((item) => (
                 <CaseCard key={item.title} item={item} labels={labels} className={ui.reveal} />

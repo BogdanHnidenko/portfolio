@@ -2,7 +2,7 @@ import { ArrowRightIcon, ArrowUpRightIcon, DownloadIcon, GlobeIcon, MailIcon } f
 import { Photo } from '../components/Photo/Photo';
 import { RouteLink } from '../components/RouteLink/RouteLink';
 import { CV_FILENAME, CV_HREF, EMAIL_HREF, GITHUB_HREF, LINKEDIN_HREF, TELEGRAM_HREF } from '../data/contacts';
-import { PATHS } from '../data/routes';
+import { ABOUT_ANCHORS, PATHS, WORK_ANCHORS, withAnchor } from '../data/routes';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import { useT } from '../i18n';
 import ui from '../styles/ui.module.scss';
@@ -18,6 +18,16 @@ const EXTERNAL_ROWS: readonly { id: string; label: string; href: string }[] = [
 ];
 
 /**
+ * Адреси плиток робіт за їх порядком у `workTiles`: POS-термінал → SkyService POS, FieldQuote → Mobile apps,
+ * AI Chat → My projects. Кортеж тієї ж довжини, що й `workTiles`, тож TypeScript не дасть їм розійтися.
+ */
+const WORK_TILE_HREFS: readonly [string, string, string] = [
+  withAnchor(PATHS.work, WORK_ANCHORS.sky),
+  withAnchor(PATHS.work, WORK_ANCHORS.apps),
+  withAnchor(PATHS.work, WORK_ANCHORS.own),
+];
+
+/**
  * Кругла стрілка в куті плитки-посилання; при наведенні на плитку стає оранжевою й повертається.
  */
 function TileArrow() {
@@ -29,8 +39,8 @@ function TileArrow() {
 }
 
 /**
- * Головна сторінка — bento-огляд: інтро з іменем і показниками, фото, три плитки робіт (→ /work),
- * тизер AI-процесу і стек (→ /about), оранжева CTA-плитка з email і плитка контактів.
+ * Головна сторінка — bento-огляд: інтро з іменем і показниками, фото, три плитки робіт (→ відповідна група на /work),
+ * тизер AI-процесу і стек (→ свої секції на /about), оранжева CTA-плитка з email і плитка контактів.
  */
 export function HomePage() {
   // Тексти активної мови
@@ -93,8 +103,13 @@ export function HomePage() {
             </Photo>
           </div>
 
-          {t.workTiles.map((tile) => (
-            <RouteLink key={tile.title} className={cx(s.tile, s.tW, ui.reveal)} to={PATHS.work} data-testid="home-work-tile">
+          {t.workTiles.map((tile, i) => (
+            <RouteLink
+              key={tile.title}
+              className={cx(s.tile, s.tW, ui.reveal)}
+              to={WORK_TILE_HREFS[i] ?? PATHS.work}
+              data-testid="home-work-tile"
+            >
               <div className={s.tTop}>
                 <span className={ui.lbl}>{tile.lbl}</span>
                 <TileArrow />
@@ -105,7 +120,11 @@ export function HomePage() {
             </RouteLink>
           ))}
 
-          <RouteLink className={cx(s.tile, s.tAi, ui.reveal)} to={PATHS.about} data-testid="home-ai-tile">
+          <RouteLink
+            className={cx(s.tile, s.tAi, ui.reveal)}
+            to={withAnchor(PATHS.about, ABOUT_ANCHORS.ai)}
+            data-testid="home-ai-tile"
+          >
             <div className={s.tTop}>
               <span className={ui.lbl}>{t.teaserLbl}</span>
               <TileArrow />
@@ -120,7 +139,11 @@ export function HomePage() {
             </div>
           </RouteLink>
 
-          <RouteLink className={cx(s.tile, s.tStack, ui.reveal)} to={PATHS.about} data-testid="home-stack-tile">
+          <RouteLink
+            className={cx(s.tile, s.tStack, ui.reveal)}
+            to={withAnchor(PATHS.about, ABOUT_ANCHORS.stack)}
+            data-testid="home-stack-tile"
+          >
             <div className={s.tTop}>
               <span className={ui.lbl}>{t.stackTitle}</span>
               <TileArrow />

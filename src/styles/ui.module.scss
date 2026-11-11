@@ -298,6 +298,12 @@ a.card {
   border-top: 1px solid var(--line);
 }
 
+// Блок-якір (`id`), на який можна перейти за адресою з `#`: при прокрутці до нього верх лишається
+// під sticky-хедером з невеликим зазором, а не ховається за ним. Значення = висота хедера + зазор.
+.anchor {
+  scroll-margin-top: 92px; // 68 px хедер + 24 px зазор
+}
+
 // Шапка внутрішньої сторінки (Work / About / Contact) зі світінням
 .pageHead {
   position: relative;
@@ -396,6 +402,10 @@ a.card {
 @include phone {
   .wrap {
     padding: 0 20px;
+  }
+
+  .anchor {
+    scroll-margin-top: 84px; // 64 px хедер на телефоні + 20 px зазор
   }
 
   .sec {

@@ -33,3 +33,26 @@ export const NAV_ITEMS: readonly NavItem[] = [
 export function navLabel(t: Dictionary, item: NavItem): string {
   return t[item.labelKey];
 }
+
+/** Якорі (атрибут `id`) груп на сторінці Work; однакові для всіх мов, тому не в словнику. */
+export const WORK_ANCHORS = {
+  sky: 'work-sky',
+  apps: 'work-apps',
+  own: 'work-own',
+} as const;
+
+/** Якорі (атрибут `id`) секцій сторінки About, на які ведуть плитки головної. */
+export const ABOUT_ANCHORS = {
+  ai: 'ai',
+  stack: 'stack',
+} as const;
+
+/**
+ * Будує внутрішню адресу з якорем на блок сторінки.
+ * @param path - шлях сторінки з PATHS
+ * @param anchor - `id` цільового блоку
+ * @returns адреса виду `/work#work-apps`
+ */
+export function withAnchor(path: string, anchor: string): string {
+  return `${path}#${anchor}`;
+}
