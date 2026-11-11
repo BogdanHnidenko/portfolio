@@ -1,5 +1,8 @@
-/** Шлях до CV: файл `public/cv.pdf` додасть автор пізніше; кнопки завантаження посилаються сюди. */
+/** Шлях до CV: файл `public/cv.pdf` (англійське резюме автора, спільне для EN і UA); кнопки завантаження посилаються сюди. */
 export const CV_HREF = '/cv.pdf';
+
+/** Назва, під якою браузер зберігає CV (значення атрибута `download` на всіх кнопках CV). */
+export const CV_FILENAME = 'Bohdan_Hnidenko_React_Native_CV.pdf';
 
 /** Адреса пошти для картки email. */
 export const EMAIL = 'bodyaghnidenko@gmail.com';

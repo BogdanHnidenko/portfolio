@@ -1,7 +1,7 @@
 import { AiFlow } from '../components/AiFlow/AiFlow';
 import { CtaBand } from '../components/CtaBand/CtaBand';
 import { Photo } from '../components/Photo/Photo';
-import { CV_HREF } from '../data/contacts';
+import { CV_FILENAME, CV_HREF } from '../data/contacts';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import { useT } from '../i18n';
 import ui from '../styles/ui.module.scss';
@@ -146,7 +146,7 @@ export function AboutPage() {
               </div>
             ))}
           </div>
-          <CtaBand primary={{ href: CV_HREF, label: t.cv, download: true }} />
+          <CtaBand primary={{ href: CV_HREF, label: t.cv, download: CV_FILENAME }} />
         </div>
       </section>
     </div>

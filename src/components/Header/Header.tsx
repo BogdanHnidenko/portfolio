@@ -1,5 +1,5 @@
 import { useId } from 'react';
-import { CV_HREF } from '../../data/contacts';
+import { CV_FILENAME, CV_HREF } from '../../data/contacts';
 import { NAV_ITEMS, PATHS, navLabel } from '../../data/routes';
 import { useT } from '../../i18n';
 import ui from '../../styles/ui.module.scss';
@@ -42,7 +42,7 @@ export function Header() {
         <div className={s.topAct}>
           <LangSwitch testIdPrefix="lang" className={s.wideOnly} />
           <ThemeToggle testId="theme-toggle" className={s.wideOnly} />
-          <a className={cx(ui.btn, ui.primary, ui.sm)} href={CV_HREF} download data-testid="cv-header">
+          <a className={cx(ui.btn, ui.primary, ui.sm)} href={CV_HREF} download={CV_FILENAME} data-testid="cv-header">
             <DownloadIcon size={15} />
             <span className={s.full}>{t.cv}</span>
             <span className={s.short}>CV</span>

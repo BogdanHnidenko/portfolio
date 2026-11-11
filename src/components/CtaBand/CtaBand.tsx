@@ -5,11 +5,12 @@ import { cx } from '../../utils/cx';
 import s from './CtaBand.module.scss';
 import { RouteLink } from '../RouteLink/RouteLink';
 
-/** Головна кнопка банера: адреса, підпис і чи це завантаження файлу (CV). */
+/** Головна кнопка банера: адреса, підпис і (для CV) назва файлу при завантаженні. */
 export interface CtaBandPrimary {
   href: string;
   label: string;
-  download?: boolean;
+  /** Назва файлу для атрибута `download`; без неї кнопка — звичайне посилання */
+  download?: string;
 }
 
 /** Пропси банера. */
@@ -39,7 +40,7 @@ export function CtaBand({ primary }: CtaBandProps) {
         <a
           className={cx(ui.btn, ui.primary)}
           href={primary.href}
-          download={primary.download || undefined}
+          download={primary.download}
           data-testid="band-primary"
         >
           {primary.label}
