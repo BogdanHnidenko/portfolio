@@ -29,7 +29,7 @@ npm test
 3. **Build command:** `npm run build`
 4. **Deploy command:** `npx wrangler deploy`
 5. **Non-production branch deploy command (preview):** `npx wrangler preview`
-6. **Production branch:** `prod` (гілка `staging` збирається як preview-версія).
+6. **Production branch:** `production` (гілка `staging` збирається як preview-версія).
 7. Змінних оточення та секретів не потрібно.
 
 ### Домен `portfolio-hnidenko.dev`
