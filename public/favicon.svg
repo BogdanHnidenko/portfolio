@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <title>BH</title>
+  <!--
+    Іконка вкладки повторює логотип хедера (.mark у src/components/Header/Header.module.scss):
+    заокруглений квадрат (радіус 12/44 сторони), тонка рамка, моноширинні ініціали «BH».
+    Кольори — з src/styles/_tokens.scss; тема береться з ОС/браузера, а не з перемикача на сайті.
+    Рамка товща за 1/44 сторони, інакше на 16×16 її не видно.
+  -->
+  <style>
+    /* Темна тема (за замовчуванням): --surface, --line2, --text */
+    .bg { fill: #121419; stroke: rgba(255, 255, 255, 0.13); }
+    .txt { fill: #f1f2f5; }
+    /* Світла тема ОС: ті самі токени зі світлої теми */
+    @media (prefers-color-scheme: light) {
+      .bg { fill: #ffffff; stroke: rgba(14, 15, 20, 0.15); }
+      .txt { fill: #111318; }
+    }
+  </style>
+  <rect class="bg" x="1" y="1" width="62" height="62" rx="17" ry="17" stroke-width="2" />
+  <!-- Базова лінія під кегль 30 (≈47% висоти), щоб великі літери стояли по центру; Geist Mono тут не завантажується, працюють fallback-и -->
+  <text
+    class="txt"
+    x="32"
+    y="42.5"
+    text-anchor="middle"
+    font-family="'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
+    font-size="30"
+    font-weight="600"
+    letter-spacing="0.6"
+  >BH</text>
+</svg>
