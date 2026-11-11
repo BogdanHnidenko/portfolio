@@ -1,6 +1,19 @@
 // Схема AI-процесу: вузли, група агентів, зʼєднувачі з імпульсами та рейка CLAUDE.md.
 @use '../../styles/breakpoints' as *;
 
+// Мінімальна ширина звичайного кроку в горизонтальному режимі: вміщує найдовше слово («Orchestrator», «Оркестратор»)
+$node-min: 132px;
+// Мінімальна ширина групи Build: картки агентів мають власні відступи й маркер
+$grp-min: 150px;
+// Мінімальна ширина кроку Verify: поруч із текстом стоїть галочка
+$done-min: 150px;
+// Мінімальна довжина лінії зʼєднувача
+$conn-min: 24px;
+// Відступ зʼєднувача від сусідніх кроків з кожного боку
+$conn-gap: 8px;
+// Найменша ширина вмісту схеми, за якої 5 кроків і 4 зʼєднувачі ще стоять в один ряд; вужче — вертикальний режим
+$flow-min: 3 * $node-min + $grp-min + $done-min + 4 * ($conn-min + 2 * $conn-gap);
+
 .flowBox {
   position: relative;
   margin-top: 40px;
@@ -8,7 +21,10 @@
   border-radius: 22px;
   background: var(--bg2);
   padding: 48px 40px 32px;
+  // Обрізає лише декоративну сітку; вміст схеми завжди вміщується завдяки гнучким крокам і вертикальному режиму
   overflow: hidden;
+  // Контейнер для перемикання режимів схеми за її власною шириною, а не шириною сторінки
+  container: aiflow / inline-size;
 
   // Сітка на фоні, що згасає до країв
   &::before {
@@ -34,8 +50,9 @@
 
 .node {
   position: relative;
-  flex: 0 0 auto;
-  width: 172px;
+  // Ширина з макета (172 px) як база; на вужчих контейнерах крок стискається до мінімуму
+  flex: 0 1 172px;
+  min-width: $node-min;
   border: 1px solid var(--line2);
   border-radius: 12px;
   background: var(--surface);
@@ -57,7 +74,8 @@
 
 // Фінальний крок «Перевірено» з галочкою
 .node.done {
-  width: 190px;
+  flex-basis: 190px;
+  min-width: $done-min;
   background: color-mix(in oklab, var(--accent) 14%, var(--surface));
   border-color: color-mix(in oklab, var(--accent) 60%, transparent);
 
@@ -76,8 +94,8 @@
 // Група паралельних агентів (Backend / Frontend / Mobile)
 .grp {
   position: relative;
-  flex: 0 0 auto;
-  width: 196px;
+  flex: 0 1 196px;
+  min-width: $grp-min;
   border: 1px dashed var(--line2);
   border-radius: 14px;
   padding: 12px;
@@ -115,9 +133,9 @@
 .conn {
   position: relative;
   flex: 1 1 0;
-  min-width: 24px;
+  min-width: $conn-min;
   height: 1px;
-  margin: 0 8px;
+  margin: 0 $conn-gap;
   background: var(--line2);
 
   &::after {
@@ -226,30 +244,15 @@
   }
 }
 
-@include tablet {
-  .node {
-    width: 140px;
-  }
-
-  .node.done {
-    width: 160px;
-  }
-
-  .grp {
-    width: 168px;
-  }
-
-  .conn {
-    margin: 0 5px;
-  }
-}
-
 @include phone {
   .flowBox {
     padding: 22px 18px 18px;
     border-radius: 16px;
   }
+}
 
+// Вертикальний режим: схема вужча, ніж потрібно для 5 кроків з мінімальними ширинами
+@container aiflow (width < #{$flow-min}) {
   .flow {
     flex-direction: column;
     align-items: stretch;
@@ -258,7 +261,8 @@
   .node,
   .grp,
   .node.done {
-    width: auto;
+    flex: 0 0 auto;
+    min-width: 0;
   }
 
   .conn {

@@ -47,7 +47,7 @@ export function AboutPage() {
       <section className={ui.pageHead}>
         <div className={ui.pageGlow} aria-hidden="true" />
         <div className={cx(ui.wrap, ui.relative)}>
-          <div className={s.aboutHead}>
+          <div className={s.aboutHead} data-testid="about-head">
             <div>
               <div className={cx(s.chiprow, ui.rise, ui.d1)}>
                 <div className={s.avaM} data-testid="about-avatar">

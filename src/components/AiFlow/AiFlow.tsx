@@ -18,7 +18,8 @@ function Conn({ delayClass }: { delayClass?: string }) {
 
 /**
  * Схема AI-процесу на About: План → Розробка (3 агенти) → Рев'ю → Тест → Перевірка,
- * під нею рейка з правилами CLAUDE.md. На телефоні схема стає вертикальною.
+ * під нею рейка з правилами CLAUDE.md. Кроки гнучкі й стискаються; коли контейнер схеми
+ * вужчий за суму мінімальних ширин, схема стає вертикальною (container query в AiFlow.module.scss).
  */
 export function AiFlow() {
   // Тексти активної мови
@@ -26,13 +27,13 @@ export function AiFlow() {
 
   return (
     <div className={cx(s.flowBox, ui.reveal)} data-testid="ai-flow">
-      <div className={s.flow}>
-        <div className={s.node}>
+      <div className={s.flow} data-testid="ai-flow-steps">
+        <div className={s.node} data-testid="ai-flow-step">
           <div className={ui.lbl}>01 · {t.stPlan}</div>
           <div className={s.nodeN}>{t.nPm}</div>
         </div>
         <Conn />
-        <div className={s.grp}>
+        <div className={s.grp} data-testid="ai-flow-step">
           <div className={ui.lbl}>02 · {t.stBuild}</div>
           {[t.nBack, t.nFront, t.nMobile].map((agent) => (
             <div key={agent} className={s.sub}>
@@ -42,17 +43,17 @@ export function AiFlow() {
           ))}
         </div>
         <Conn delayClass={s.p2} />
-        <div className={s.node}>
+        <div className={s.node} data-testid="ai-flow-step">
           <div className={ui.lbl}>03 · {t.stReview}</div>
           <div className={s.nodeN}>{t.nSec}</div>
         </div>
         <Conn delayClass={s.p3} />
-        <div className={s.node}>
+        <div className={s.node} data-testid="ai-flow-step">
           <div className={ui.lbl}>04 · {t.stTest}</div>
           <div className={s.nodeN}>{t.nQa}</div>
         </div>
         <Conn delayClass={s.p4} />
-        <div className={cx(s.node, s.done)}>
+        <div className={cx(s.node, s.done)} data-testid="ai-flow-step">
           <div className={ui.lbl}>05 · {t.stShip}</div>
           <div className={s.nodeN}>
             <CheckIcon />
