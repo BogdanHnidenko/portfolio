@@ -13,5 +13,7 @@
     "directory": "./dist",
     // Невідомі адреси віддають index.html зі статусом 200, щоб BrowserRouter обробив глибокі посилання (/about, /work)
     "not_found_handling": "single-page-application"
-  }
+  },
+  // Налаштування preview-версій (non-production гілки, `wrangler preview`)
+  "previews": {}
 }
