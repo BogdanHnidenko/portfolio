@@ -1,0 +1,17 @@
+// Конфігурація Cloudflare Workers для статичного портфоліо (лише асети, без Worker-скрипта).
+{
+  // Схема з локального пакета wrangler дає автодоповнення та перевірку в редакторі
+  "$schema": "node_modules/wrangler/config-schema.json",
+  // Назва має точно збігатися з назвою проєкту в дашборді Cloudflare, інакше Workers Builds створить новий Worker
+  "name": "portfolio",
+  // Дата сумісності рантайму Workers; змінювати свідомо, бо вона впливає на поведінку платформи
+  "compatibility_date": "2026-10-01",
+  // Поле main навмисно відсутнє: Worker-коду немає, Cloudflare роздає лише вміст dist/
+  // routes / custom_domain навмисно не задаємо: домен portfolio-hnidenko.dev підключається в дашборді (Settings → Domains & Routes)
+  "assets": {
+    // Тека з результатом `npm run build` (Vite)
+    "directory": "./dist",
+    // Невідомі адреси віддають index.html зі статусом 200, щоб BrowserRouter обробив глибокі посилання (/about, /work)
+    "not_found_handling": "single-page-application"
+  }
+}

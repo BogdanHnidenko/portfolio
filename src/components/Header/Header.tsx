@@ -1,81 +1,67 @@
+import { useId } from 'react';
 import { CV_HREF } from '../../data/contacts';
-import { NAV_ITEMS, navLabel } from '../../data/sections';
+import { NAV_ITEMS, PATHS, navLabel } from '../../data/routes';
 import { useT } from '../../i18n';
-import type { Lang } from '../../i18n/types';
-import { useSettings } from '../../store/settings';
 import ui from '../../styles/ui.module.scss';
 import { cx } from '../../utils/cx';
-import { DownloadIcon, MoonIcon, SunIcon } from '../icons/Icons';
+import { CloseIcon, DownloadIcon, MenuIcon } from '../icons/Icons';
+import { RouteLink, RouteNavLink } from '../RouteLink/RouteLink';
 import s from './Header.module.scss';
-
-/** Кнопки перемикача мов у порядку відображення. */
-const LANG_OPTIONS: readonly { lang: Lang; label: string }[] = [
-  { lang: 'en', label: 'EN' },
-  { lang: 'ua', label: 'UA' },
-];
+import { LangSwitch } from './LangSwitch';
+import { MobileMenu } from './MobileMenu';
+import { navClass } from './navClass';
+import { ThemeToggle } from './ThemeToggle';
+import { useMobileMenu } from './useMobileMenu';
 
 /**
- * Sticky-хедер: лого, десктопна навігація, перемикач мов, кнопка теми, кнопка CV,
- * мобільна навігація-«пігулки» (≤900 px) і смуга прогресу скролу.
+ * Sticky-хедер: лого (→ Home), десктопна навігація Home · Work · About · Contact, перемикач мов,
+ * кнопка теми, кнопка CV. На ≤ 900 px навігація, мова й тема ховаються, замість них — кнопка-бургер
+ * і панель меню під хедером. Пункти меню — справжні посилання на /, /work, /about, /contact.
  */
 export function Header() {
   // Тексти активної мови
   const t = useT();
-  // Активна мова — для aria-pressed і підсвітки кнопок
-  const lang = useSettings((state) => state.lang);
-  // Активна тема — визначає іконку на кнопці
-  const theme = useSettings((state) => state.theme);
-  // Дія зміни мови
-  const setLang = useSettings((state) => state.setLang);
-  // Дія перемикання теми
-  const toggleTheme = useSettings((state) => state.toggleTheme);
+  // Стан і обробники бургер-меню
+  const { open, toggleRef, panelRef, toggle, onLinkClick } = useMobileMenu();
+  // id панелі меню для aria-controls бургера
+  const menuId = useId();
 
   return (
     <header className={s.top} data-testid="site-header">
       <div className={cx(ui.wrap, s.topIn)}>
-        <a className={s.mark} href="#top" aria-label={t.homeLabel} data-testid="logo-link">
+        <RouteLink className={s.mark} to={PATHS.home} aria-label={t.homeLabel} data-testid="logo-link">
           BH
-        </a>
+        </RouteLink>
         <nav className={s.nav} aria-label={t.navPrimaryLabel} data-testid="nav-desktop">
           {NAV_ITEMS.map((item) => (
-            <a key={item.id} href={`#${item.id}`} data-testid={`nav-link-${item.id}`}>
+            <RouteNavLink key={item.id} to={PATHS[item.id]} end={item.end} className={navClass} data-testid={`nav-link-${item.id}`}>
               {navLabel(t, item)}
-            </a>
+            </RouteNavLink>
           ))}
         </nav>
         <div className={s.topAct}>
-          <div className={s.seg} role="group" aria-label={t.langLabel}>
-            {LANG_OPTIONS.map((option) => (
-              <button
-                key={option.lang}
-                type="button"
-                className={cx(lang === option.lang && s.on)}
-                aria-pressed={lang === option.lang}
-                onClick={() => setLang(option.lang)}
-                data-testid={`lang-${option.lang}`}
-              >
-                {option.label}
-              </button>
-            ))}
-          </div>
-          <button type="button" className={s.ibtn} aria-label={t.themeLabel} onClick={toggleTheme} data-testid="theme-toggle">
-            {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
-          </button>
+          <LangSwitch testIdPrefix="lang" className={s.wideOnly} />
+          <ThemeToggle testId="theme-toggle" className={s.wideOnly} />
           <a className={cx(ui.btn, ui.primary, ui.sm)} href={CV_HREF} download data-testid="cv-header">
             <DownloadIcon size={15} />
             <span className={s.full}>{t.cv}</span>
             <span className={s.short}>CV</span>
           </a>
+          <button
+            ref={toggleRef}
+            type="button"
+            className={cx(s.ibtn, s.burger)}
+            aria-expanded={open}
+            aria-controls={menuId}
+            aria-label={open ? t.menuClose : t.menuOpen}
+            onClick={toggle}
+            data-testid="menu-toggle"
+          >
+            {open ? <CloseIcon /> : <MenuIcon />}
+          </button>
         </div>
       </div>
-      <nav className={s.mnav} aria-label={t.navSectionsLabel} data-testid="nav-mobile">
-        {NAV_ITEMS.map((item) => (
-          <a key={item.id} href={`#${item.id}`} data-testid={`mnav-link-${item.id}`}>
-            {navLabel(t, item)}
-          </a>
-        ))}
-      </nav>
-      <div className={s.progress} aria-hidden="true" data-testid="scroll-progress" />
+      <MobileMenu id={menuId} open={open} panelRef={panelRef} onLinkClick={onLinkClick} />
     </header>
   );
 }

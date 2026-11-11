@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Bohdan Hnidenko — Full-Stack & React Native developer. Production POS systems, own mobile apps, AI agent workflows." />
     <title>Bohdan Hnidenko — Full-Stack Developer</title>
-    <!-- Порожня іконка: справжній favicon поза скоупом, а без цього браузер робить запит /favicon.ico з 404 у консолі -->
-    <link rel="icon" href="data:," />
+    <!-- Іконка вкладки з ініціалами «BH» у стилі логотипа хедера; світлий/темний варіант за темою ОС усередині SVG.
+         Явний rel="icon" також прибирає запит /favicon.ico (і 404 у консолі) -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <!--
       Ставить тему й мову на <html> до рендеру React, щоб не блимала неправильна тема.
       Логіка навмисно дублює src/store/settings.ts (ключ portfolio-settings, формат zustand persist),
@@ -53,8 +54,8 @@
     </script>
     <!-- Фон сторінки за темою ще до завантаження стилів бандла: без білих смуг і спалахів -->
     <style>
-      html[data-theme='dark'], html[data-theme='dark'] body { background: #060a16; }
-      html[data-theme='light'], html[data-theme='light'] body { background: #f7f8fb; }
+      html[data-theme='dark'], html[data-theme='dark'] body { background: #08090d; }
+      html[data-theme='light'], html[data-theme='light'] body { background: #f6f6f4; }
       body { margin: 0; }
     </style>
     <link rel="preconnect" href="https://fonts.googleapis.com" />

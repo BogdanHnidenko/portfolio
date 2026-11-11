@@ -1,0 +1,31 @@
+// Рядок дій картки FieldQuote: дві кнопки-посилання і позначка Google Play; переноситься, не виходячи за картку.
+@use '../../styles/breakpoints' as *;
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+// Кнопка не ширша за картку: на вузьких екранах довгий текст переноситься замість горизонтального скролу.
+// Селектор `.actions a.action` сильніший за `.btn.sm` зі спільних стилів, тож перевизначення не залежить від порядку CSS.
+.actions a.action {
+  max-width: 100%;
+}
+
+// Позначка вирівнюється по центру рядка, а не по верху, як бейдж біля заголовка (селектор сильніший за `.badge`)
+.actions .soon {
+  align-self: center;
+}
+
+@include phone {
+  .actions a.action {
+    height: auto;
+    min-height: 44px;
+    padding-block: 10px;
+    white-space: normal;
+    text-align: center;
+  }
+}

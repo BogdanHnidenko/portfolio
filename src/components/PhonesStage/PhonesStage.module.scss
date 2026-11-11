@@ -1,0 +1,206 @@
+// Сцена картки застосунків: оранжеве світіння, два кільця і три телефони зі скриншотами FieldQuote, що «плавають».
+@use '../../styles/breakpoints' as *;
+
+.appsStage {
+  position: relative;
+  min-height: 520px;
+  border-left: 1px solid var(--line);
+  background:
+    radial-gradient(closest-side, color-mix(in oklab, var(--accent2) 18%, transparent), transparent 75%),
+    var(--bg2);
+  overflow: hidden;
+}
+
+.ring {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+}
+
+.r1 {
+  width: 380px;
+  height: 380px;
+}
+
+.r2 {
+  width: 540px;
+  height: 540px;
+  border-style: dashed;
+}
+
+// Обгортка телефонів: масштаб зменшує всю групу, не змінюючи розміри з макета
+.pw {
+  position: absolute;
+  inset: 0;
+  scale: 0.86;
+}
+
+.phone {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  border-radius: 32px;
+  border: 1px solid var(--line2);
+  background: var(--surface);
+  padding: 7px;
+  box-shadow: 0 40px 70px -30px rgba(0, 0, 0, 0.6);
+}
+
+.c {
+  width: 236px;
+  height: 490px;
+  margin: -245px 0 0 -118px;
+  z-index: 2;
+}
+
+.l {
+  width: 204px;
+  height: 424px;
+  margin: -200px 0 0 -262px;
+  rotate: -9deg;
+  z-index: 1;
+}
+
+.r {
+  width: 204px;
+  height: 424px;
+  margin: -200px 0 0 58px;
+  rotate: 9deg;
+  z-index: 1;
+}
+
+.scr {
+  height: 100%;
+  border-radius: 25px;
+  overflow: hidden;
+  background: var(--bg2);
+  position: relative;
+}
+
+// Скриншот на весь екран телефона: верх кадру (шапка застосунку) завжди видно, низ обрізається за потреби
+.shot {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+}
+
+// Розмитий «інтерфейс» екрана: заглушка, коли скриншот не завантажився
+.blur {
+  position: absolute;
+  inset: 0;
+  padding: 22px 13px 13px;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  filter: blur(4.5px);
+}
+
+.bl {
+  border-radius: 8px;
+  background: var(--line2);
+}
+
+.t {
+  height: 12px;
+  width: 58%;
+}
+
+.t2 {
+  height: 9px;
+  width: 36%;
+  opacity: 0.6;
+}
+
+.hero {
+  height: 118px;
+  border-radius: 14px;
+  background: linear-gradient(140deg, var(--accent2), color-mix(in oklab, var(--accent) 70%, transparent) 70%);
+}
+
+.row {
+  height: 40px;
+  border-radius: 10px;
+  background: var(--surface2);
+  border: 1px solid var(--line2);
+}
+
+.tiles {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  background: transparent;
+}
+
+.tile {
+  height: 78px;
+  border-radius: 12px;
+  background: var(--surface2);
+  border: 1px solid var(--line2);
+  // Тінь успадкована в макеті від спільного класу `.tile`; під розмиттям дає легкий об'єм
+  box-shadow: var(--shadow);
+}
+
+.tile.a {
+  background: color-mix(in oklab, var(--accent) 45%, var(--surface2));
+}
+
+.tile.o {
+  background: color-mix(in oklab, var(--accent2) 55%, var(--surface2));
+}
+
+@keyframes float {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -8px;
+  }
+}
+
+@include motion {
+  .phone {
+    animation: float 8s ease-in-out infinite;
+  }
+
+  .l {
+    animation-delay: -2.6s;
+  }
+
+  .r {
+    animation-delay: -5.2s;
+  }
+}
+
+@include narrow {
+  .appsStage {
+    border-left: 0;
+    border-top: 1px solid var(--line);
+    min-height: 440px;
+  }
+}
+
+@include phone {
+  .appsStage {
+    min-height: 380px;
+  }
+
+  .pw {
+    scale: 0.64;
+  }
+
+  .r2 {
+    width: 400px;
+    height: 400px;
+  }
+
+  .r1 {
+    width: 290px;
+    height: 290px;
+  }
+}

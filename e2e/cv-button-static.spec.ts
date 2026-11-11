@@ -97,7 +97,7 @@ for (const id of BUTTONS) {
     const rest = await read();
     // Наводимо курсор
     await btn.hover();
-    await expect.poll(async () => Math.round((rest.y - (await read()).y) * 10) / 10).toBe(2);
+    await expect.poll(async () => Math.round((rest.y - (await read()).y) * 10) / 10).toBe(1);
     expect((await read()).shadow).not.toBe(rest.shadow);
     // Відводимо курсор
     await page.mouse.move(0, 0);

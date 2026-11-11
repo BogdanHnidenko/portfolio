@@ -1,0 +1,220 @@
+// Сторінка About: шапка з анкетою й фото, таймлайн досвіду, картки AI-процесу, рядки стеку.
+@use '../styles/breakpoints' as *;
+
+.aboutHead {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.7fr);
+  gap: 72px;
+  align-items: start;
+}
+
+.chiprow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+// Обгортка круглого аватара: видно лише на вузьких екранах, де велике фото сховане
+.avaM {
+  display: none;
+}
+
+.profDl {
+  margin: 32px 0 0;
+  border-top: 1px solid var(--line);
+  max-width: 620px;
+}
+
+.profRow {
+  display: grid;
+  grid-template-columns: 120px minmax(0, 1fr);
+  gap: 16px;
+  padding: 15px 0;
+  border-bottom: 1px solid var(--line);
+
+  dt {
+    padding-top: 4px;
+  }
+
+  dd {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--text);
+  }
+}
+
+.aboutPhoto {
+  max-width: 340px;
+  justify-self: end;
+  // Фото по центру висоти текстової колонки, щоб під ним не лишалось порожнечі; текст лишається вирівняним по верху
+  align-self: center;
+  width: 100%;
+}
+
+// Таймлайн досвіду
+.tl {
+  margin-top: 40px;
+  border-top: 1px solid var(--line);
+}
+
+.tlItem {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  gap: 48px;
+  padding: 36px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.tlWhen {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tlPeriod {
+  font: 500 14px/1.3 $font-mono;
+  color: var(--text);
+}
+
+.tlRole {
+  font-size: 24px;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+  font-weight: 600;
+  margin: 0;
+}
+
+.tlOrg {
+  font-size: 16px;
+  color: var(--muted);
+  margin-top: 6px;
+}
+
+.tlList {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 66ch;
+
+  li {
+    position: relative;
+    padding-left: 22px;
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--muted);
+
+    // Оранжева риска-маркер
+    &::before {
+      content: '';
+      position: absolute;
+      left: 2px;
+      top: 0.75em;
+      width: 8px;
+      height: 1px;
+      background: var(--accent2);
+    }
+  }
+}
+
+// Картки з прикладами роботи агентів
+.aiCards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.aiCard {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.aiCardT {
+  margin: 0;
+  font-size: 16.5px;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+  text-wrap: pretty;
+}
+
+.tools {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 24px;
+}
+
+.stack {
+  margin-top: 40px;
+  border-top: 1px solid var(--line);
+}
+
+.stRow {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  gap: 48px;
+  align-items: center;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--line);
+
+  // Теги стеку більші й контрастніші за звичайні
+  > :last-child > * {
+    height: 34px;
+    padding: 0 13px;
+    font-size: 13px;
+    color: var(--text);
+    background: var(--surface);
+  }
+}
+
+@include narrow {
+  .aboutPhoto {
+    display: none;
+  }
+
+  .avaM {
+    display: block;
+  }
+
+  .aiCards {
+    grid-template-columns: 1fr;
+  }
+
+  .aboutHead {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}
+
+@include phone {
+  .chiprow {
+    gap: 14px;
+  }
+
+  .profRow {
+    grid-template-columns: 96px minmax(0, 1fr);
+  }
+
+  .tlItem {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 28px 0;
+  }
+
+  .tlRole {
+    font-size: 21px;
+  }
+
+  .stRow {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 18px 0;
+  }
+}

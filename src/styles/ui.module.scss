@@ -1,4 +1,5 @@
-// Спільні класи макета, які використовують кілька секцій: контейнер, кнопки, картки, теги, заголовки, анімації появи.
+// Спільні класи макета, які використовують кілька сторінок: контейнер, типографіка, кнопки, картки, теги,
+// шапка сторінки та анімації появи. Значення — з docs/design/portfolio.dc.html разом із блоком «trend refinements».
 @use './breakpoints' as *;
 
 .wrap {
@@ -7,11 +8,7 @@
   padding: 0 40px;
 }
 
-.mono {
-  font-family: $font-mono;
-}
-
-// Курсивний акцент у заголовках з «переливом» градієнта
+// Курсивний акцент у заголовках з градієнтом
 .em {
   font-family: $font-serif;
   font-style: italic;
@@ -20,17 +17,90 @@
   letter-spacing: -0.01em;
   line-height: 0.9;
   padding-right: 0.08em;
-  background: linear-gradient(100deg, var(--accent2-text) 0%, var(--accent2-hi) 45%, var(--accent2-text) 70%);
-  background-size: 220% 100%;
+  background: linear-gradient(100deg, var(--accent2-text), var(--accent2-hi));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
+.lbl {
+  font: 500 11.5px/1 $font-mono;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+// Надзаголовок секції: номер, риска і назва
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font: 500 12px/1 $font-mono;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.ix {
+  color: var(--accent2-text);
+}
+
+.ln {
+  width: 28px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--accent2), var(--line2));
+}
+
+.h1 {
+  font-size: 72px;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  font-weight: 600;
+  margin: 20px 0 0;
+  text-wrap: balance;
+}
+
+.h2 {
+  font-size: 48px;
+  line-height: 1.05;
+  letter-spacing: -0.045em;
+  font-weight: 600;
+  margin: 18px 0 0;
+  text-wrap: balance;
+}
+
+.h3 {
+  font-size: 26px;
+  line-height: 1.18;
+  letter-spacing: -0.032em;
+  font-weight: 600;
+  margin: 0;
+}
+
+.h3.sm {
+  font-size: 20px;
+}
+
+.lead {
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--muted);
+  max-width: 58ch;
+  margin: 20px 0 0;
+  text-wrap: pretty;
+}
+
+.p {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--muted);
+  margin: 0;
+  max-width: 52ch;
+  text-wrap: pretty;
+}
+
 // Кнопки-посилання
 .btn {
-  position: relative;
-  overflow: hidden;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -51,10 +121,11 @@
     transform 0.25s $ease-out,
     box-shadow 0.25s;
   white-space: nowrap;
+  cursor: pointer;
 
   &:hover {
     background: var(--surface2);
-    transform: translateY(-2px);
+    transform: translateY(-1px);
   }
 }
 
@@ -66,13 +137,13 @@
   font-weight: 600;
   box-shadow:
     0 0 0 1px rgba(255, 255, 255, 0.18) inset,
-    0 10px 30px -10px var(--accent2);
+    0 10px 28px -12px var(--accent2);
 
   &:hover {
     background: var(--accent2);
     box-shadow:
       0 0 0 1px rgba(255, 255, 255, 0.25) inset,
-      0 16px 40px -10px var(--accent2);
+      0 14px 34px -12px var(--accent2);
   }
 }
 
@@ -91,66 +162,61 @@
   transform: translateX(3px);
 }
 
-// Картка з обертовою рамкою та світінням при hover
+// Текстове посилання зі стрілкою (посилання кейсів)
+.lnk {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 44px;
+  padding: 0 10px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  color: var(--text);
+  transition:
+    background 0.2s,
+    color 0.2s;
+  cursor: pointer;
+
+  svg {
+    color: var(--faint);
+    transition:
+      transform 0.25s,
+      color 0.2s;
+  }
+
+  &:hover {
+    background: var(--surface2);
+    color: var(--accent2-text);
+  }
+
+  &:hover svg {
+    transform: translateX(3px);
+    color: var(--accent2-text);
+  }
+}
+
+// Картка з легким підйомом при наведенні
 .card {
   position: relative;
-  isolation: isolate;
   border: 1px solid var(--line);
-  border-radius: 18px;
+  border-radius: 24px;
   background: var(--surface);
   box-shadow: var(--shadow);
   transition:
     border-color 0.25s,
-    transform 0.35s $ease-out,
-    box-shadow 0.35s;
-
-  &::before {
-    content: '';
-    position: absolute;
-    inset: -1px;
-    z-index: 2;
-    border-radius: inherit;
-    padding: 1px;
-    pointer-events: none;
-    background: conic-gradient(
-      from var(--ang),
-      transparent 0 55%,
-      var(--accent) 70%,
-      var(--accent2) 82%,
-      transparent 95%
-    );
-    -webkit-mask:
-      linear-gradient(#000 0 0) content-box,
-      linear-gradient(#000 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    opacity: 0;
-    transition: opacity 0.35s;
-  }
-
-  &::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    border-radius: inherit;
-    pointer-events: none;
-    background: radial-gradient(600px circle at 50% 0%, var(--accent-soft), transparent 45%);
-    opacity: 0;
-    transition: opacity 0.35s;
-  }
+    transform 0.35s $ease-out;
 
   &:hover {
-    transform: translateY(-4px);
-    box-shadow:
-      var(--shadow),
-      0 30px 60px -30px color-mix(in oklab, var(--accent) 45%, transparent);
+    border-color: var(--line2);
+    transform: translateY(-2px);
   }
+}
 
-  &:hover::before,
-  &:hover::after {
-    opacity: 1;
-  }
+a.card {
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .tag {
@@ -164,14 +230,6 @@
   font: 500 12px/1 $font-mono;
   color: var(--muted);
   white-space: nowrap;
-  transition:
-    color 0.2s,
-    border-color 0.2s;
-
-  &:hover {
-    color: var(--text);
-    border-color: var(--line2);
-  }
 }
 
 .tags {
@@ -180,80 +238,20 @@
   gap: 6px;
 }
 
-.lbl {
-  font: 500 11.5px/1 $font-mono;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--faint);
-}
-
-// Секції та заголовки
-.sec {
-  position: relative;
-  padding: 112px 0;
-  border-bottom: 1px solid var(--line);
-  // Відступ під sticky-хедер при переході за якорем (висота хедера на десктопі разом із нижньою рамкою)
-  scroll-margin-top: 69px;
-}
-
-.eyebrow {
-  display: flex;
+// Плашка з ключовою метрикою
+.metric {
+  display: inline-flex;
+  align-self: flex-start;
   align-items: center;
-  gap: 10px;
-  font: 500 12px/1 $font-mono;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--accent-text);
-}
-
-.ix {
-  color: var(--accent2-text);
-}
-
-.ln {
-  width: 28px;
-  height: 1px;
-  background: linear-gradient(90deg, var(--accent2), var(--line2));
-}
-
-.h2 {
-  font-size: 56px;
-  line-height: 1.04;
-  letter-spacing: -0.045em;
-  font-weight: 600;
-  margin: 20px 0 0;
-  max-width: 20ch;
-  text-wrap: balance;
-}
-
-.lead {
-  font-size: 18px;
-  line-height: 1.6;
-  color: var(--muted);
-  max-width: 58ch;
-  margin: 20px 0 0;
-  text-wrap: pretty;
-}
-
-.h3 {
-  font-size: 30px;
-  line-height: 1.15;
-  letter-spacing: -0.035em;
-  font-weight: 600;
-  margin: 0;
-}
-
-.h3.sm {
-  font-size: 20px;
-}
-
-.p {
-  font-size: 16px;
-  line-height: 1.6;
-  color: var(--muted);
-  margin: 0;
-  max-width: 44ch;
-  text-wrap: pretty;
+  gap: 8px;
+  min-height: 30px;
+  padding: 6px 11px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: var(--surface2);
+  color: var(--text);
+  font: 500 13px/1.2 $font-mono;
+  letter-spacing: -0.01em;
 }
 
 .badge {
@@ -270,6 +268,7 @@
   align-self: flex-start;
 }
 
+// Крапка бейджа — статична: бейдж показує сталий стан («On the App Store»), тож без блимання
 .bd {
   width: 6px;
   height: 6px;
@@ -291,136 +290,106 @@
   border-radius: 2px;
   rotate: 45deg;
   background: var(--accent2);
-  box-shadow: 0 0 12px var(--accent2);
 }
 
-.subL {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font: 500 11.5px/1 $font-mono;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--accent-text);
+// Секція сторінки з рамкою зверху
+.sec {
+  padding: 96px 0;
+  border-top: 1px solid var(--line);
+}
 
-  .grpDot {
-    width: 6px;
-    height: 6px;
-  }
+// Шапка внутрішньої сторінки (Work / About / Contact) зі світінням
+.pageHead {
+  position: relative;
+  overflow: hidden;
+  padding: 96px 0 72px;
+}
+
+.pageGlow {
+  position: absolute;
+  left: 50%;
+  top: -320px;
+  width: 1100px;
+  height: 640px;
+  translate: -50% 0;
+  pointer-events: none;
+  background: radial-gradient(closest-side, var(--accent2-soft), transparent 72%);
+}
+
+// Внутрішній контейнер шапки над світінням
+.relative {
+  position: relative;
 }
 
 // Анімації
 @keyframes rise {
   from {
     opacity: 0;
-    translate: 0 18px;
-    filter: blur(8px);
+    translate: 0 14px;
   }
   to {
     opacity: 1;
     translate: 0 0;
-    filter: blur(0);
   }
 }
 
 @keyframes rv {
   from {
     opacity: 0;
-    translate: 0 32px;
-    scale: 0.985;
-    filter: blur(6px);
+    translate: 0 24px;
   }
   to {
     opacity: 1;
     translate: 0 0;
-    scale: 1;
-    filter: blur(0);
   }
 }
 
-@keyframes sheen {
-  0% {
-    background-position: 100% 0;
+@keyframes pagein {
+  from {
+    opacity: 0;
   }
-  100% {
-    background-position: -120% 0;
-  }
-}
-
-@keyframes spin {
   to {
-    --ang: 360deg;
-  }
-}
-
-@keyframes blink {
-  0%,
-  100% {
     opacity: 1;
   }
-  50% {
-    opacity: 0.35;
-  }
 }
 
+// Анімації вмикаються лише без prefers-reduced-motion; без них увесь контент одразу видимий.
+// Сторінки монтуються заново при кожному переході, тож pagein / rise відпрацьовують і при навігації.
 @include motion {
+  .pg {
+    animation: pagein 0.45s ease both;
+  }
+
   .rise {
-    animation: rise 1s $ease-out both;
+    animation: rise 0.8s $ease-out both;
   }
 
   .d1 {
-    animation-delay: 0.05s;
+    animation-delay: 0.04s;
   }
   .d2 {
-    animation-delay: 0.16s;
+    animation-delay: 0.12s;
   }
   .d3 {
-    animation-delay: 0.28s;
+    animation-delay: 0.2s;
   }
   .d4 {
-    animation-delay: 0.4s;
+    animation-delay: 0.28s;
   }
   .d5 {
-    animation-delay: 0.52s;
+    animation-delay: 0.36s;
   }
   .d6 {
-    animation-delay: 0.64s;
+    animation-delay: 0.44s;
   }
 
-  .em {
-    animation: sheen 7s linear infinite;
-  }
-
-  .card:hover::before {
-    animation: spin 3.5s linear infinite;
-  }
-
-  .bd {
-    animation: blink 2s ease-in-out infinite;
-  }
-
-  // Поява секцій під час прокрутки — лише там, де є scroll-driven animations; інакше контент просто видимий
+  // Поява під час прокрутки — лише там, де є scroll-driven animations; інакше контент просто видимий
   @supports (animation-timeline: view()) {
     .reveal {
       animation: rv linear both;
       animation-timeline: view();
-      animation-range: entry 0% entry 45%;
+      animation-range: entry 0% entry 40%;
     }
-
-    .reveal.r2 {
-      animation-range: entry 8% entry 55%;
-    }
-
-    .reveal.r3 {
-      animation-range: entry 16% entry 65%;
-    }
-  }
-}
-
-@include narrow {
-  .sec {
-    // Хедер на вузьких екранах вищий: рядок 68px + мобільна навігація 54px + рамка 1px
-    scroll-margin-top: 123px;
   }
 }
 
@@ -430,20 +399,26 @@
   }
 
   .sec {
-    padding: 80px 0;
-    // Хедер на телефоні: рядок 64px + мобільна навігація 54px + рамка 1px
-    scroll-margin-top: 119px;
+    padding: 72px 0;
+  }
+
+  .pageHead {
+    padding: 48px 0 40px;
+  }
+
+  .h1 {
+    font-size: 44px;
   }
 
   .h2 {
-    font-size: 38px;
+    font-size: 34px;
+  }
+
+  .h3 {
+    font-size: 22px;
   }
 
   .lead {
     font-size: 16px;
-  }
-
-  .h3 {
-    font-size: 24px;
   }
 }

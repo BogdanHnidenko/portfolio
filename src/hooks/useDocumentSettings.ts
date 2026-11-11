@@ -1,10 +1,11 @@
 import { useEffect } from 'react';
-import { dictionaries, htmlLang } from '../i18n';
+import { htmlLang } from '../i18n';
 import { useSettings } from '../store/settings';
 
 /**
- * Синхронізує `<html data-theme>`, `<html lang>` і `document.title` з поточними темою та мовою зі стору.
+ * Синхронізує `<html data-theme>` і `<html lang>` з поточними темою та мовою зі стору.
  * Фон body залежить від `html[data-theme]`, тому тема має стояти саме на `<html>`, а не лише на корені застосунку.
+ * Заголовок вкладки ставить кожна сторінка сама (див. `useDocumentTitle`).
  */
 export function useDocumentSettings(): void {
   // Активна тема
@@ -18,6 +19,5 @@ export function useDocumentSettings(): void {
 
   useEffect(() => {
     document.documentElement.setAttribute('lang', htmlLang[lang]);
-    document.title = dictionaries[lang].docTitle;
   }, [lang]);
 }

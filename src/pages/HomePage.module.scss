@@ -1,0 +1,574 @@
+// Головна сторінка: bento-сітка на 12 колонок з плитками інтро, фото, робіт, AI-тизера, стеку, CTA і контактів.
+// Значення — з блоків «home hero» / «home bento» макета разом із перекриттями `.t-intro .name` тощо.
+@use '../styles/breakpoints' as *;
+
+.home {
+  position: relative;
+  overflow: hidden;
+  padding: 32px 0 0;
+}
+
+.homeGlow {
+  position: absolute;
+  left: 62%;
+  top: -260px;
+  width: 1000px;
+  height: 640px;
+  translate: -50% 0;
+  pointer-events: none;
+  background: radial-gradient(closest-side, var(--accent2-soft), transparent 72%);
+}
+
+.bento {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.tile {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 28px;
+  background: var(--surface);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: var(--shadow);
+  transition:
+    border-color 0.25s,
+    transform 0.35s $ease-out;
+}
+
+// Плитки-посилання піднімаються при наведенні
+a.tile {
+  text-decoration: none;
+  cursor: pointer;
+  color: var(--text);
+
+  &:hover {
+    border-color: var(--line2);
+    transform: translateY(-3px);
+  }
+}
+
+// Інтро: статус, імʼя, headline, pitch, кнопки і показники
+.tIntro {
+  grid-column: span 7;
+  padding: 44px;
+  justify-content: space-between;
+  gap: 40px;
+  background:
+    radial-gradient(120% 90% at 0% 0%, color-mix(in oklab, var(--surface2) 80%, transparent), transparent 60%),
+    var(--surface);
+}
+
+// Статус «Open to remote work» з пульсуючою точкою
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 32px;
+  padding: 7px 13px 7px 11px;
+  border: 1px solid var(--line2);
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--surface) 82%, transparent);
+  font: 500 12.5px/1.35 $font-mono;
+  color: var(--muted);
+}
+
+.dot {
+  flex: 0 0 auto;
+  position: relative;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ok);
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    border: 1px solid var(--ok);
+    opacity: 0;
+  }
+}
+
+.name {
+  font-size: 68px;
+  line-height: 0.98;
+  letter-spacing: -0.052em;
+  font-weight: 600;
+  margin: 22px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 0.24em;
+
+  span {
+    display: inline-block;
+  }
+}
+
+// Ролі через «·»; кожна роль не переноситься всередині
+.headline {
+  font-size: 22px;
+  line-height: 1.25;
+  letter-spacing: -0.028em;
+  font-weight: 450;
+  color: var(--muted);
+  margin: 14px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 2px;
+
+  span {
+    white-space: nowrap;
+  }
+
+  span:not(:last-child)::after {
+    content: '·';
+    margin: 0 0.42em;
+    color: var(--faint);
+  }
+}
+
+.pitch {
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--muted);
+  max-width: 52ch;
+  margin: 18px 0 0;
+  text-wrap: pretty;
+}
+
+.cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.istats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+}
+
+.istatV {
+  font-size: 30px;
+  line-height: 1;
+  font-weight: 600;
+  letter-spacing: -0.045em;
+  white-space: nowrap;
+}
+
+.istatL {
+  font-size: 13.5px;
+  line-height: 1.4;
+  color: var(--muted);
+  margin-top: 8px;
+}
+
+// Плитка з фото: поруч з intro тягнеться на всю висоту ряду (не нижча за min-height макета)
+.tPhoto {
+  grid-column: span 5;
+  padding: 0;
+  min-height: 560px;
+}
+
+// Бейдж із мовами поверх фото
+.photoBadge {
+  position: absolute;
+  left: 16px;
+  bottom: 16px;
+  right: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid var(--line2);
+  background: color-mix(in oklab, var(--surface) 78%, transparent);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  font: 500 12.5px/1.35 $font-mono;
+  color: var(--text);
+}
+
+.tW {
+  grid-column: span 4;
+  min-height: 250px;
+
+  // Метрика притиснута до низу плитки
+  > :last-child {
+    margin-top: auto;
+  }
+}
+
+.tTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.arrC {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line2);
+  color: var(--faint);
+  transition:
+    background 0.25s,
+    color 0.25s,
+    border-color 0.25s,
+    rotate 0.35s $ease-out;
+}
+
+a.tile:hover .arrC {
+  background: var(--accent2);
+  border-color: transparent;
+  color: var(--on-accent2);
+  rotate: 45deg;
+}
+
+.tH {
+  margin: 6px 0 0;
+  font-size: 22px;
+  line-height: 1.2;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+
+.tP {
+  margin: 0;
+  font-size: 15.5px;
+  line-height: 1.55;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+.tAi {
+  grid-column: span 8;
+}
+
+// Міні-схема AI-процесу; останній крок підсвічено
+.miniFlow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: auto;
+}
+
+.mf {
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 11px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: var(--bg2);
+  font-size: 13px;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.mf.done {
+  border-color: color-mix(in oklab, var(--accent) 50%, transparent);
+  background: var(--accent-soft);
+  color: var(--accent-text);
+}
+
+.tStack {
+  grid-column: span 4;
+
+  // Теги притиснуті до низу плитки
+  > :last-child {
+    margin-top: auto;
+  }
+}
+
+// Оранжева CTA-плитка з темною кнопкою email
+.tCta {
+  grid-column: span 8;
+  padding: 40px;
+  border: 0;
+  color: var(--on-accent2);
+  background:
+    radial-gradient(90% 120% at 100% 100%, rgba(255, 255, 255, 0.28), transparent 60%),
+    linear-gradient(120deg, var(--accent2), var(--accent2-hi));
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.ctaH {
+  margin: 0;
+  font-size: 36px;
+  line-height: 1.08;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  max-width: 20ch;
+  text-wrap: balance;
+}
+
+.ctaS {
+  margin: 0;
+  font-size: 17px;
+  opacity: 0.85;
+}
+
+// Темна кнопка на оранжевому фоні; подвійний клас перекриває базові кольори .btn
+.ink.ink {
+  margin-top: 10px;
+  background: var(--on-accent2);
+  color: #fff4ee;
+  border-color: transparent;
+
+  &:hover {
+    background: #2a140a;
+  }
+}
+
+.tLinks {
+  grid-column: span 4;
+  gap: 8px;
+}
+
+.lrows {
+  display: flex;
+  flex-direction: column;
+  margin-top: 6px;
+}
+
+.lrow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 48px;
+  border-bottom: 1px solid var(--line);
+  font-size: 16px;
+  font-weight: 500;
+  text-decoration: none;
+  color: var(--text);
+  transition:
+    color 0.2s,
+    padding 0.25s;
+
+  &:last-child {
+    border-bottom: 0;
+  }
+
+  svg {
+    color: var(--faint);
+    transition: color 0.2s;
+  }
+
+  &:hover {
+    color: var(--accent2-text);
+    padding-left: 4px;
+  }
+
+  &:hover svg {
+    color: var(--accent2-text);
+  }
+}
+
+@keyframes word {
+  from {
+    opacity: 0;
+    translate: 0 0.3em;
+    filter: blur(8px);
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+    filter: blur(0);
+  }
+}
+
+@keyframes ping {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+@include motion {
+  // Слова імені зʼявляються по черзі (затримки d2 / d3 макета)
+  .name span {
+    animation: word 0.9s $ease-out both;
+  }
+
+  .name span:nth-child(1) {
+    animation-delay: 0.12s;
+  }
+
+  .name span:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+
+  .dot::after {
+    animation: ping 2.4s $ease-out infinite;
+  }
+}
+
+// 901–1100 і вужче: рівні ряди без порожніх половин — intro 7 + фото 5, роботи 4 + 4 + 4, AI на всю ширину,
+// Stack і Contact links по 6 в одному ряду, CTA після них на всю ширину (лише `order`, DOM-порядок той самий)
+@include tablet {
+  .tAi,
+  .tCta {
+    grid-column: span 12;
+  }
+
+  .tCta {
+    order: 1;
+  }
+
+  .tStack,
+  .tLinks {
+    grid-column: span 6;
+  }
+}
+
+// 721–900: колонки ті самі, що й на планшеті, але плитки вужчі — менші відступи й кегль, щоб текст не вилазив
+@include narrow {
+  .tW,
+  .tAi,
+  .tStack,
+  .tLinks {
+    padding: 22px;
+  }
+
+  .tIntro {
+    padding: 30px 26px;
+    gap: 28px;
+  }
+
+  .chip {
+    font-size: 11.5px;
+    gap: 8px;
+  }
+
+  .name {
+    font-size: 46px;
+    letter-spacing: -0.045em;
+    margin-top: 18px;
+  }
+
+  .headline {
+    font-size: 18px;
+  }
+
+  .pitch {
+    font-size: 15.5px;
+  }
+
+  .cta {
+    margin-top: 22px;
+    gap: 10px;
+  }
+
+  .istats {
+    gap: 12px;
+    padding-top: 20px;
+  }
+
+  .istatV {
+    font-size: 22px;
+  }
+
+  .istatL {
+    font-size: 12.5px;
+  }
+
+  .tW {
+    min-height: 0;
+  }
+
+  .tH {
+    font-size: 19px;
+  }
+
+  .tP {
+    font-size: 14.5px;
+  }
+}
+
+@include phone {
+  .home {
+    padding-top: 16px;
+  }
+
+  .bento {
+    gap: 12px;
+  }
+
+  // Телефон: кожна плитка на всю ширину
+  .tIntro,
+  .tPhoto,
+  .tW,
+  .tStack,
+  .tLinks {
+    grid-column: span 12;
+  }
+
+  .tile {
+    border-radius: 22px;
+  }
+
+  .tIntro {
+    padding: 26px 22px;
+  }
+
+  .name {
+    font-size: 42px;
+  }
+
+  .headline {
+    font-size: 19px;
+  }
+
+  .pitch {
+    font-size: 16px;
+  }
+
+  .cta {
+    flex-direction: column;
+
+    a {
+      width: 100%;
+    }
+  }
+
+  // Портретна рамка 4:5 на всю ширину замість min-height макета
+  .tPhoto {
+    min-height: 0;
+    aspect-ratio: 4 / 5;
+  }
+
+  .tH {
+    font-size: 22px;
+  }
+
+  .tP {
+    font-size: 15.5px;
+  }
+
+  .tCta {
+    padding: 28px 22px;
+  }
+
+  .ctaH {
+    font-size: 28px;
+  }
+}

@@ -1,0 +1,14 @@
+# Заголовки відповідей Cloudflare Workers Static Assets. Vite копіює файл у dist/_headers; як сторінка він не віддається.
+# Content-Security-Policy навмисно відсутній: index.html містить інлайн-скрипт теми та Google Fonts (окрема задача).
+
+# Базові безпекові заголовки для всіх відповідей
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+
+# Хешовані бандли Vite незмінні, тому кешуємо їх на рік
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable

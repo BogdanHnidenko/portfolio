@@ -1,0 +1,63 @@
+// Банер-заклик унизу Work і About: м'які градієнти акцентів на поверхні картки.
+@use '../../styles/breakpoints' as *;
+
+.band {
+  position: relative;
+  overflow: hidden;
+  margin: 96px 0 0;
+  padding: 56px;
+  border-radius: 24px;
+  border: 1px solid var(--line2);
+  background:
+    radial-gradient(80% 120% at 100% 100%, var(--accent2-soft), transparent 60%),
+    radial-gradient(60% 100% at 0% 0%, var(--accent-soft), transparent 60%),
+    var(--surface);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+.bandH {
+  font-size: 40px;
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+  font-weight: 600;
+  margin: 0;
+  max-width: 22ch;
+  text-wrap: balance;
+}
+
+.bandS {
+  font-size: 17px;
+  color: var(--muted);
+  margin: 14px 0 0;
+}
+
+.bandCta {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+@include phone {
+  .band {
+    margin-top: 72px;
+    padding: 28px 22px;
+    border-radius: 20px;
+  }
+
+  .bandH {
+    font-size: 28px;
+  }
+
+  .bandCta {
+    width: 100%;
+    flex-direction: column;
+
+    a {
+      width: 100%;
+    }
+  }
+}
