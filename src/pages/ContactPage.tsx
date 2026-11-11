@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { ArrowUpRightIcon, DownloadIcon, MailIcon } from '../components/icons/Icons';
-import { CV_HREF, EMAIL, EMAIL_HREF, GITHUB_HREF, LINKEDIN_HREF, TELEGRAM_HREF } from '../data/contacts';
+import { CV_FILENAME, CV_HREF, EMAIL, EMAIL_HREF, GITHUB_HREF, LINKEDIN_HREF, TELEGRAM_HREF } from '../data/contacts';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import { useT } from '../i18n';
 import ui from '../styles/ui.module.scss';
@@ -22,20 +22,20 @@ interface ContactCardProps {
   delayClass: string;
   /** data-testid картки */
   testId: string;
-  /** Чи це завантаження файлу (CV) */
-  download?: boolean;
+  /** Назва файлу для атрибута `download` (лише для CV); без неї атрибута немає */
+  download?: string;
 }
 
 /**
  * Картка контакту: мітка з іконкою і значення; зовнішні посилання відкриваються в новій вкладці.
- * @param props - адреса, тексти, іконка, затримка появи, testid і ознака завантаження
+ * @param props - адреса, тексти, іконка, затримка появи, testid і назва файлу для завантаження (CV)
  */
 function ContactCard({ href, label, value, icon, delayClass, testId, download }: ContactCardProps) {
   return (
     <a
       className={cx(ui.card, s.cLink, ui.rise, delayClass)}
       href={href}
-      download={download || undefined}
+      download={download}
       {...externalLinkProps(href)}
       data-testid={testId}
     >
@@ -113,7 +113,7 @@ export function ContactPage() {
               icon={<DownloadIcon size={16} strokeWidth={1.9} />}
               delayClass={ui.d6}
               testId="cv-contact"
-              download
+              download={CV_FILENAME}
             />
           </div>
         </div>

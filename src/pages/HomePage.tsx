@@ -1,7 +1,7 @@
 import { ArrowRightIcon, ArrowUpRightIcon, DownloadIcon, GlobeIcon, MailIcon } from '../components/icons/Icons';
 import { Photo } from '../components/Photo/Photo';
 import { RouteLink } from '../components/RouteLink/RouteLink';
-import { CV_HREF, EMAIL_HREF, GITHUB_HREF, LINKEDIN_HREF, TELEGRAM_HREF } from '../data/contacts';
+import { CV_FILENAME, CV_HREF, EMAIL_HREF, GITHUB_HREF, LINKEDIN_HREF, TELEGRAM_HREF } from '../data/contacts';
 import { PATHS } from '../data/routes';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import { useT } from '../i18n';
@@ -64,7 +64,7 @@ export function HomePage() {
                 {t.pitch}
               </p>
               <div className={s.cta}>
-                <a className={cx(ui.btn, ui.primary)} href={CV_HREF} download data-testid="cv-hero">
+                <a className={cx(ui.btn, ui.primary)} href={CV_HREF} download={CV_FILENAME} data-testid="cv-hero">
                   <DownloadIcon />
                   {t.cv}
                 </a>

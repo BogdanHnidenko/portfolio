@@ -266,22 +266,30 @@ describe('App — контент сторінок', () => {
 });
 
 describe('App — посилання', () => {
-  it('усі кнопки CV ведуть на /cv.pdf з download', () => {
-    renderAt('/');
-    // Кнопки CV у хедері й на Home
-    const cvHome = [screen.getByTestId('cv-header'), screen.getByTestId('cv-hero')];
-    for (const link of cvHome) {
-      expect(link).toHaveAttribute('href', '/cv.pdf');
-      expect(link).toHaveAttribute('download');
-    }
-    fireEvent.click(screen.getByTestId('nav-link-about'));
-    expect(screen.getByTestId('band-primary')).toHaveAttribute('href', '/cv.pdf');
-    expect(screen.getByTestId('band-primary')).toHaveAttribute('download');
-    expect(screen.getByTestId('band-primary')).toHaveTextContent('Download CV');
-    fireEvent.click(screen.getByTestId('nav-link-contact'));
-    expect(screen.getByTestId('cv-contact')).toHaveAttribute('href', '/cv.pdf');
-    expect(screen.getByTestId('cv-contact')).toHaveAttribute('download');
-  });
+  it.each(['en', 'ua'] as const)(
+    'усі кнопки CV ведуть на /cv.pdf і зберігають файл під назвою автора (мова %s)',
+    (lang) => {
+      // Очікувана назва файлу при завантаженні — однакова для EN і UA
+      const fileName = 'Bohdan_Hnidenko_React_Native_CV.pdf';
+      act(() => {
+        useSettings.setState({ lang });
+      });
+      renderAt('/');
+      // Кнопки CV у хедері й на Home
+      const cvHome = [screen.getByTestId('cv-header'), screen.getByTestId('cv-hero')];
+      for (const link of cvHome) {
+        expect(link).toHaveAttribute('href', '/cv.pdf');
+        expect(link).toHaveAttribute('download', fileName);
+      }
+      fireEvent.click(screen.getByTestId('nav-link-about'));
+      expect(screen.getByTestId('band-primary')).toHaveAttribute('href', '/cv.pdf');
+      expect(screen.getByTestId('band-primary')).toHaveAttribute('download', fileName);
+      expect(screen.getByTestId('band-primary')).toHaveTextContent(lang === 'en' ? 'Download CV' : 'Завантажити CV');
+      fireEvent.click(screen.getByTestId('nav-link-contact'));
+      expect(screen.getByTestId('cv-contact')).toHaveAttribute('href', '/cv.pdf');
+      expect(screen.getByTestId('cv-contact')).toHaveAttribute('download', fileName);
+    },
+  );
 
   it('email-кнопки ведуть на mailto у тій самій вкладці', () => {
     renderAt('/');
