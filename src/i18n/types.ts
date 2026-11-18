@@ -118,7 +118,7 @@ export interface Dictionary {
   featTitle: string;
   featBody: string;
   appStoreCta: string;
-  googlePlaySoon: string;
+  googlePlayCta: string;
   appScreenAlts: AppScreenAlts;
   ndaTitle: string;
   ndaBody: string;

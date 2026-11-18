@@ -1,4 +1,4 @@
-import { FIELDQUOTE_APP_STORE_HREF, FIELDQUOTE_SITE_HREF } from '../../data/apps';
+import { FIELDQUOTE_APP_STORE_HREF, FIELDQUOTE_GOOGLE_PLAY_HREF, FIELDQUOTE_SITE_HREF } from '../../data/apps';
 import { useT } from '../../i18n';
 import ui from '../../styles/ui.module.scss';
 import { cx } from '../../utils/cx';
@@ -14,16 +14,17 @@ interface ActionLink {
 }
 
 /**
- * Рядок дій картки FieldQuote на Work: кнопки-посилання на App Store і сайт (нова вкладка, без `window.opener`)
- * та неактивна позначка «Google Play — незабаром», яка навмисно не є посиланням.
+ * Рядок дій картки FieldQuote на Work: кнопки-посилання на App Store, Google Play і сайт у такому порядку
+ * (нова вкладка, без `window.opener`). Без офіційних бейджів магазинів — лише текстові кнопки.
  * Посилання з небезпечною чи порожньою адресою не рендеряться (див. `isRenderableHref`).
  */
 export function FieldQuoteActions() {
   // Тексти активної мови
   const t = useT();
-  // Зовнішні посилання застосунку; сайт підписаний доменом, як у специфікації
+  // Зовнішні посилання застосунку в порядку App Store → Google Play → сайт; сайт підписаний доменом
   const links: ActionLink[] = [
     { href: FIELDQUOTE_APP_STORE_HREF, label: t.appStoreCta, testId: 'app-store-link' },
+    { href: FIELDQUOTE_GOOGLE_PLAY_HREF, label: t.googlePlayCta, testId: 'google-play-link' },
     { href: FIELDQUOTE_SITE_HREF, label: 'fieldquote.org', testId: 'app-site-link' },
   ];
 
@@ -43,9 +44,6 @@ export function FieldQuoteActions() {
             <ArrowUpRightIcon />
           </a>
         ))}
-      <span className={cx(ui.badge, ui.neutral, s.soon)} data-testid="google-play-soon">
-        {t.googlePlaySoon}
-      </span>
     </div>
   );
 }

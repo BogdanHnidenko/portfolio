@@ -98,11 +98,12 @@ for (const id of BUTTONS) {
     // Наводимо курсор
     await btn.hover();
     await expect.poll(async () => Math.round((rest.y - (await read()).y) * 10) / 10).toBe(1);
-    expect((await read()).shadow).not.toBe(rest.shadow);
+    await expect.poll(async () => (await read()).shadow).not.toBe(rest.shadow);
     // Відводимо курсор
     await page.mouse.move(0, 0);
     await expect.poll(async () => (await read()).y).toBeCloseTo(rest.y, 1);
-    expect((await read()).shadow).toBe(rest.shadow);
+    // Тінь повертається плавно, тому чекаємо кінця переходу, а не читаємо одразу
+    await expect.poll(async () => (await read()).shadow).toBe(rest.shadow);
     expect(errors).toEqual([]);
   });
 

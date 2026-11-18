@@ -1,13 +1,14 @@
 import { test, expect, type Page } from '@playwright/test';
 import fs from 'node:fs';
+import path from 'node:path';
 import { WIDTHS, eachWidth, checkLayout } from './_helpers/layout-checks';
 
 /** Ключ localStorage зі збереженими налаштуваннями (тема/мова). */
 const STORAGE_KEY = 'portfolio-settings';
 /** Очікувана назва файлу при збереженні. */
 const FILENAME = 'Bohdan_Hnidenko_React_Native_CV.pdf';
-/** Оригінал CV, з яким порівнюємо розмір і вміст. */
-const ORIGINAL = '/Users/bohdanhnidenko/Downloads/Bohdan_Hnidenko_React_Native_CV.pdf';
+/** Поточний CV із public/, з яким порівнюємо розмір і вміст. */
+const ORIGINAL = path.resolve(__dirname, '../public/cv.pdf');
 /** Сторінки з кнопкою CV та її тест-ідентифікатор. */
 const CV_PAGES = [
   { path: '/', id: 'cv-hero' },

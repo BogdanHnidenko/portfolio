@@ -1,5 +1,8 @@
-/** Сторінка FieldQuote: Invoices & Quotes в App Store (власний iOS-застосунок автора). */
+/** Сторінка FieldQuote: Invoices & Quotes в App Store (власний застосунок автора для iOS та Android). */
 export const FIELDQUOTE_APP_STORE_HREF = 'https://apps.apple.com/us/app/fieldquote-invoices-quotes/id6822302139';
+
+/** Сторінка FieldQuote: Invoices & Quotes у Google Play (Android-версія того самого застосунку). */
+export const FIELDQUOTE_GOOGLE_PLAY_HREF = 'https://play.google.com/store/apps/details?id=com.modernapps.devstudio.fieldquote';
 
 /** Сайт застосунку FieldQuote. */
 export const FIELDQUOTE_SITE_HREF = 'https://fieldquote.org/';
