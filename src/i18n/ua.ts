@@ -52,7 +52,7 @@ export const ua = {
       lbl: 'Власні проєкти',
       title: 'FieldQuote',
       text: 'Офлайн-кошториси, інвойси та підпис клієнта для контракторів.',
-      metric: 'В App Store · Google Play незабаром',
+      metric: 'В App Store і Google Play',
     },
     {
       lbl: 'Мої проєкти',
@@ -82,12 +82,12 @@ export const ua = {
   g3: 'Мої проєкти',
   appsOwn: 'Власні проєкти',
   appsClient: 'Клієнтські продукти',
-  appLive: 'В App Store',
+  appLive: 'В App Store і Google Play',
   featTitle: 'FieldQuote',
   featBody:
-    'Кошторис на обʼєкті — оплата ще до відʼїзду. Офлайн iOS-застосунок для контракторів-одинаків: кошториси, інвойси, PDF і підпис клієнта просто на місці.',
+    'Кошторис на обʼєкті — оплата ще до відʼїзду. Офлайн-застосунок для iOS та Android для контракторів-одинаків: кошториси, інвойси, PDF і підпис клієнта просто на місці.',
   appStoreCta: 'Завантажити в App Store',
-  googlePlaySoon: 'Google Play — незабаром',
+  googlePlayCta: 'Завантажити з Google Play',
   appScreenAlts: {
     left: 'FieldQuote — екран кошторису',
     center: 'FieldQuote — головний екран',
@@ -148,7 +148,7 @@ export const ua = {
   aboutTitleA: 'Про',
   aboutTitleB: 'мене',
   prof: [
-    { k: 'Зараз', v: 'FieldQuote — мій iOS-застосунок, уже в App Store' },
+    { k: 'Зараз', v: 'FieldQuote — мій застосунок, уже в App Store і Google Play' },
     { k: 'Раніше', v: 'SkyService POS · 2023–2026 · заступник тімліда' },
     { k: 'Формат', v: 'Віддалено · повна зайнятість, контракт, фриланс' },
     { k: 'Мови', v: 'Англійська B1 · Українська — рідна' },
@@ -160,7 +160,7 @@ export const ua = {
       org: 'Фриланс і власні продукти',
       period: '2025 – дотепер',
       place: 'Віддалено',
-      bullets: ['Власний продукт FieldQuote — уже в App Store, Google Play незабаром.', 'Кросплатформні клієнтські застосунки під NDA.'],
+      bullets: ['Власний продукт FieldQuote — уже в App Store і Google Play.', 'Кросплатформні клієнтські застосунки під NDA.'],
     },
     {
       role: 'Frontend / Full-Stack розробник',

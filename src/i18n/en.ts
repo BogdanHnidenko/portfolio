@@ -50,7 +50,7 @@ export const en = {
       lbl: 'Own projects',
       title: 'FieldQuote',
       text: 'Offline-first quotes, invoices and client signatures for contractors.',
-      metric: 'On the App Store · Google Play soon',
+      metric: 'On App Store & Google Play',
     },
     {
       lbl: 'My projects',
@@ -77,12 +77,12 @@ export const en = {
   g3: 'My projects',
   appsOwn: 'Own projects',
   appsClient: 'Client products',
-  appLive: 'On the App Store',
+  appLive: 'On App Store & Google Play',
   featTitle: 'FieldQuote',
   featBody:
-    'Quote on site. Get paid before you leave. An offline-first iOS app for solo contractors: estimates, invoices, PDFs and client signatures right on the job.',
+    'Quote on site. Get paid before you leave. An offline-first iOS & Android app for solo contractors: estimates, invoices, PDFs and client signatures right on the job.',
   appStoreCta: 'Download on the App Store',
-  googlePlaySoon: 'Google Play — coming soon',
+  googlePlayCta: 'Get it on Google Play',
   appScreenAlts: {
     left: 'FieldQuote — estimate screen',
     center: 'FieldQuote — home screen',
@@ -141,7 +141,7 @@ export const en = {
   aboutTitleA: 'About',
   aboutTitleB: 'me',
   prof: [
-    { k: 'Now', v: 'FieldQuote — my own iOS app, live on the App Store' },
+    { k: 'Now', v: 'FieldQuote — my own app, live on App Store & Google Play' },
     { k: 'Before', v: 'SkyService POS · 2023–2026 · deputy team lead' },
     { k: 'Format', v: 'Remote · full-time, contract, freelance' },
     { k: 'Languages', v: 'English B1 · Ukrainian native' },
@@ -153,7 +153,7 @@ export const en = {
       org: 'Freelance & Own Products',
       period: '2025 – Present',
       place: 'Remote',
-      bullets: ['Own product FieldQuote — live on the App Store, Google Play coming soon.', 'Cross-platform client apps under NDA.'],
+      bullets: ['Own product FieldQuote — live on the App Store and Google Play.', 'Cross-platform client apps under NDA.'],
     },
     {
       role: 'Frontend / Full-Stack Developer',

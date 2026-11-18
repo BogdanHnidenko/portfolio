@@ -184,8 +184,12 @@ test('AC-8 [responsive] мобільний: плитка, бургер, Наза
 test('AC-2 [responsive] Work за якорем на 3 ширинах', async ({ page }, testInfo) => {
   // Кожна ширина: заходимо за якорем і перевіряємо верстку
   await eachWidth(page, WIDTHS.smoke, async (w) => {
+    // Скидаємо документ: повторний goto на той самий URL з якорем — це same-document навігація без нового скролу
+    await page.goto('about:blank');
     await open(page, '/work#work-apps', w);
     await expectBlockVisible(page, 'work-apps');
+    // Чекаємо кінця скінченних вхідних анімацій: у їхній середині блок зсунутий і дає хибний overlap
+    await page.evaluate(() => Promise.all(document.getAnimations().filter((a) => a.timeline instanceof DocumentTimeline && a.effect?.getComputedTiming().iterations !== Infinity).map((a) => a.finished.catch(() => undefined))));
     await checkLayout(page, testInfo, { name: `work-anchor-${w}`, ignore: ['[data-testid="app-screen-left"]', '[data-testid="app-screen-right"]'] });
   });
 });

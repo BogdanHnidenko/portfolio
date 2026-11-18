@@ -21,8 +21,8 @@ function shape(value: unknown): unknown {
 /** Ключі макета, які розмітка не використовує, тож їх не переносимо (розділ «Тексти» специфікації). */
 const DROPPED_KEYS = ['featured', 'allWork', 'openCase', 'teaserGo', 'photoBadge', 'photoCap', 'photoCap2'];
 
-/** Ключі старого статусу «на рев'ю», прибрані після виходу FieldQuote в App Store. */
-const REVIEW_KEYS = ['inReview', 'featStatus'];
+/** Ключі старих статусів «на рев'ю» і «Google Play незабаром», прибрані після виходу FieldQuote в обох магазинах. */
+const REVIEW_KEYS = ['inReview', 'featStatus', 'googlePlaySoon'];
 
 /** Ключі попередньої односторінкової версії, які більше не потрібні. */
 const LEGACY_KEYS = ['docTitle', 'navApps', 'navAi', 'navStack', 'navExp', 'dirs', 'dirsLabel', 'groupNames', 'groupMeta', 'avatarLabel', 'stackHead', 'navSectionsLabel'];
@@ -71,33 +71,47 @@ describe('словник', () => {
     }
   });
 
+  it('не містить статусу «Google Play незабаром» у жодному тексті', () => {
+    for (const dict of Object.values(dictionaries)) {
+      // Усі тексти словника одним рядком
+      const texts = JSON.stringify(dict);
+      expect(texts).not.toMatch(/coming soon|google play soon|незабаром/i);
+    }
+  });
+
   it('має тексти FieldQuote з таблиць специфікації обома мовами', () => {
     // Словники обох мов для порівняння з таблицями специфікації
     const { en, ua } = dictionaries;
     expect(en.featTitle).toBe('FieldQuote');
     expect(ua.featTitle).toBe('FieldQuote');
-    expect(en.appLive).toBe('On the App Store');
-    expect(ua.appLive).toBe('В App Store');
+    expect(en.appLive).toBe('On App Store & Google Play');
+    expect(ua.appLive).toBe('В App Store і Google Play');
+    expect(en.featBody).toBe(
+      'Quote on site. Get paid before you leave. An offline-first iOS & Android app for solo contractors: estimates, invoices, PDFs and client signatures right on the job.',
+    );
+    expect(ua.featBody).toBe(
+      'Кошторис на обʼєкті — оплата ще до відʼїзду. Офлайн-застосунок для iOS та Android для контракторів-одинаків: кошториси, інвойси, PDF і підпис клієнта просто на місці.',
+    );
     expect(en.appStoreCta).toBe('Download on the App Store');
     expect(ua.appStoreCta).toBe('Завантажити в App Store');
-    expect(en.googlePlaySoon).toBe('Google Play — coming soon');
-    expect(ua.googlePlaySoon).toBe('Google Play — незабаром');
+    expect(en.googlePlayCta).toBe('Get it on Google Play');
+    expect(ua.googlePlayCta).toBe('Завантажити з Google Play');
     expect(en.workTiles[1]).toMatchObject({
       lbl: 'Own projects',
       title: 'FieldQuote',
       text: 'Offline-first quotes, invoices and client signatures for contractors.',
-      metric: 'On the App Store · Google Play soon',
+      metric: 'On App Store & Google Play',
     });
     expect(ua.workTiles[1]).toMatchObject({
       lbl: 'Власні проєкти',
       title: 'FieldQuote',
       text: 'Офлайн-кошториси, інвойси та підпис клієнта для контракторів.',
-      metric: 'В App Store · Google Play незабаром',
+      metric: 'В App Store і Google Play',
     });
-    expect(en.prof[0]).toEqual({ k: 'Now', v: 'FieldQuote — my own iOS app, live on the App Store' });
-    expect(ua.prof[0]).toEqual({ k: 'Зараз', v: 'FieldQuote — мій iOS-застосунок, уже в App Store' });
-    expect(en.jobs[0].bullets[0]).toBe('Own product FieldQuote — live on the App Store, Google Play coming soon.');
-    expect(ua.jobs[0].bullets[0]).toBe('Власний продукт FieldQuote — уже в App Store, Google Play незабаром.');
+    expect(en.prof[0]).toEqual({ k: 'Now', v: 'FieldQuote — my own app, live on App Store & Google Play' });
+    expect(ua.prof[0]).toEqual({ k: 'Зараз', v: 'FieldQuote — мій застосунок, уже в App Store і Google Play' });
+    expect(en.jobs[0].bullets[0]).toBe('Own product FieldQuote — live on the App Store and Google Play.');
+    expect(ua.jobs[0].bullets[0]).toBe('Власний продукт FieldQuote — уже в App Store і Google Play.');
     expect(en.appScreenAlts).toEqual({
       left: 'FieldQuote — estimate screen',
       center: 'FieldQuote — home screen',

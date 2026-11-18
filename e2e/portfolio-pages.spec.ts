@@ -171,7 +171,7 @@ test.describe('AC-1 сторінки й контент', () => {
       '4 years shipping production products — from a cloud POS used by 1,000+ venues to my own mobile apps. I build end to end with my own team of AI agents.',
       'Download CV', 'View work', '4 yrs', 'commercial experience', '1,000+', 'venues on the POS I worked on', '~1 week', 'app MVP with my AI agents',
       'English B1 · Ukrainian native', 'SkyService POS', 'POS terminal', 'Catalog render for 1,000+ items on low-end POS devices.', '10–20 s → <1 s',
-      'Own projects', 'FieldQuote', 'Offline-first quotes, invoices and client signatures for contractors.', 'On the App Store · Google Play soon',
+      'Own projects', 'FieldQuote', 'Offline-first quotes, invoices and client signatures for contractors.', 'On App Store & Google Play',
       'My projects', 'AI Chat', 'Chat with AI and authentication, built full-stack.', 'Vue 3 · Node.js · PostgreSQL',
       'How I build', 'With my own team of AI agents', 'PM / Orchestrator', 'Backend · Frontend · Mobile', 'Security pre-tester', 'QA agent', 'Verified',
       'Stack', 'Vue.js 3', 'Node.js', 'PostgreSQL', 'WebSockets', 'Claude Code',
@@ -210,8 +210,8 @@ test.describe('AC-1 сторінки й контент', () => {
       'Chat with AI and authentication on a Vue 3 + Node.js + PostgreSQL stack.',
       'A working full-stack app — live demo and source on GitHub.',
       'Problem', 'Solution', 'Result', 'Vuex/Pinia', 'Kitchen Display System',
-      'On the App Store', 'Quote on site. Get paid before you leave. An offline-first iOS app for solo contractors: estimates, invoices, PDFs and client signatures right on the job.',
-      'Google Play — coming soon', 'Client apps under NDA', 'NDA',
+      'On App Store & Google Play', 'Quote on site. Get paid before you leave. An offline-first iOS & Android app for solo contractors: estimates, invoices, PDFs and client signatures right on the job.',
+      'Get it on Google Play', 'Client apps under NDA', 'NDA',
       'Cross-platform React Native / Expo apps delivered to client requirements.',
       'Open to full-time, contract and freelance remote work.', 'Email me', 'All contacts',
     ]);
@@ -229,10 +229,10 @@ test.describe('AC-1 сторінки й контент', () => {
     await expect(page.getByTestId('cta-band')).toBeVisible();
     await expect(page.getByTestId('about-title')).toBeVisible();
     await expectTexts(page, [
-      'Now', 'FieldQuote — my own iOS app, live on the App Store', 'Before', 'SkyService POS · 2023–2026 · deputy team lead',
+      'Now', 'FieldQuote — my own app, live on App Store & Google Play', 'Before', 'SkyService POS · 2023–2026 · deputy team lead',
       'Format', 'Remote · full-time, contract, freelance', 'Languages', 'English B1 · Ukrainian native',
       'Experience', '2025 – Present', 'React Native Developer', 'Freelance & Own Products',
-      'Own product FieldQuote — live on the App Store, Google Play coming soon.', 'Cross-platform client apps under NDA.',
+      'Own product FieldQuote — live on the App Store and Google Play.', 'Cross-platform client apps under NDA.',
       'May 2023 – Jun 2026', 'Frontend / Full-Stack Developer', 'Deputy team lead in a team of four.', 'Realtime POS & KDS.', 'Google and Apple OAuth.',
       'Replaced legacy polling with callback-driven handling and async/await, eliminating a class of race-condition bugs.',
       'AI Workflow', 'A team of role-based Claude Code agents, one job each. Every change ends verified on a real device or in the browser.',
@@ -380,18 +380,19 @@ test.describe('AC-2 навігація', () => {
     // Селектор і очікувана адреса кожного внутрішнього посилання Home
     const cases: [Locator, string][] = [];
     await open(page, '/');
-    cases.push([page.getByTestId('view-work'), '/work'], [page.getByTestId('home-ai-tile'), '/about'], [page.getByTestId('home-stack-tile'), '/about'], [page.getByTestId('home-link-contacts'), '/contact']);
-    for (let i = 0; i < 3; i++) cases.push([page.getByTestId('home-work-tile').nth(i), '/work']);
+    cases.push([page.getByTestId('view-work'), '/work'], [page.getByTestId('home-ai-tile'), '/about#ai'], [page.getByTestId('home-stack-tile'), '/about#stack'], [page.getByTestId('home-link-contacts'), '/contact']);
+    // Плитки Work ведуть до своїх блоків (home-tile-anchors AC-1)
+    ['/work#work-sky', '/work#work-apps', '/work#work-own'].forEach((h, i) => cases.push([page.getByTestId('home-work-tile').nth(i), h]));
     for (const [loc, href] of cases) {
       await expect(loc).toHaveAttribute('href', href);
       expect(await loc.evaluate((e) => e.tagName)).toBe('A');
     }
     // Реальний перехід по кожній адресі
     await page.getByTestId('home-work-tile').nth(2).click();
-    await expect(page).toHaveURL(/\/work$/);
+    await expect(page).toHaveURL(/\/work#work-own$/);
     await page.goBack();
     await page.getByTestId('home-stack-tile').click();
-    await expect(page).toHaveURL(/\/about$/);
+    await expect(page).toHaveURL(/\/about#stack$/);
     await page.goBack();
     await page.getByTestId('home-ai-tile').click();
     await expect(page.getByTestId('page-about')).toBeVisible();
@@ -613,15 +614,15 @@ test.describe('AC-4 мова', () => {
       '4 роки випускаю продакшн-продукти — від хмарного POS, яким користуються 1 000+ закладів, до власних мобільних застосунків. Будую від початку до кінця з власною командою AI-агентів.',
       'Мої роботи', '4 роки', 'комерційного досвіду', '1 000+', 'закладів на POS, над яким я працював', '~7 днів', 'MVP застосунку з AI-агентами',
       'POS-термінал', 'Рендер каталогу з 1 000+ позицій на слабких POS-пристроях.', '10–20 с → <1 с', 'Власні проєкти', 'FieldQuote',
-      'Офлайн-кошториси, інвойси та підпис клієнта для контракторів.', 'В App Store · Google Play незабаром', 'Мої проєкти', 'Чат з AI та авторизація, повний стек.', 'Як я будую', 'З власною командою AI-агентів',
+      'Офлайн-кошториси, інвойси та підпис клієнта для контракторів.', 'В App Store і Google Play', 'Мої проєкти', 'Чат з AI та авторизація, повний стек.', 'Як я будую', 'З власною командою AI-агентів',
       'PM / Оркестратор', 'Security пре-тестер', 'QA-агент', 'Перевірено',
       'Відкритий до повної зайнятості, контракту та фрилансу', 'віддалено.', 'Відповідаю протягом доби.', 'Написати на email', 'Усі контакти',
     ],
     '/work': [
       'Роботи', 'Вибрані', 'трав. 2023 – черв. 2026', 'Мобільні застосунки', 'Мої проєкти', 'Проблема', 'Рішення', 'Результат', 'В App Store',
       'FieldQuote', 'Клієнтські застосунки під NDA', 'Клієнтські продукти', 'Усі контакти', 'Написати на email',
-      'Google Play — незабаром',
-      'Кошторис на обʼєкті — оплата ще до відʼїзду. Офлайн iOS-застосунок для контракторів-одинаків: кошториси, інвойси, PDF і підпис клієнта просто на місці.',
+      'Завантажити з Google Play',
+      'Кошторис на обʼєкті — оплата ще до відʼїзду. Офлайн-застосунок для iOS та Android для контракторів-одинаків: кошториси, інвойси, PDF і підпис клієнта просто на місці.',
       'Кросплатформні застосунки на React Native / Expo, створені за вимогами клієнтів.',
     ],
     '/about': [
@@ -1095,7 +1096,7 @@ test.describe('AC-7 посилання', () => {
     await page.route('**/cv.pdf', (r) => r.fulfill({ status: 200, contentType: 'application/pdf', body: '%PDF-1.4' }));
     // Подія завантаження
     const [download] = await Promise.all([page.waitForEvent('download'), page.getByTestId('band-primary').click()]);
-    expect(download.suggestedFilename()).toBe('cv.pdf');
+    expect(download.suggestedFilename()).toBe('Bohdan_Hnidenko_React_Native_CV.pdf');
     await expect(page).toHaveURL(/\/about$/);
     await expect(page.getByTestId('page-about')).toBeVisible();
   });

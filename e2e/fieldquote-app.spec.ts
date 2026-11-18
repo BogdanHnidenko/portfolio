@@ -106,7 +106,7 @@ test('AC-2 [happy] картка: заголовок, бейдж, посилан�
   await expect(card).toContainText('FieldQuote');
   // Бейдж статусу
   const badge = page.getByTestId('app-live-badge');
-  await expect(badge).toHaveText('On the App Store');
+  await expect(badge).toHaveText('On App Store & Google Play');
   expect(await badge.locator('*').evaluateAll((els) => els.map((e) => getComputedStyle(e, '::before').animationName))).not.toContain('blink');
   expect(await badge.evaluate((e) => getComputedStyle(e).animationName)).toBe('none');
   // Посилання-кнопки
@@ -121,19 +121,18 @@ test('AC-2 [happy] картка: заголовок, бейдж, посилан�
     await expect(l).toHaveAttribute('target', '_blank');
     await expect(l).toHaveAttribute('rel', /noopener/);
   }
-  // Google Play: звичайний span без href
-  const gp = page.getByTestId('google-play-soon');
-  await expect(gp).toHaveText('Google Play — coming soon');
-  expect(await gp.evaluate((e) => e.tagName + (e.closest('a') ? '-in-link' : ''))).toBe('SPAN');
+  // Google Play тепер активне посилання, старої позначки немає
+  await expect(page.getByTestId('google-play-link')).toHaveText(/Get it on Google Play/);
+  await expect(page.getByTestId('google-play-soon')).toHaveCount(0);
   await expect(card).not.toContainText(/Status:|in App Store & Google Play review/i);
 });
 
 test('AC-2 [state] UA: тексти картки', async ({ page }) => {
   await openAt(page, '/work', 1440, 'ua');
-  await expect(page.getByTestId('app-live-badge')).toHaveText('В App Store');
+  await expect(page.getByTestId('app-live-badge')).toHaveText('В App Store і Google Play');
   await expect(page.getByTestId('app-store-link')).toContainText('Завантажити в App Store');
-  await expect(page.getByTestId('google-play-soon')).toHaveText('Google Play — незабаром');
-  await expect(page.getByTestId('apps-card')).toContainText('Кошторис на обʼєкті — оплата ще до відʼїзду. Офлайн iOS-застосунок для контракторів-одинаків');
+  await expect(page.getByTestId('google-play-link')).toContainText('Завантажити з Google Play');
+  await expect(page.getByTestId('apps-card')).toContainText('Офлайн-застосунок для iOS та Android для контракторів-одинаків');
 });
 
 // ===================== AC-3 Тексти =====================
@@ -144,10 +143,10 @@ test('AC-3 [happy] EN: Home плитка, About Now і досвід', async ({ p
   const tile = page.getByTestId('home-work-tile').nth(1);
   await expect(tile).toContainText('FieldQuote');
   await expect(tile).toContainText('Offline-first quotes, invoices and client signatures for contractors.');
-  await expect(tile).toContainText('On the App Store · Google Play soon');
+  await expect(tile).toContainText('On App Store & Google Play');
   await page.goto('/about');
-  await expect(page.getByTestId('page-about')).toContainText('FieldQuote — my own iOS app, live on the App Store');
-  await expect(page.getByTestId('page-about')).toContainText('Own product FieldQuote — live on the App Store, Google Play coming soon.');
+  await expect(page.getByTestId('page-about')).toContainText('FieldQuote — my own app, live on App Store & Google Play');
+  await expect(page.getByTestId('page-about')).toContainText('Own product FieldQuote — live on the App Store and Google Play.');
 });
 
 test('AC-3 [happy] UA: Home плитка, About Now і досвід', async ({ page }) => {
@@ -156,10 +155,10 @@ test('AC-3 [happy] UA: Home плитка, About Now і досвід', async ({ p
   const tile = page.getByTestId('home-work-tile').nth(1);
   await expect(tile).toContainText('FieldQuote');
   await expect(tile).toContainText('Офлайн-кошториси, інвойси та підпис клієнта для контракторів.');
-  await expect(tile).toContainText('В App Store · Google Play незабаром');
+  await expect(tile).toContainText('В App Store і Google Play');
   await page.goto('/about');
-  await expect(page.getByTestId('page-about')).toContainText('FieldQuote — мій iOS-застосунок, уже в App Store');
-  await expect(page.getByTestId('page-about')).toContainText('Власний продукт FieldQuote — уже в App Store, Google Play незабаром.');
+  await expect(page.getByTestId('page-about')).toContainText('FieldQuote — мій застосунок, уже в App Store і Google Play');
+  await expect(page.getByTestId('page-about')).toContainText('Власний продукт FieldQuote — уже в App Store і Google Play.');
 });
 
 test('AC-3 [negative] жодна сторінка не містить старих фраз про рев\'ю', async ({ page }) => {
@@ -216,7 +215,7 @@ test('AC-5 [responsive] /work при 320px: кнопки дій у межах к
   await openAt(page, '/work', 320, 'ua');
   // Межі картки й кнопок
   const card = (await page.getByTestId('apps-card').boundingBox())!;
-  for (const id of ['app-store-link', 'app-site-link', 'google-play-soon']) {
+  for (const id of ['app-store-link', 'google-play-link', 'app-site-link']) {
     // Межі кнопки
     const b = (await page.getByTestId(id).boundingBox())!;
     expect(b.x, id).toBeGreaterThanOrEqual(card.x - 0.5);
